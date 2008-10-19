@@ -750,12 +750,10 @@ var http = {
 
 function solve(n) {
     n -= 1;
-    var t0, t1, r, w = 5000, p = function () {
+    var t0 = new Date(), t1, r = projectEuler[n](), w = 5000, p = function () {
         var c = new Date();
         return [http.answer, c - t0];
     };
-    t0 = new Date();
-    r = projectEuler[n]();
     if (http.wait) {
         window.setTimeout(function () {
             r = p();
