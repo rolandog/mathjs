@@ -1,13 +1,12 @@
 /** 
  * projectEuler.js by Rolando Garza
- * http://rolandog.com/
+ * http://code.google.com/p/mathjs/
  *
  * License: Creative Commons Attribution-Share Alike 3.0 Unported.
  * http://creativecommons.org/licenses/by-sa/3.0/
  *
  * @projectDescription   My attempt at solving Project Euler.
  * @author               Rolando Garza rolandog@gmail.com
- * @version              0.42
  */
 
 "use strict";
@@ -19,26 +18,22 @@ var http = {
     /**
      * Gets a file and calls a function.
      * @param(Number) a A Number.
-     * @param(Function) f A Function.
      */
-    get: function (a, f) {
-        var txt = new XMLHttpRequest(), al = function () {
-            if (txt.readyState === 4) {
-                http.txt = txt.responseText;
-                if (f !== undefined) {
-                    f(http.txt);
-                }
-            }
-        };
-        function g(n) {
-            txt.open('get', n);
-            txt.onreadystatechange = al;
-            txt.send(null);
+    get: function (url) {
+        var AJAX;
+        if (window.XMLHttpRequest) {
+            AJAX = new XMLHttpRequest();
+        } else {
+            AJAX = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if (AJAX) {
+            AJAX.open("GET", url, false);
+            AJAX.send(null);
+            return AJAX.responseText;
+        } else {
             return false;
         }
-        g(a);
-    },
-    wait: false
+    }
 }, projectEuler = [
     /**
      * Problem 1
@@ -513,12 +508,19 @@ var http = {
     /**
      * Problem 15
      * 
-     * Starting in the top left corner of a 22 grid, there are 6 routes
+     * Starting in the top left corner of a 2x2 grid, there are 6 routes
      * (without backtracking) to the bottom right corner.
-     * How many routes are there through a 2020 grid?
+     * How many routes are there through a 20x20 grid?
      */
     function () {
-        return Math.factorial(20 + 20) / Math.pow(Math.factorial(20), 2);
+        var size = 2, i = 0, j = 0, k = 0, pos = [], limit, routes = [];
+        limit = Math.factorial(2 * size) / Math.pow(Math.factorial(size), 2);
+        return limit;
+        function branchOut() {}
+        while (i < limit) {
+            
+            i += 1;
+        }
     },
     /**
      * Problem 16
@@ -654,24 +656,19 @@ var http = {
      * What is the total of all the name scores in the file?
      */
     function () {
-        var names, i, score = 0;
-        http.wait = true;
+        var names = http.get("names.txt"), i, score = 0;
         function p(a) {
             return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(a);
         }
         function v(a) {
             return a.length - 1 ? 1 + p(a.charAt(0)) + v(a.slice(1)) : 1 + p(a);
         }
-        function proceed(a) {
-            names = a;
-            names.replace(/"/g, '');
-            names = names.split(",").sort();
-            for (i = 0; i < names.length; i += 1) {
-                score += v(names[i]) * (i + 1);
-            }
-            http.answer = score;
+        names.replace(/"/g, '');
+        names = names.split(",").sort();
+        for (i = 0; i < names.length; i += 1) {
+            score += v(names[i]) * (i + 1);
         }
-        http.get("names.txt", proceed);
+        return score;
     },
     /**
      * Problem 23
@@ -748,31 +745,34 @@ var http = {
     }
 ], answers = [];
 
+/** * Solves the selected problem.
+ *  */
 function solve(n) {
-    n -= 1;
-    var t0 = new Date(), t1, r = projectEuler[n](), w = 5000, p = function () {
-        var c = new Date();
-        return [http.answer, c - t0];
-    };
-    if (http.wait) {
-        window.setTimeout(function () {
-            r = p();
-            answers[n - 1] = http.answer;
-            http.wait = false;
-            http.answer = undefined;
-            return r;
-        }, w);
-    } else {
-        t1 = new Date();
-        return [r, t1 - t0];
+    var t0 = new Date(), t1, answer, p;
+    answer = projectEuler[n - 1]();
+    t1 = new Date();
+    function t(b) { 
+        return document.createTextNode(b);
     }
-}
-
-function answer(n) {
-    if (answers[n - 1]) {
-        return answers[n - 1];
-    } else {
-        solve(n);
-        return answers[n - 1];
+    function e(b) {
+        return document.createElement(b);
     }
+    function a(b, c) {
+        b.appendChild(c);
+    }
+    function c(d, b) {
+        var r = e(d);
+        a(r, t(b));
+        return r;
+    }
+    p = e("p");
+    a(p, c("h3", "Problem: " + n));
+    a(p, c("strong", "Answer: "));
+    a(p, t(answer + ", "));
+    a(p, c("strong", "Time: "));
+    a(p, t((t1 - t0) + " "));
+    a(p, c("small", "milliseconds"));
+    a(p, t("."));
+    a(p, e("br"));
+    a(document.getElementById("solutions"), p);
 }
