@@ -27,11 +27,8 @@ var http = {
             AJAX = new ActiveXObject("Microsoft.XMLHTTP");
         }
         if (AJAX) {
-            AJAX.open("GET", url, false);
+            AJAX.open("GET", "http://mathjs.googlecode.com/svn/trunk/" + url, false);
             AJAX.send(null);
-            if (AJAX.status !== 200) {
-                return http.get("http://mathjs.googlecode.com/svn/trunk/" + url);
-            }
             return AJAX.responseText;
         } else {
             return false;
