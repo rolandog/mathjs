@@ -20,15 +20,20 @@ var http = {
      * @param(Number) a A Number.
      */
     get: function (url) {
-        var AJAX;
+        var AJAX, e;
         if (window.XMLHttpRequest) {
             AJAX = new XMLHttpRequest();
         } else {
             AJAX = new ActiveXObject("Microsoft.XMLHTTP");
         }
         if (AJAX) {
-            AJAX.open("GET", url, false);
-            AJAX.send(null);
+            try{
+                AJAX.open("GET", url, false);
+                AJAX.send(null);
+            } catch(e) {
+                AJAX.open("GET", "http://mathjs.googlecode.com/svn/trunk/" + url, false);
+                AJAX.send(null);                
+            }
             return AJAX.responseText;
         } else {
             return false;
