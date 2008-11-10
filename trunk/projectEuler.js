@@ -1,18 +1,18 @@
 /** 
- * projectEuler.js by Rolando Garza
+ * projectEuler.js
  * http://code.google.com/p/mathjs/
  *
  * License: Creative Commons Attribution-Share Alike 3.0 Unported.
  * http://creativecommons.org/licenses/by-sa/3.0/
  *
- * @projectDescription   My attempt at solving Project Euler.
+ * @projectDescription   The solution to Project Euler using ECMAscript.
  * @author               Rolando Garza rolandog@gmail.com
  */
 
 "use strict";
 
 /**
- * An array containing my algorithms for solving Project Euler
+ * An array containing proposed algorithms for solving Project Euler problems.
  */
 var http = {
     /**
@@ -294,36 +294,36 @@ var http = {
             [20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16],
             [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],
             [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
-        ], j, i, max = 0;
+        ], j, i, m = 0;
         for (i = 0; i < 20; i += 1) {
             for (j = 0; j < 20; j += 1) {
                 if (j < 17) {
-                    max = Math.max(max, a[i][j] * a[i][j + 1] * a[i][j + 2] * a[i][j + 3]);
+                    m = Math.max(m, a[i][j] * a[i][j + 1] * a[i][j + 2] * a[i][j + 3]);
                 }
                 if (j < 17 && i >= 3) {
-                    max = Math.max(max, a[i][j] * a[i - 1][j + 1] * a[i - 2][j + 2] * a[i - 3][j + 3]);
+                    m = Math.max(m, a[i][j] * a[i - 1][j + 1] * a[i - 2][j + 2] * a[i - 3][j + 3]);
                 }
                 if (i >= 3) {
-                    max = Math.max(max, a[i][j] * a[i - 1][j] * a[i - 2][j] * a[i - 3][j]);
+                    m = Math.max(m, a[i][j] * a[i - 1][j] * a[i - 2][j] * a[i - 3][j]);
                 }
                 if (i >= 3 && j >= 3) {
-                    max = Math.max(max, a[i][j] * a[i - 1][j - 1] * a[i - 2][j - 2] * a[i - 3][j - 3]);
+                    m = Math.max(m, a[i][j] * a[i - 1][j - 1] * a[i - 2][j - 2] * a[i - 3][j - 3]);
                 }
                 if (j >= 3) {
-                    max = Math.max(max, a[i][j] * a[i][j - 1] * a[i][j - 2] * a[i][j - 3]);
+                    m = Math.max(m, a[i][j] * a[i][j - 1] * a[i][j - 2] * a[i][j - 3]);
                 }
                 if (j >= 3 && i < 17) {
-                    max = Math.max(max, a[i][j] * a[i + 1][j - 1] * a[i + 2][j - 2] * a[i + 3][j - 3]);
+                    m = Math.max(m, a[i][j] * a[i + 1][j - 1] * a[i + 2][j - 2] * a[i + 3][j - 3]);
                 }
                 if (i < 17) {
-                    max = Math.max(max, a[i][j] * a[i + 1][j] * a[i + 2][j] * a[i + 3][j]);
+                    m = Math.max(m, a[i][j] * a[i + 1][j] * a[i + 2][j] * a[i + 3][j]);
                 }
                 if (i < 17 && j < 17) {
-                    max = Math.max(max, a[i][j] * a[i + 1][j + 1] * a[i + 2][j + 2] * a[i + 3][j + 3]);
+                    m = Math.max(m, a[i][j] * a[i + 1][j + 1] * a[i + 2][j + 2] * a[i + 3][j + 3]);
                 }
             }
         }
-        return max;
+        return m;
     },
     /**
      * Problem 12
@@ -513,14 +513,9 @@ var http = {
      * How many routes are there through a 20x20 grid?
      */
     function () {
-        var size = 2, i = 0, j = 0, k = 0, pos = [], limit, routes = [];
+        var size = 20, limit;
         limit = Math.factorial(2 * size) / Math.pow(Math.factorial(size), 2);
         return limit;
-        function branchOut() {}
-        while (i < limit) {
-            
-            i += 1;
-        }
     },
     /**
      * Problem 16
@@ -553,22 +548,8 @@ var http = {
         }
         return Math.sum(n);
     },
-    /**
-     * Problem 17
-     * 
-     * 
-     */
-    function () {
-        
-    },
-    /**
-     * Problem 18
-     * 
-     * 
-     */
-    function () {
-        
-    },
+    undefined,
+    undefined,
     /**
      * Problem 19
      * 
@@ -652,7 +633,7 @@ var http = {
      * obtain a name score.
      * For example, when the list is sorted into alphabetical order, COLIN,
      * which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list.
-     * So, COLIN would obtain a score of 938 53 = 49714.
+     * So, COLIN would obtain a score of 938 * 53 = 49714.
      * What is the total of all the name scores in the file?
      */
     function () {
@@ -693,14 +674,7 @@ var http = {
     function () {
         
     },
-    /**
-     * Problem 24
-     * 
-     * 
-     */
-    function () {
-        
-    },
+    undefined,
     /**
      * Problem 25
      * 
@@ -718,38 +692,19 @@ var http = {
             i += 1;
         }
         return i;
-    },
-    /**
-     * Problem 26
-     * 
-     * 
-     */
-    function () {
-        
-    },
-    /**
-     * Problem 27
-     * 
-     * 
-     */
-    function () {
-        
-    },
-    /**
-     * Problem 28
-     * 
-     * 
-     */
-    function () {
-    
     }
-], answers = [];
+];
 
 /** * Solves the selected problem.
  *  */
 function solve(n) {
-    var t0 = new Date(), t1, answer, p;
-    answer = projectEuler[n - 1]();
+    if (n === "") {
+        return false;
+    } else if (typeof(n) === "string") {
+        n = parseInt(n, 10);
+    }
+    var t0 = new Date(), t1, problem = projectEuler[n - 1], answer, p;
+    answer = problem();
     t1 = new Date();
     function t(b) { 
         return document.createTextNode(b);
@@ -765,7 +720,12 @@ function solve(n) {
         a(r, t(b));
         return r;
     }
+    p = document.getElementById("problem");
+    if (p) {
+        p.parentNode.removeChild(p);
+    }
     p = e("p");
+    p.id = "problem";
     a(p, c("h3", "Problem: " + n));
     a(p, c("strong", "Answer: "));
     a(p, t(answer + ", "));
@@ -774,5 +734,23 @@ function solve(n) {
     a(p, c("small", "milliseconds"));
     a(p, t("."));
     a(p, e("br"));
-    a(document.getElementById("solutions"), p);
+    a(p, c("pre", problem));
+    a(p, e("br"));
+    a(document.getElementById("solution"), p);
+}
+
+function populateList() {
+    var i, p = projectEuler, l = p.length, t = document.getElementById("plist");
+    function option(n) {
+        var o = document.createElement("option"), txt = "Problem " + n;
+        o.value = "" + n;
+        txt = document.createTextNode(txt);
+        o.appendChild(txt);
+        return o;
+    }
+    for (i = 0; i < l; i += 1) {
+        if (p[i] !== undefined) {
+            t.appendChild(option(i + 1));
+        }
+    }
 }
