@@ -1,5 +1,5 @@
 /** 
- * math.js by Rolando Garza
+ * math.js
  * http://rolandog.com/math-js/
  *
  * License: Creative Commons Attribution-Share Alike 3.0 Unported.
@@ -7,7 +7,6 @@
  *
  * @projectDescription   A library with Mathematical functions.
  * @author               Rolando Garza rolandog@gmail.com
- * @version              0.42
  */
 
 "use strict";
@@ -240,7 +239,7 @@ Math.Fibonacci = function (l, a, b) {
  */
 Math.bigInt = {};
 /**
- * Returns a big Integer factorial numbers
+ * Returns the sum of big Integer factorial numbers
  */
 Math.bigInt.sum = function (a) {
     a = a.length ? a:Math.js.argsToArray(arguments);
