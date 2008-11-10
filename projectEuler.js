@@ -33,6 +33,20 @@ var http = {
         } else {
             return false;
         }
+    },
+    /**
+     * Adds a function to the onload event.
+     * @param(Function) f A Function.
+     */
+    onLoad: function(f) {
+        var old = window.onload;
+        if (typeof(old) !== 'function') {
+            window.onload = f;
+        } else {
+            window.onload = function() {
+                old(); f();
+            }
+        }
     }
 }, projectEuler = [
     /**
@@ -754,3 +768,5 @@ function populateList() {
         }
     }
 }
+
+http.onLoad(populateList);
