@@ -554,22 +554,18 @@ var http = {
      * Problem 25
      */
     function () {
-        var a = 1, b = 1, c = 2, i = 3;
-        function digits(a) {
-            return "";
-        }
-        while (Math.floor(Math.log(c) / Math.LN10) < 999) {
+        var a = "1", b = "1", c = "2", i = 3;
+        while (c.length < 1000) {
             a = b;
             b = c;
-            c = a + b;
+            c = Math.bigInt.sum(a, b);
             i += 1;
         }
         return i;
     }
 ];
 
-/** * Solves the selected problem.
- *  */
+/** * Solves the selected problem. */
 function solve(n) {
     if (n === "") {
         return false;

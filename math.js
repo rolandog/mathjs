@@ -269,6 +269,35 @@ Math.bigInt.factorial = function (a) {
     return b.reverse().join("");
 };
 
+Math.bigInt.sum = function (a) {
+    a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
+    var b = a.shift();
+    function flip(z) {
+        z = typeof(z) === "string" ? z : "" + z;
+        z = z.split("").reverse();
+        for (var i = 0; i < z.length; i += 1) {
+            z[i] = parseInt(z[i], 10);
+        }
+        return z;
+    }
+    function sum(A, B) {
+        var C = [], i, l = Math.max(A.length, B.length);
+        for (i = 0; i < l; i += 1) {
+            C[i] = (A[i]?A[i]:0) + (B[i]?B[i]:0);
+            if (C[i] >= 10) {
+                C[i] -= 10;
+                C[i + 1] += 1;
+            }
+        }
+        return C;
+    }
+    b = flip(b);
+    while (a.length) {
+        b = sum(b, flip(a.shift()));
+    }
+    return b.reverse().join("");
+};
+
 Math.bigInt.multiply = function (a) {
     a = a.length ? a:Math.js.argsToArray(arguments);
     var b = a.shift(), i, j, k, l, o, t, c;
