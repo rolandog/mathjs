@@ -547,7 +547,23 @@ var http = {
      * Problem 23
      */
     function () {
-        
+        var abundant = [], i, j, k, l, other = [];
+        for (i = 1; i <= 28123; i += 1) {
+            if (Math.sum(Math.divisors(i, true)) - i > 0) {
+                abundant.push(i);
+            }
+            other[i - 1] = i;
+        }
+        for (i = 0; i < abundant.length; i += 1) {
+            for (j = i; j < abundant.length; j += 1) {
+                k = abundant[i] + abundant[j];
+                l = other.indexOf(k);
+                if (l > -1) {
+                    other.splice(l, 1);
+                }
+            }
+        }
+        return Math.sum(other);
     },
     undefined,
     /**

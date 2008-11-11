@@ -201,9 +201,10 @@ Math.factors = function (a) {
 /**
  * Returns the divisors of a number in an array.
  * @param(Number) a An integer.
+ * @param(Boolean) b If true, returns the 'proper' divisors.
  * @return(Array) Returns the divisors of 'a' in an array.
  */
-Math.divisors = function (a) {
+Math.divisors = function (a, b) {
     var n = Math.abs(a), r = Math.sqrt(n), i = 1, d = [];
     while (i <= r) {
         if (a % i === 0) {
@@ -214,7 +215,11 @@ Math.divisors = function (a) {
         }
         i += 1;
     }
-    return d.sort(Math.js.ascending);
+    d = d.sort(Math.js.ascending);
+    if (b) {
+        d.pop();
+    }
+    return d;
 };
 
 /**
@@ -238,14 +243,10 @@ Math.Fibonacci = function (l, a, b) {
  * @classDescription Some big Integer functions
  */
 Math.bigInt = {};
-/**
- * Returns the sum of big Integer factorial numbers
- */
-Math.bigInt.sum = function (a) {
-    a = a.length ? a:Math.js.argsToArray(arguments);
-    var l = a.length, i;
-};
 
+/**
+ * Returns big Integer factorial numbers
+ */
 Math.bigInt.factorial = function (a) {
     var b = a.toString(), i, j, k, l, o, t, c;
     b = b.split("").reverse();
@@ -269,6 +270,9 @@ Math.bigInt.factorial = function (a) {
     return b.reverse().join("");
 };
 
+/**
+ * Returns the sum of big Integers
+ */
 Math.bigInt.sum = function (a) {
     a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
     var b = a.shift();
@@ -283,10 +287,10 @@ Math.bigInt.sum = function (a) {
     function sum(A, B) {
         var C = [], i, l = Math.max(A.length, B.length);
         for (i = 0; i < l; i += 1) {
-            C[i] = (A[i]?A[i]:0) + (B[i]?B[i]:0);
+            C[i] = (A[i]?A[i]:0) + (B[i]?B[i]:0) + (C[i]?C[i]:0);
             if (C[i] >= 10) {
                 C[i] -= 10;
-                C[i + 1] += 1;
+                C[i + 1] = C[i + 1] ? C[i + 1] + 1 : 1;
             }
         }
         return C;
@@ -326,3 +330,5 @@ Math.bigInt.multiply = function (a) {
     }
     return b.reverse().join("");
 };
+
+//The limit of integer precision: parseInt("9007199254740994", 10)
