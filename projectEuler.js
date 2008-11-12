@@ -19,7 +19,7 @@ var http = {
      * Gets a file and calls a function.
      * @param(Number) a A Number.
      */
-    get: function (url) {
+    get: function get(url) {
         var AJAX, e;
         if (window.XMLHttpRequest) {
             AJAX = new XMLHttpRequest();
@@ -38,7 +38,7 @@ var http = {
      * Adds a function to the onload event.
      * @param(Function) f A Function.
      */
-    onLoad: function (f) {
+    onLoad: function onLoad(f) {
         var old = window.onload;
         if (typeof(old) !== 'function') {
             window.onload = f;
@@ -79,7 +79,7 @@ var http = {
     /**
      * Problem 1
      */
-    function () {
+    function p1() {
         var multiples = [], i;
         for (i = 0; i < 1000; i += 1) {
             if (i % 3 === 0 || i % 5 === 0) {
@@ -92,7 +92,7 @@ var http = {
      * Problem 2
      * 
      */
-    function () {
+    function p2() {
         var fib = Math.Fibonacci(4000000), s = 0, i;
         for (i = 0; i < fib.length; i += 1) {
             if (fib[i] % 2 === 0) {
@@ -104,14 +104,14 @@ var http = {
     /**
      * Problem 3
      */
-    function () {
+    function p3() {
         var r = Math.factors(600851475143);
         return r.pop();
     },
     /**
      * Problem 4
      */
-    function () {
+    function p4() {
         function isPalindrome(a) {
             a = a.toString();
             var l = a.length, i;
@@ -135,7 +135,7 @@ var http = {
     /**
      * Problem 5
      */
-    function () {
+    function p5() {
         var i, n = [];
         for (i = 20; i > 0; i -= 1) {
             n.push(i);
@@ -145,7 +145,7 @@ var http = {
     /**
      * Problem 6
      */
-    function () {
+    function p6() {
         var i, ns = [], sqs = [];
         for (i = 1; i <= 100; i += 1) {
             ns.push(i);
@@ -156,7 +156,7 @@ var http = {
     /**
      * Problem 7
      */
-    function () {
+    function p7() {
         var primes = [2], i;
         for (i = 3; primes.length < 10001; i += 2) {
             if (Math.isPrime(i)) {
@@ -168,7 +168,7 @@ var http = {
     /**
      * Problem 8
      */
-    function () {
+    function p8() {
         var n, i, max = 0, l;
         n = "73167176531330624919225119674426574742355349194934";
         n += "96983520312774506326239578318016984801869478851843";
@@ -203,7 +203,7 @@ var http = {
     /**
      * Problem 9
      */
-    function () {
+    function p9() {
         var a, b, c;
         for (c = 400; c < 500; c += 1) {
             for (b = 300; b < c; b += 1) {
@@ -220,7 +220,7 @@ var http = {
     /**
      * Problem 10
      */
-    function () {
+    function p10() {
         var i, p = [2];
         function isPrime(n) {
             var j, r = Math.floor(Math.sqrt(n));
@@ -241,7 +241,7 @@ var http = {
     /**
      * Problem 11
      */
-    function () {
+    function p11() {
         var a = [
             [8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8],
             [49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0],
@@ -297,7 +297,7 @@ var http = {
     /**
      * Problem 12
      */
-    function () {
+    function p12() {
         for (var i = 2, t = 3; Math.divisors(t).length <= 500; i += 1) {
             t = i * (i + 1) / 2;
         }
@@ -306,7 +306,7 @@ var http = {
     /**
      * Problem 13
      */
-    function () {
+    function p13() {
         var numbers = [
             37107287533902102798797998220837590246510135740250,
             46376937677490009712648124896970078050417018260538,
@@ -414,7 +414,7 @@ var http = {
     /**
      * Problem 14
      */
-    function () {
+    function p14() {
         function sequence(n) {
             var r = [n];
             while (n !== 1) {
@@ -444,7 +444,7 @@ var http = {
     /**
      * Problem 15
      */
-    function () {
+    function p15() {
         var size = 20, limit;
         limit = Math.factorial(2 * size) / Math.pow(Math.factorial(size), 2);
         return limit;
@@ -452,7 +452,7 @@ var http = {
     /**
      * Problem 16
      */
-    function () {
+    function p16() {
         var n = "2", i;
         function twice(a) {
             a = a.split("").reverse();
@@ -482,7 +482,7 @@ var http = {
     /**
      * Problem 19
      */
-    function () {
+    function p19() {
         var i, j, c = 0;
         for (i = 1901; i <= 2000; i += 1) {
             for (j = 1; j <= 12; j += 1) {
@@ -494,7 +494,7 @@ var http = {
     /**
      * Problem 20
      */
-    function () {
+    function p20() {
         var i, a = Math.bigInt.factorial(100).split("");
         for (i = 0; i < a.length; i += 1) {
             a[i] = parseInt(a[i], 10);
@@ -504,7 +504,7 @@ var http = {
     /**
      * Problem 21
      */
-    function () {
+    function p21() {
         function d(n) {
             var r = Math.divisors(n);
             r.pop();
@@ -528,7 +528,7 @@ var http = {
     /**
      * Problem 22
      */
-    function () {
+    function p22() {
         var names = http.get("names.txt"), i, score = 0;
         function p(a) {
             return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(a);
@@ -546,7 +546,7 @@ var http = {
     /**
      * Problem 23
      */
-    function () {
+    function p23() {
         var abundant = [], i, j, k, l, other = [];
         for (i = 1; i <= 28123; i += 1) {
             if (Math.sum(Math.divisors(i, true)) - i > 0) {
@@ -569,7 +569,7 @@ var http = {
     /**
      * Problem 25
      */
-    function () {
+    function p25() {
         var a = "1", b = "1", c = "2", i = 3;
         while (c.length < 1000) {
             a = b;
