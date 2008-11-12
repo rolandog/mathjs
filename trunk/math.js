@@ -16,7 +16,7 @@
  * @return(Array) Returns the filtered array.
  */
 if (Array.unique !== undefined) {
-    Array.prototype.unique = function unique() {
+    Array.prototype.unique = function Array_unique() {
         var a = [], l = this.length, i = 0, j;
         while (i < l) {
             for (j = i + 1; j < l; j += 1) {
@@ -37,7 +37,7 @@ if (Array.unique !== undefined) {
  * @return(Number) Counts how many 'a' there are in the Array.
  */
 if (Array.count !== undefined) {
-    Array.prototype.count = function count(a) {
+    Array.prototype.count = function Array_count(a) {
         var r = 0, i;
         for (i = 0; i < this.length; i += 1) {
             r += this[i] === a ? 1 : 0; 
@@ -55,7 +55,7 @@ Math.js = {
      * @param(Object) as The arguments Object in a function.
      * @return(Array) An array with the arguments of a function.
      */
-    argsToArray: function argsToArray(as) {
+    argsToArray: function Math_js_argsToArray(as) {
         var a = 0, r = [];
         while (a < as.length) {
             r.push(as[a]);
@@ -69,7 +69,7 @@ Math.js = {
      * @param(Number) b A Number.
      * @return(Number) The comparison between those numbers.
      */
-    ascending: function ascending(a, b) {
+    ascending: function Math_js_ascending(a, b) {
         return a - b;
     },
     /**
@@ -78,7 +78,7 @@ Math.js = {
      * @param(Number) b A Number.
      * @return(Number) The comparison between those numbers.
      */
-    descending: function descending(a, b) {
+    descending: function Math_js_descending(a, b) {
         return b - a;
     }
 };
@@ -89,7 +89,7 @@ Math.js = {
  * @param(Array) a A Number or an Array of numbers.
  * @return(Number) Returns the sum of all numbers.
  */
-Math.sum = function sum(a) {
+Math.sum = function Math_sum(a) {
     var r = 0;
     a = a.length ? a:Math.js.argsToArray(arguments);
     while (a.length) {
@@ -104,7 +104,7 @@ Math.sum = function sum(a) {
  * @param(Array) a A Number or an Array of numbers.
  * @return(Number) Returns the product of all numbers.
  */
-Math.product = function product(a) {
+Math.product = function Math_product(a) {
     var r = 1;
     a = a.length ? a:Math.js.argsToArray(arguments);
     while (a.length) {
@@ -119,7 +119,7 @@ Math.product = function product(a) {
  * @param(Array) a A Number or an Array of numbers.
  * @return(Number) Returns the product of all numbers.
  */
-Math.factorial = function factorial(a) {
+Math.factorial = function Math_factorial(a) {
     return (a <= 1) ? 1 : a * Math.factorial(a - 1);
 };
 
@@ -128,7 +128,7 @@ Math.factorial = function factorial(a) {
  * @param(Array) a An Array of integers.
  * @return(Number) Returns the Greatest Common Divisor.
  */
-Math.gcd = function gcd(a) {
+Math.gcd = function Math_gcd(a) {
     a = a.length ? a:Math.js.argsToArray(arguments);
     var l = a.length;
     if (l < 2) {
@@ -146,7 +146,7 @@ Math.gcd = function gcd(a) {
  * @param(Array) a An integer or an Array of integers.
  * @return(Number) Returns the Least Common Multiple.
  */
-Math.lcm = function lcm(a) {
+Math.lcm = function Math_lcm(a) {
     a = a.length ? a:Math.js.argsToArray(arguments);
     var l = a.length;
     while (l - 2) {
@@ -161,7 +161,7 @@ Math.lcm = function lcm(a) {
  * @param(Number) a An integer.
  * @return(Boolean) true if a number is prime.
  */
-Math.isPrime = function isPrime(n) {
+Math.isPrime = function Math_isPrime(n) {
     if (n !== Math.floor(n) || n <= 1 || (n % 2 === 0 && n !== 2)) {
         return false;
     }
@@ -181,7 +181,7 @@ Math.isPrime = function isPrime(n) {
  * @param(Number) a An integer.
  * @return(Array) Returns the factors of 'a' in an array.
  */
-Math.factors = function factors(a) {
+Math.factors = function Math_factors(a) {
     var n = Math.abs(a), r = Math.floor(Math.sqrt(n)), i = 2, f = [];
     while (i <= n && i <= r) {
         if (n % i === 0) {
@@ -204,7 +204,7 @@ Math.factors = function factors(a) {
  * @param(Boolean) b If true, returns the 'proper' divisors.
  * @return(Array) Returns the divisors of 'a' in an array.
  */
-Math.divisors = function divisors(a, b) {
+Math.divisors = function Math_divisors(a, b) {
     var n = Math.abs(a), r = Math.sqrt(n), i = 1, d = [];
     while (i <= r) {
         if (a % i === 0) {
@@ -229,7 +229,7 @@ Math.divisors = function divisors(a, b) {
  * @param(Number) b The next value in the sequence.
  * @return(Array) Returns the sequence of Fibonacci numbers.
  */
-Math.Fibonacci = function Fibonacci(l, a, b) {
+Math.fibonacci = function Math_fibonacci(l, a, b) {
     a = a === undefined ? 1:a;
     b = b === undefined ? 2:b;
     var r = [a, b];
@@ -247,7 +247,7 @@ Math.bigInt = {};
 /**
  * Returns big Integer factorial numbers
  */
-Math.bigInt.factorial = function Factorial(a) {
+Math.bigInt.factorial = function Math_bigInt_factorial(a) {
     var b = a.toString(), i, j, k, l, o, t, c;
     b = b.split("").reverse();
     for (i = 0; i < b.length; i += 1) {
@@ -273,7 +273,7 @@ Math.bigInt.factorial = function Factorial(a) {
 /**
  * Returns the sum of big Integers
  */
-Math.bigInt.sum = function Sum(a) {
+Math.bigInt.sum = function Math_bigInt_sum(a) {
     a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
     var b = a.shift();
     function flip(z) {
@@ -302,7 +302,7 @@ Math.bigInt.sum = function Sum(a) {
     return b.reverse().join("");
 };
 
-Math.bigInt.multiply = function Multiply(a) {
+Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     a = a.length ? a:Math.js.argsToArray(arguments);
     var b = a.shift(), i, j, k, l, o, t, c;
     try {
