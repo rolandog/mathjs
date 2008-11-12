@@ -586,12 +586,19 @@ timesU = [6, 0, 2, 4073, 1, 1, 532, 5, 1256, undefined, 8, 17194, 0, 90718, 12, 
 
 /** * Solves the selected problem. */
 function solve(n) {
+    var t0, t1, problem, answer, p, time, conf, s;
+    p = document.getElementById("problem");
+    if (p) {
+        p.parentNode.removeChild(p);
+    }
     if (n === "") {
         return false;
     } else if (typeof(n) === "string") {
         n = parseInt(n, 10);
     }
-    var t0, t1, problem = projectEuler[n - 1], answer = answers[n - 1], p, time = times[n - 1], conf;
+    problem = projectEuler[n - 1];
+    answer = answers[n - 1];
+    time = times[n - 1];
     function format(t) { 
         if (t === undefined) {
             return "might take a while. ";
@@ -628,10 +635,6 @@ function solve(n) {
         a(r, t(b));
         return r;
     }
-    p = document.getElementById("problem");
-    if (p) {
-        p.parentNode.removeChild(p);
-    }
     p = e("p");
     p.id = "problem";
     a(p, c("h3", "Problem: " + n));
@@ -646,15 +649,20 @@ function solve(n) {
     a(p, e("br"));
     a(p, c("pre", problem));
     a(p, e("br"));
-    a(document.getElementById("solution"), p);
+    s = document.getElementById("solution");
+    a(s, p);
 }
 
 /** * Displays the chosen functions. */
 function display(n) {
-    if (n === "") {
+    var Mf = Math.js.functions, p, f, i;
+    p = document.getElementById("function");
+    if (p) {
+        p.parentNode.removeChild(p);
+    }
+    if (n === "" || p) {
         return false;
     }
-    var Mf = Math.js.functions, p, f, i;
     function t(b) { 
         return document.createTextNode(b);
     }
@@ -674,15 +682,11 @@ function display(n) {
             f = Mf[i];
         }
     }
-    p = document.getElementById("function");
-    if (p) {
-        p.parentNode.removeChild(p);
-    }
     p = e("p");
     p.id = "function";
     a(p, c("h3", "Function: " + f.name));
     a(p, c("pre", f));
-    a(document.getElementById("solution"), p);
+    a(document.getElementById("source"), p);
 }
 
 function populateLists() {
