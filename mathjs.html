@@ -34,6 +34,15 @@
             #solution {
                 max-width: 500px;
             }
+            .center {
+                text-align: center;
+            }
+            .center form {
+                position: float;
+            }
+            fieldset {
+                display: inline;
+            }
             /*]]>*/
         </style>
     </head>
@@ -42,12 +51,15 @@
             <h1>MathJS</h1>
         </div>
         <div>
-            <p>This is a showcase for the Math.JS library. It solves Project Euler problems, using Math.JS functions in some of the algorithms.
-                <form><fieldset><legend>Solve</legend>
+            <p>This is a showcase for the Math.JS library. It solves Project Euler problems, using Math.JS functions in some of the algorithms.</p>
+            <div class="center">
+                <form><fieldset><legend>Show</legend>
                     <label for="plist">Problem List</label>
                     <select id="plist" onchange="solve(this.options[this.selectedIndex].value);"><option value="">Select Problem</option></select>
+                    <label for="flist">Function Reference</label>
+                    <select id="flist" onchange="display(this.options[this.selectedIndex].value);"><option value="">Select Function</option></select>
                 </fieldset></form>
-            </p>
+            </div>
         </div>
         <div id="main">
             <h2>Solution and Source</h2>
