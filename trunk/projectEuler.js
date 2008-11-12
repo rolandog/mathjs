@@ -712,8 +712,14 @@ function populateLists() {
             pl.appendChild(option(i + 1, "Problem "));
         }
     }
-    for (i = 0; i < a.length; i += 1) {
-        fl.appendChild(option(a[i].name, ""));
+    if (a[0].name !== undefined) {
+        for (i = 0; i < a.length; i += 1) {
+            fl.appendChild(option(a[i].name, ""));
+        }
+    } else {
+        fl.parentNode.removeChild(fl);
+        fl = document.getElementById("flabel");
+        fl.parentNode.removeChild(fl);
     }
 }
 
