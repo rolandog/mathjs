@@ -579,7 +579,10 @@ var http = {
         }
         return i;
     }
-];
+], answers, times, timesU;
+answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922, 70600674, 76576500, 5537376230, 837799, 137846528820, 1366, undefined, undefined, 171, 648, 31626, 871198282, 4179871, undefined, 4782];
+times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147, 1, 1844, 2, 13082, 0, 272, undefined, undefined, 104, 69, 593, 259, 1034792, undefined, 7830];
+timesU = [6, 0, 2, 4073, 1, 1, 532, 5, 1256, undefined, 8, 17194, 0, 90718, 12, 387, undefined, undefined, 26, 187, 1069, 779, undefined, undefined, 8819];
 
 /** * Solves the selected problem. */
 function solve(n) {
@@ -588,9 +591,29 @@ function solve(n) {
     } else if (typeof(n) === "string") {
         n = parseInt(n, 10);
     }
-    var t0 = new Date(), t1, problem = projectEuler[n - 1], answer, p;
-    answer = problem();
-    t1 = new Date();
+    var t0, t1, problem = projectEuler[n - 1], answer = answers[n - 1], p, time = times[n - 1], conf;
+    function format(t) { 
+        if (t === undefined) {
+            return "might take a while. ";
+        }
+        if (t >= 60000) {
+            t = "takes " + parseInt(t / 60000, 10) + " minutes";
+        } else if (t >= 1000) {
+            t = "takes " + parseInt(t / 1000, 10) + " seconds";
+        } else {
+            t = "takes " + t + " milliseconds";
+        }
+        return t + ", more or less, on a 1.5 GHz laptop using Google Chrome. ";
+    }
+    conf = time >= 4200 ? confirm("The algorithm " + format(time) + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
+    if (conf) {
+        t0 = new Date();
+        answer = problem();
+        t1 = new Date();
+        time = t1 - t0;
+    } else {
+        time = "N/A";
+    }
     function t(b) { 
         return document.createTextNode(b);
     }
@@ -617,7 +640,7 @@ function solve(n) {
     a(p, c("strong", "Answer: "));
     a(p, t(answer + ", "));
     a(p, c("strong", "Time: "));
-    a(p, t((t1 - t0) + " "));
+    a(p, t(time + " "));
     a(p, c("small", "milliseconds"));
     a(p, t("."));
     a(p, e("br"));
