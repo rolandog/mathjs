@@ -660,7 +660,7 @@ function display(n) {
     if (p) {
         p.parentNode.removeChild(p);
     }
-    if (n === "" || p) {
+    if (n === "") {
         return false;
     }
     function t(b) { 

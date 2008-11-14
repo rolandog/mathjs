@@ -274,8 +274,6 @@ Math.bigInt.factorial = function Math_bigInt_factorial(a) {
  * Returns the sum of big Integers
  */
 Math.bigInt.sum = function Math_bigInt_sum(a) {
-    a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
-    var b = a.shift();
     function flip(z) {
         z = typeof(z) === "string" ? z : "" + z;
         z = z.split("").reverse();
@@ -295,6 +293,8 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         }
         return C;
     }
+    a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
+    var b = a.shift();
     b = flip(b);
     while (a.length) {
         b = sum(b, flip(a.shift()));
@@ -303,32 +303,54 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
 };
 
 Math.bigInt.multiply = function Math_bigInt_multiply(a) {
-    a = a.length ? a:Math.js.argsToArray(arguments);
-    var b = a.shift(), i, j, k, l, o, t, c;
-    try {
-        b = b.toString();
-    } catch (e) {
-        e = e;
-    }
-    b = b.split("").reverse();
-    for (i = 0; i < b.length; i += 1) {
-        b[i] = parseInt(b[i], 10);
-    }
-    for (i = 0; i < a.length; i += 1) {
-        l = b.length;
-        for (j = 0; j < l; j += 1) {
-            b[j] *= a[i];
+    function toInt(z) {
+        for (var i = 0; i < z.length; i += 1) {
+            z[i] = parseInt(z[i], 10);
         }
-        for (j = 0; j < l; j += 1) {
-            t = b[j].toString().split("").reverse().join("");
-            o = t.length;
-            for (k = 0; k < o; k += 1) {
-                c = parseInt(t.charAt(k), 10);
-                b[j + k] = b[j + k] ? (k ? b[j + k] : 0) + c:c;
+        return z;
+    }
+    function check(z) {
+        for (var i = 0; i < z.reverse().length; i += 1) {
+            if (z[i] >= 10) {
+                z[i] -= 10;
+                z[i + 1] = z[i + 1] ? z[i + 1] + 1 : 1;
             }
         }
+        return z.reverse();
     }
-    return b.reverse().join("");
+    function fillz(z) {
+        var r = [];
+        while(z) {
+            z -= 1;
+            r.push(0);
+        }
+        return r;
+    }
+    function product(f, g) {
+        var i, j, k, r = [], t, z;
+        for (j = g.length; j >= 0; j -= 1) {
+            t = [];
+            z = [];
+            for (i = f.length; i >= 0; i -= 1) {
+                t[i] = f[i] * g[j];
+            }
+            z = fillz(j);
+            r.push(check(t).concat(z).join(""));
+        }
+        return toInt(Math.sum(r).split(""));
+        
+    }
+    a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
+    var b = a.shift(), c;
+    b = toInt(("" + b).split(""));
+    while (a.length) {
+        c = toInt(("" + a.shift()).split(""));
+        b = product(b, c);
+    }
+//    while (b[0] === 0) {
+//        b.shift();
+//    }
+    return b.length ? b.join("") : "0";
 };
 
 //The limit of integer precision: parseInt("9007199254740994", 10)
