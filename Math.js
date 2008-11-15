@@ -1,5 +1,5 @@
 /** 
- * math.js
+ * Math.js
  * http://rolandog.com/math-js/
  *
  * License: Creative Commons Attribution-Share Alike 3.0 Unported.
@@ -51,15 +51,23 @@ if (Array.count !== undefined) {
  */
 Math.js = {
     /**
-     * Converts argument objects into arrays.
+     * Duplicates argument objects or arrays, and returns them as arrays.
      * @param(Object) as The arguments Object in a function.
      * @return(Array) An array with the arguments of a function.
      */
-    argsToArray: function Math_js_argsToArray(as) {
+    copy: function Math_js_copy(as) {
         var a = 0, r = [];
-        while (a < as.length) {
-            r.push(as[a]);
-            a += 1;
+        try {
+            while (a < as.length) {
+                r.push(as[a]);
+                a += 1;
+            }
+        } catch (e) {
+            for (a in as) {
+                if (as.hasOwnProperty(a) && as[a]) {
+                    r.push(a);
+                }
+            }
         }
         return r;
     },
@@ -91,7 +99,7 @@ Math.js = {
  */
 Math.sum = function Math_sum(a) {
     var r = 0;
-    a = a.length ? a:Math.js.argsToArray(arguments);
+    a = a.length ? a:Math.js.copy(arguments);
     while (a.length) {
         r += a.shift();
     }
@@ -106,7 +114,7 @@ Math.sum = function Math_sum(a) {
  */
 Math.product = function Math_product(a) {
     var r = 1;
-    a = a.length ? a:Math.js.argsToArray(arguments);
+    a = a.length ? a:Math.js.copy(arguments);
     while (a.length) {
         r *= a.shift();
     }
@@ -129,7 +137,7 @@ Math.factorial = function Math_factorial(a) {
  * @return(Number) Returns the Greatest Common Divisor.
  */
 Math.gcd = function Math_gcd(a) {
-    a = a.length ? a:Math.js.argsToArray(arguments);
+    a = a.length ? a:Math.js.copy(arguments);
     var l = a.length;
     if (l < 2) {
         throw "Error: Must have at least two integers.";
@@ -147,7 +155,7 @@ Math.gcd = function Math_gcd(a) {
  * @return(Number) Returns the Least Common Multiple.
  */
 Math.lcm = function Math_lcm(a) {
-    a = a.length ? a:Math.js.argsToArray(arguments);
+    a = a.length ? a:Math.js.copy(arguments);
     var l = a.length;
     while (l - 2) {
         a.unshift(Math.lcm(a.shift(), a.shift()));
@@ -293,7 +301,7 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         }
         return C;
     }
-    a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
+    a = a.length && typeof(a) !== "string" ? a:Math.js.copy(arguments);
     var b = a.shift();
     b = flip(b);
     while (a.length) {
@@ -309,47 +317,55 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
         }
         return z;
     }
-    function check(z) {
-        for (var i = 0; i < z.reverse().length; i += 1) {
+    function check(x) {
+        var i, t, z = Math.js.copy(x).reverse();
+        for (i = 0; i < z.length; i += 1) {
             if (z[i] >= 10) {
-                z[i] -= 10;
-                z[i + 1] = z[i + 1] ? z[i + 1] + 1 : 1;
+                t = parseInt(z[i] / 10, 10);
+                z[i] = z[i] % 10;
+                z[i + 1] = z[i + 1] !== undefined ? z[i + 1] + t : t;
             }
         }
-        return z.reverse();
+        z.reverse();
+        while (z[0] === 0) {
+            z.shift();
+        }
+        return z.length !== 0 ? z : [0];
     }
     function fillz(z) {
         var r = [];
-        while(z) {
-            z -= 1;
+        while (z > 0) {
             r.push(0);
+            z -= 1;
         }
         return r;
     }
     function product(f, g) {
-        var i, j, k, r = [], t, z;
-        for (j = g.length; j >= 0; j -= 1) {
+        var i, j, k, r = [], t, u, z;
+        for (j = g.length - 1; j >= 0; j -= 1) {
             t = [];
-            z = [];
-            for (i = f.length; i >= 0; i -= 1) {
+            //multiplies everything
+            for (i = f.length - 1; i >= 0; i -= 1) {
                 t[i] = f[i] * g[j];
             }
-            z = fillz(j);
-            r.push(check(t).concat(z).join(""));
+            //fills an array with zeros, according to the magnitude order of the number
+            z = fillz(g.length - j - 1);
+            //checks that every number in the array is below 10.
+            u = check(t);
+            //joins the number array and the zeros, and converts to string..
+            t = u.concat(z);
+            t = t.join("");
+            r.unshift(t);
         }
-        return toInt(Math.sum(r).split(""));
-        
+        return toInt(Math.bigInt.sum(r).split(""));
     }
-    a = a.length && typeof(a) !== "string" ? a:Math.js.argsToArray(arguments);
+    a = a.length && typeof(a) !== "string" ? a:Math.js.copy(arguments);
     var b = a.shift(), c;
     b = toInt(("" + b).split(""));
     while (a.length) {
         c = toInt(("" + a.shift()).split(""));
         b = product(b, c);
     }
-//    while (b[0] === 0) {
-//        b.shift();
-//    }
     return b.length ? b.join("") : "0";
 };
 
