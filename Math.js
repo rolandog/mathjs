@@ -52,8 +52,8 @@ if (Array.count !== undefined) {
 Math.js = {
     /**
      * Duplicates argument objects or arrays, and returns them as arrays.
-     * @param(Object) as The arguments Object in a function.
-     * @return(Array) An array with the arguments of a function.
+     * @param(Object) as An Object or an Array.
+     * @return(Array) A duplicated array.
      */
     copy: function Math_js_copy(as) {
         var a = 0, r = [];
