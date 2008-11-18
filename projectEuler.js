@@ -75,12 +75,12 @@ var http = {
     "A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number. A number whose proper divisors are less than the number is called deficient and a number whose proper divisors exceed the number is called abundant. As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit. Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.",
     undefined,
     "What is the first term in the Fibonacci sequence to contain 1000 digits?",
-     undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined,
-"The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.\nFind the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000."
+    "The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.\nFind the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000."
 ], projectEuler = [
     /**
      * Problem 1
@@ -601,10 +601,10 @@ var http = {
     function p48() {
         var r = 0, i;
         for (i = 1; i <= 1000; i += 1) {
-            r = Math.bigInt.sum(r, Math.bigInt.pow(i, i);
+            r = Math.bigInt.sum(r, Math.bigInt.pow(i, i));
         }
         return r.slice(r.length - 10);
-    },
+    }
 ], answers, times, timesU;
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922, 70600674, 76576500, 5537376230, 837799, 137846528820, 1366, undefined, undefined, 171, 648, 31626, 871198282, 4179871, undefined, 4782];
 times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147, 1, 1844, 2, 13082, 0, 272, undefined, undefined, 104, 69, 593, 259, 1034792, undefined, 7830];
