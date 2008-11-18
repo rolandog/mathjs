@@ -66,7 +66,7 @@ var http = {
     "The following iterative sequence is defined for the set of positive integers: n = n/2 (n is even); n = 3n + 1 (n is odd). Using the rule above and starting with 13, we generate the following sequence: 13 40 20 10 5 16 8 4 2 1 It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1. Which starting number, under one million, produces the longest chain? NOTE: Once the chain starts the terms are allowed to go above one million.",
     "* Starting in the top left corner of a 2x2 grid, there are 6 routes (without backtracking) to the bottom right corner. How many routes are there through a 20x20 grid?",
     "2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26. What is the sum of the digits of the number 2^1000?",
-    undefined,
+    "If the numbers 1 to 5 are written out in words: one, two, three, four, five, then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total. If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?\nNOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-two) contains 23 letters and 115 (one hundred and fifteen) contains 20 letters. The use of 'and' when writing out numbers is in compliance with British usage.",
     undefined,
     "You are given the following information, but you may prefer to do some research for yourself. 1 Jan 1900 was a Monday. Thirty days has September, April, June and November. All the rest have thirty-one, Saving February alone, Which has twenty-eight, rain or shine. And on leap years, twenty-nine. A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400. How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?",
     "n! means n  (n  1)  ...  3  2  1. Find the sum of the digits in the number 100!",
@@ -74,7 +74,13 @@ var http = {
     "Using names.txt (right click and 'Save Link/Target As...'), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score. For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 * 53 = 49714. What is the total of all the name scores in the file?",
     "A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number. A number whose proper divisors are less than the number is called deficient and a number whose proper divisors exceed the number is called abundant. As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit. Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.",
     undefined,
-    "What is the first term in the Fibonacci sequence to contain 1000 digits?"
+    "What is the first term in the Fibonacci sequence to contain 1000 digits?",
+     undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined,
+"The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.\nFind the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000."
 ], projectEuler = [
     /**
      * Problem 1
@@ -584,7 +590,21 @@ var http = {
             i += 1;
         }
         return i;
-    }
+    }, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined,
+    /**
+     * Problem 48
+     */
+    function p48() {
+        var r = 0, i;
+        for (i = 1; i <= 1000; i += 1) {
+            r = Math.bigInt.sum(r, Math.bigInt.pow(i, i);
+        }
+        return r.slice(r.length - 10);
+    },
 ], answers, times, timesU;
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922, 70600674, 76576500, 5537376230, 837799, 137846528820, 1366, undefined, undefined, 171, 648, 31626, 871198282, 4179871, undefined, 4782];
 times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147, 1, 1844, 2, 13082, 0, 272, undefined, undefined, 104, 69, 593, 259, 1034792, undefined, 7830];

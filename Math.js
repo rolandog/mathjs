@@ -255,6 +255,7 @@ Math.bigInt = {};
 
 /**
  * Returns big Integer factorial numbers
+ * @param(Number) a An Integer. * @return(String) Returns the evaluated factorial number.
  */
 Math.bigInt.factorial = function Math_bigInt_factorial(a) {
     var b = a.toString(), i, j, k, l, o, t, c;
@@ -280,7 +281,8 @@ Math.bigInt.factorial = function Math_bigInt_factorial(a) {
 };
 
 /**
- * Returns the sum of big Integers
+ * Returns the sum of big integers
+ * @param(String) a An Integer. * @return(String) Returns the evaluated sum.
  */
 Math.bigInt.sum = function Math_bigInt_sum(a) {
     function flip(z) {
@@ -311,6 +313,10 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
     return b.reverse().join("");
 };
 
+/**
+ * Returns the product of big integers
+ * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
+ */
 Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     function toInt(z) {
         for (var i = 0; i < z.length; i += 1) {
@@ -370,7 +376,22 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     return b.length ? b.join("") : "0";
 };
 
-//The limit of integer precision: Math.toText(9007199254740994);
+/**
+ * Returns an integer to a specified power
+ * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
+ */
+Math.bigInt.pow = function Math_bigInt_pow(n, p) {
+    var r = [], i;
+    for (i = 0; i < p; i += 1) {
+        r[i] = n;
+    }
+    return p === 0?1:Math.bigInt.multiply(r);
+};
+
+/**
+ * Returns the textual representation of a number.
+ * @param(String) a An Integer. * @return(String) Converts the number to text (British English).
+ */
 Math.toText = function Math_toText(n) {
     n = (typeof(n) !== "string" ? "" + n : n).split("");
     var segs = [], l = n.length, i, r = [], terms = ["", "thousand", "million"];
@@ -421,3 +442,5 @@ Math.toText = function Math_toText(n) {
     r.reverse();
     return r.join(" ");
 };
+
+//The limit of integer precision: Math.toText(9007199254740994);
