@@ -477,7 +477,13 @@ var http = {
         }
         return Math.sum(n);
     },
-    undefined,
+    function p17() {
+        var i, r = "";
+        for (i = 1; i <= 1000; i += 1) {
+            r += Math.toText(i).replace(/\W/g, "");
+        }
+        return r.length;
+    },
     undefined,
     /**
      * Problem 19
