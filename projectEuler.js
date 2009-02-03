@@ -67,7 +67,7 @@ var http = {
     "* Starting in the top left corner of a 2x2 grid, there are 6 routes (without backtracking) to the bottom right corner. How many routes are there through a 20x20 grid?",
     "2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26. What is the sum of the digits of the number 2^1000?",
     "If the numbers 1 to 5 are written out in words: one, two, three, four, five, then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total. If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?\nNOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-two) contains 23 letters and 115 (one hundred and fifteen) contains 20 letters. The use of 'and' when writing out numbers is in compliance with British usage.",
-    undefined,
+    "Find the maximum total from top to bottom of the triangle below:\n75\n95 64\n17 47 82\n18 35 87 10\n20 04 82 47 65\n19 01 23 75 03 34\n88 02 77 73 07 63 67\n99 65 04 28 06 16 70 92\n41 41 26 56 83 40 80 70 33\n41 48 72 33 47 32 37 16 94 29\n53 71 44 65 25 43 91 52 97 51 14\n70 11 33 28 77 73 17 78 39 68 17 57\n91 71 52 38 17 14 91 43 58 50 27 29 48\n63 66 04 68 89 53 67 30 73 16 69 87 40 31\n04 62 98 27 23 09 70 98 73 93 38 53 60 04 23",
     "You are given the following information, but you may prefer to do some research for yourself. 1 Jan 1900 was a Monday. Thirty days has September, April, June and November. All the rest have thirty-one, Saving February alone, Which has twenty-eight, rain or shine. And on leap years, twenty-nine. A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400. How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?",
     "n! means n  (n  1)  ...  3  2  1. Find the sum of the digits in the number 100!",
     "Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n). If d(a) = b and d(b) = a, where a !== b, then a and b are an amicable pair and each of a and b are called amicable numbers. For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110 Therefore d(220) = 284. The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220. Evaluate the sum of all the amicable numbers under 10000.",
@@ -80,12 +80,15 @@ var http = {
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined,
-    "The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.\nFind the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000."
+    "The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.\nFind the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000.",
+    undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined,
+    "Find the maximum total from top to bottom in triangle.txt (right click and 'Save Link/Target As...'), a 15K text file containing a triangle with one-hundred rows."
 ], projectEuler = [
-    /**
-     * Problem 1
-     */
-    function p1() {
+    function Problem_1() {
         var multiples = [], i;
         for (i = 0; i < 1000; i += 1) {
             if (i % 3 === 0 || i % 5 === 0) {
@@ -94,11 +97,7 @@ var http = {
         }
         return Math.sum(multiples);
     },
-    /**
-     * Problem 2
-     * 
-     */
-    function p2() {
+    function Problem_2() {
         var fib = Math.fibonacci(4000000), s = 0, i;
         for (i = 0; i < fib.length; i += 1) {
             if (fib[i] % 2 === 0) {
@@ -107,17 +106,11 @@ var http = {
         }
         return s;
     },
-    /**
-     * Problem 3
-     */
-    function p3() {
+    function Problem_3() {
         var r = Math.factors(600851475143);
         return r.pop();
     },
-    /**
-     * Problem 4
-     */
-    function p4() {
+    function Problem_4() {
         function isPalindrome(a) {
             a = a.toString();
             var l = a.length, i;
@@ -138,20 +131,14 @@ var http = {
         }
         return palindromes.sort(Math.js.ascending).pop();
     },
-    /**
-     * Problem 5
-     */
-    function p5() {
+    function Problem_5() {
         var i, n = [];
         for (i = 20; i > 0; i -= 1) {
             n.push(i);
         }
         return Math.lcm(n);
     },
-    /**
-     * Problem 6
-     */
-    function p6() {
+    function Problem_6() {
         var i, ns = [], sqs = [];
         for (i = 1; i <= 100; i += 1) {
             ns.push(i);
@@ -159,10 +146,7 @@ var http = {
         }
         return Math.pow(Math.sum(ns), 2) - Math.sum(sqs);
     },
-    /**
-     * Problem 7
-     */
-    function p7() {
+    function Problem_7() {
         var primes = [2], i;
         for (i = 3; primes.length < 10001; i += 2) {
             if (Math.isPrime(i)) {
@@ -171,10 +155,7 @@ var http = {
         }
         return primes.pop();
     },
-    /**
-     * Problem 8
-     */
-    function p8() {
+    function Problem_8() {
         var n, i, max = 0, l;
         n = "73167176531330624919225119674426574742355349194934";
         n += "96983520312774506326239578318016984801869478851843";
@@ -206,10 +187,7 @@ var http = {
         }
         return max;
     },
-    /**
-     * Problem 9
-     */
-    function p9() {
+    function Problem_9() {
         var a, b, c;
         for (c = 400; c < 500; c += 1) {
             for (b = 300; b < c; b += 1) {
@@ -223,10 +201,7 @@ var http = {
             }
         }
     },
-    /**
-     * Problem 10
-     */
-    function p10() {
+    function Problem_10() {
         var i, p = [2];
         function isPrime(n) {
             var j, r = Math.floor(Math.sqrt(n));
@@ -244,10 +219,7 @@ var http = {
         }
         return Math.sum(p);
     },
-    /**
-     * Problem 11
-     */
-    function p11() {
+    function Problem_11() {
         var a = [
             [8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8],
             [49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0],
@@ -300,19 +272,13 @@ var http = {
         }
         return m;
     },
-    /**
-     * Problem 12
-     */
-    function p12() {
+    function Problem_12() {
         for (var i = 2, t = 3; Math.divisors(t).length <= 500; i += 1) {
             t = i * (i + 1) / 2;
         }
         return t;
     },
-    /**
-     * Problem 13
-     */
-    function p13() {
+    function Problem_13() {
         var numbers = [
             37107287533902102798797998220837590246510135740250,
             46376937677490009712648124896970078050417018260538,
@@ -417,10 +383,7 @@ var http = {
         ], s = Math.sum(numbers), p = Math.ceil(Math.log(s) / Math.LN10);
         return parseInt(s / Math.pow(10, p - 10), 10);
     },
-    /**
-     * Problem 14
-     */
-    function p14() {
+    function Problem_14() {
         function sequence(n) {
             var r = [n];
             while (n !== 1) {
@@ -447,18 +410,12 @@ var http = {
         }
         return maxn;
     },
-    /**
-     * Problem 15
-     */
-    function p15() {
+    function Problem_15() {
         var size = 20, limit;
         limit = Math.factorial(2 * size) / Math.pow(Math.factorial(size), 2);
         return limit;
     },
-    /**
-     * Problem 16
-     */
-    function p16() {
+    function Problem_16() {
         var n = "2", i;
         function twice(a) {
             a = a.split("").reverse();
@@ -483,18 +440,81 @@ var http = {
         }
         return Math.sum(n);
     },
-    function p17() {
+    function Problem_17() {
         var i, r = "";
         for (i = 1; i <= 1000; i += 1) {
             r += Math.toText(i).replace(/\W/g, "");
         }
         return r.length;
     },
-    undefined,
-    /**
-     * Problem 19
-     */
-    function p19() {
+    function Problem_18() {
+        var i, j, k, sampleSize = 6, tarray, total = 0, triangle = "75\n95 64\n17 47 82\n18 35 87 10\n20 04 82 47 65\n19 01 23 75 03 34\n88 02 77 73 07 63 67\n99 65 04 28 06 16 70 92\n41 41 26 56 83 40 80 70 33\n41 48 72 33 47 32 37 16 94 29\n53 71 44 65 25 43 91 52 97 51 14\n70 11 33 28 77 73 17 78 39 68 17 57\n91 71 52 38 17 14 91 43 58 50 27 29 48\n63 66 04 68 89 53 67 30 73 16 69 87 40 31\n04 62 98 27 23 09 70 98 73 93 38 53 60 04 23";
+        triangle = triangle.split("\n");
+        for (i in triangle) {
+            if (triangle.hasOwnProperty(i) && triangle[i]) {
+                triangle[i] = triangle[i].split(" ");
+                for (j in triangle[i]) {
+                    if (triangle[i].hasOwnProperty(j) && triangle[i][j]) {
+                        triangle[i][j] = parseInt(triangle[i][j], 10);
+                    }
+                }
+            }
+        }
+        function sample(array, depth, index, limit) {
+            limit = depth + limit > array.length ? array.length - depth:limit;
+            var temp = [];
+            while (limit) {
+                limit -= 1;
+                temp.push(array[depth + limit].slice(index, index + limit + 1));
+            }
+            return temp.reverse();
+        }
+        function findTotals(object, i, j) {
+            i = i === undefined ? 0 : i;
+            j = j === undefined ? 0 : j;
+            var results = {}, subResult0 = {}, subResult1 = {}, r;
+            if (i < object.length - 1) {
+                subResult0 = findTotals(object, i + 1, j);
+                subResult1 = findTotals(object, i + 1, j + 1);
+                for (r in subResult0) {
+                    if (subResult0.hasOwnProperty(r) && subResult0[r]) {
+                        results["0" + r] = object[i][j] + subResult0[r];
+                        results["1" + r] = object[i][j] + subResult1[r];
+                    }
+                }
+                return results;
+            } else {
+                return {"": object[i][j]};
+            }
+        }
+        function findMax(object) {
+            var tname, tmax = 0, n;
+            for (n in object) {
+                if (object.hasOwnProperty(n) && object[n] && object[n] > tmax) {
+                    tmax = object[n];
+                    tname = n;
+                }
+            }
+            return [tname, tmax];
+        }
+        i = 0;
+        j = 0;
+        k = Math.ceil(triangle.length / sampleSize);
+        while (k) {
+            tarray = findMax(findTotals(sample(triangle, i, j, sampleSize)));
+            total += tarray[1];
+            i += sampleSize;
+            j += tarray[0].split("1").length - 1;
+            if (triangle [i] !== undefined) {
+                j += triangle[i][j + 1] > triangle[i][j]? 1:0;
+            }
+            k -= 1;
+        }
+        return total;
+        //Brute force
+        //return findMax(findTotals(triangle))[1];
+    },
+    function Problem_19() {
         var i, j, c = 0;
         for (i = 1901; i <= 2000; i += 1) {
             for (j = 1; j <= 12; j += 1) {
@@ -503,20 +523,14 @@ var http = {
         }
         return c;
     },
-    /**
-     * Problem 20
-     */
-    function p20() {
+    function Problem_20() {
         var i, a = Math.bigInt.factorial(100).split("");
         for (i = 0; i < a.length; i += 1) {
             a[i] = parseInt(a[i], 10);
         }
         return Math.sum(a);
     },
-    /**
-     * Problem 21
-     */
-    function p21() {
+    function Problem_21() {
         function d(n) {
             var r = Math.divisors(n);
             r.pop();
@@ -537,10 +551,7 @@ var http = {
         }
         return Math.sum(c);
     },
-    /**
-     * Problem 22
-     */
-    function p22() {
+    function Problem_22() {
         var names = http.get("names.txt"), i, score = 0;
         function p(a) {
             return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(a);
@@ -555,10 +566,7 @@ var http = {
         }
         return score;
     },
-    /**
-     * Problem 23
-     */
-    function p23() {
+    function Problem_23() {
         var abundant = [], i, j, k, l, other = [];
         for (i = 1; i <= 28123; i += 1) {
             if (Math.sum(Math.divisors(i, true)) - i > 0) {
@@ -578,10 +586,7 @@ var http = {
         return Math.sum(other);
     },
     undefined,
-    /**
-     * Problem 25
-     */
-    function p25() {
+    function Problem_25() {
         var a = "1", b = "1", c = "2", i = 3;
         while (c.length < 1000) {
             a = b;
@@ -595,20 +600,56 @@ var http = {
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined,
-    /**
-     * Problem 48
-     */
-    function p48() {
+    function Problem_48() {
         var r = 0, i;
-        for (i = 1; i <= 1000; i += 1) {
+        for (i = 1; i <= 1; i += 1) {
             r = Math.bigInt.sum(r, Math.bigInt.pow(i, i));
         }
         return r.slice(r.length - 10);
+    }, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
+    undefined,
+    function Problem_67() {
+        var i, j, triangle;
+        triangle = http.get("triangle.txt").split("\n");
+        while (triangle[triangle.length - 1] === "") {
+            triangle.pop();
+        }
+        for (i in triangle) {
+            if (triangle.hasOwnProperty(i) && triangle[i]) {
+                triangle[i] = triangle[i].split(" ");
+                for (j in triangle[i]) {
+                    if (triangle[i].hasOwnProperty(j) && triangle[i][j]) {
+                        triangle[i][j] = parseInt(triangle[i][j], 10);
+                    }
+                }
+            }
+        }
+        triangle.reverse();
+        for (i = 1; i < triangle.length; i += 1) {
+            for (j = 0; j < triangle[i].length; j += 1) {
+                triangle[i][j] += Math.max(triangle[i - 1][j], triangle[i - 1][j + 1]);
+            }
+        }
+        return triangle.reverse()[0][0];
     }
-], answers, times, timesU;
-answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922, 70600674, 76576500, 5537376230, 837799, 137846528820, 1366, undefined, undefined, 171, 648, 31626, 871198282, 4179871, undefined, 4782];
-times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147, 1, 1844, 2, 13082, 0, 272, undefined, undefined, 104, 69, 593, 259, 1034792, undefined, 7830];
-timesU = [6, 0, 2, 4073, 1, 1, 532, 5, 1256, undefined, 8, 17194, 0, 90718, 12, 387, undefined, undefined, 26, 187, 1069, 779, undefined, undefined, 8819];
+], answers, times;
+answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
+    70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
+    31626, 871198282, 4179871, undefined, 4782, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, 7273];
+times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147,
+    1, 1844, 2, 13082, 0, 272, 67, 3, 104, 69,
+    593, 259, 1034792, undefined, 7830, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, 27];
 
 /** * Solves the selected problem. */
 function solve(n) {
