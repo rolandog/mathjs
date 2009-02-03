@@ -412,17 +412,17 @@ Math.toText = function Math_toText(n) {
     }
     function toText(z) {
         function t(a) {
-            var r = "";
-            r += a === 1?"one":a === 2?"two":a === 3?"three":"";
-            r += a === 4?"four":a === 5?"five":a === 6?"six":"";
-            r += a === 7?"seven":a === 8?"eight":a === 9?"nine":"";
-            r += a === 11?"eleven":a === 12?"twelve":a === 13?"thir":"";
-            r += a === 14?"four":a === 15?"fif":a === 16?"six":"";
-            r += a === 17?"seven":a === 18?"eigh":a === 19?"nine":"";
+            var r;
+            r = a === 1?"one":a === 2?"two":a === 3?"three":"";
+            r = a === 4?"four":a === 5?"five":a === 6?"six":"";
+            r = a === 7?"seven":a === 8?"eight":a === 9?"nine":"";
+            r = a === 11?"eleven":a === 12?"twelve":a === 13?"thir":"";
+            r = a === 14?"four":a === 15?"fif":a === 16?"six":"";
+            r = a === 17?"seven":a === 18?"eigh":a === 19?"nine":"";
             r += a > 12 && a < 20?"teen":"";
-            r += a === 10?"ten":a === 20?"twenty":a === 30?"thirty":"";
-            r += a === 40?"forty":a === 50?"fifty":a === 60?"sixty":"";
-            r += a === 70?"seventy":a === 80?"eighty":a === 90?"ninety":"";
+            r = a === 10?"ten":a === 20?"twenty":a === 30?"thirty":"";
+            r = a === 40?"forty":a === 50?"fifty":a === 60?"sixty":"";
+            r = a === 70?"seventy":a === 80?"eighty":a === 90?"ninety":"";
             return r;
         }
         var a, b, c, d = z % 100, r = "";
@@ -443,4 +443,35 @@ Math.toText = function Math_toText(n) {
     return r.join(" ");
 };
 
+Math.is = {
+	Number: function Math_is_Number(a) {
+		return typeof(a) === 'number'?true:typeof(a) === 'object'?a.constructor.toString().match(/Number|BigInt/) !== null:false;
+	},
+    Integer: function Math_is_Integer(a) {
+        
+    },
+    Real: function Math_is_Real(a) {
+        
+    },
+    Even: function Math_is_Even(a) {
+        
+    },
+    Odd: function Math_is_Odd(a) {
+        
+    }
+};
+
+Math.type = {
+	of: function Math_type_of(a) {
+		for (var i in Math.is) {
+			if (Math.is[i](a)) {
+				return i.toLowerCase();
+			}
+		}
+	}
+};
+
+function BigInt(a) {
+    return true;
+}
 //The limit of integer precision: Math.toText(9007199254740994);
