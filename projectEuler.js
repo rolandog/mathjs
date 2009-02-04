@@ -180,7 +180,7 @@ var http = {
         n = n.split("");
         l = n.length;
         for (i = 0; i < l; i += 1) {
-            n[i] = parseInt(n[i], 10);
+            n[i] = +n[i];
         }
         for (i = 0; i < l - 4; i += 1) {
             max = Math.max(max, n[i] * n[i + 1] * n[i + 2] * n[i + 3] * n[i + 4]);
@@ -381,7 +381,7 @@ var http = {
             20849603980134001723930671666823555245252804609722,
             53503534226472524250874054075591789781264330331690
         ], s = Math.sum(numbers), p = Math.ceil(Math.log(s) / Math.LN10);
-        return parseInt(s / Math.pow(10, p - 10), 10);
+        return Math.floor(s / Math.pow(10, p - 10));
     },
     function Problem_14() {
         function sequence(n) {
@@ -421,7 +421,7 @@ var http = {
             a = a.split("").reverse();
             var l = a.length, i;
             for (i = 0; i < l; i += 1) {
-                a[i] = 2 * parseInt(a[i], 10);
+                a[i] = 2 *a[i];
             }
             for (i = 0; i < l; i += 1) {
                 if (a[i] > 9) {
@@ -436,7 +436,7 @@ var http = {
         }
         n = n.split("");
         for (i = 0; i < n.length; i += 1) {
-            n[i] = parseInt(n[i], 10);
+            n[i] = +n[i];
         }
         return Math.sum(n);
     },
@@ -455,7 +455,7 @@ var http = {
                 triangle[i] = triangle[i].split(" ");
                 for (j in triangle[i]) {
                     if (triangle[i].hasOwnProperty(j) && triangle[i][j]) {
-                        triangle[i][j] = parseInt(triangle[i][j], 10);
+                        triangle[i][j] = +triangle[i][j];
                     }
                 }
             }
@@ -526,7 +526,7 @@ var http = {
     function Problem_20() {
         var i, a = Math.bigInt.factorial(100).split("");
         for (i = 0; i < a.length; i += 1) {
-            a[i] = parseInt(a[i], 10);
+            a[i] = +a[i];
         }
         return Math.sum(a);
     },
@@ -622,7 +622,7 @@ var http = {
                 triangle[i] = triangle[i].split(" ");
                 for (j in triangle[i]) {
                     if (triangle[i].hasOwnProperty(j) && triangle[i][j]) {
-                        triangle[i][j] = parseInt(triangle[i][j], 10);
+                        triangle[i][j] = +triangle[i][j];
                     }
                 }
             }
@@ -661,7 +661,7 @@ function solve(n) {
     if (n === "") {
         return false;
     } else if (typeof(n) === "string") {
-        n = parseInt(n, 10);
+        n = +n;
     }
     problem = projectEuler[n - 1];
     answer = answers[n - 1];
@@ -671,9 +671,9 @@ function solve(n) {
             return "might take a while. ";
         }
         if (t >= 60000) {
-            t = "takes " + parseInt(t / 60000, 10) + " minutes";
+            t = "takes " + Math.floor(t / 60000) + " minutes";
         } else if (t >= 1000) {
-            t = "takes " + parseInt(t / 1000, 10) + " seconds";
+            t = "takes " + Math.floor(t / 1000) + " seconds";
         } else {
             t = "takes " + t + " milliseconds";
         }
@@ -757,7 +757,7 @@ function display(n) {
 }
 
 function populateLists() {
-    var i, pl = document.getElementById("plist"), fl = document.getElementById("flist"), a = [], f, g;
+    var i, pl = document.getElementById("plist"), fl = document.getElementById("flist"), a = [], f, g, url, queries;
     for (f in Math) {
         if (typeof(Math[f]) === "object") {
             for (g in Math[f]) {
@@ -791,6 +791,34 @@ function populateLists() {
         fl.parentNode.removeChild(fl);
         fl = document.getElementById("flabel");
         fl.parentNode.removeChild(fl);
+    }
+    
+    function parseURL(url) {
+        var fields = {'username' : 4, 'password' : 5, 'port' : 7, 'scheme' : 2, 'authority' : 6, 'path' : 8, 'url' : 0, 'query' : 9, 'fragment' : 10}, json = {}, parsed, p, q, queries;
+        parsed = url.match(/^((\w+):\/\/)?((\w+):?(\w+)?@)?([^\/\?:]+):?(\d+)?(\/?[^\?#]+)?\??([^#]+)?#?(\w*)/);
+        for (p in fields) {
+            if (fields.hasOwnProperty(p) && parsed[fields[p]]) {
+                json[p] = parsed[fields[p]];
+            }
+        }
+        if (json.query !== undefined) {
+            queries = json.query.split("&");
+            json.query = {};
+            for (q in queries) {
+                p = queries[q].split("=");
+                json.query[p[0]] = p[1] !== undefined ? p[1] : null;
+            }
+        }
+        return json;
+    }
+    url = parseURL(document.location.href)
+    if (url.query) {
+        if (url.query.solve) {
+            solve(url.query.solve);
+        }
+        if (url.query.display) {
+            display(url.query.display)
+        }
     }
 }
 
