@@ -261,7 +261,7 @@ Math.bigInt.factorial = function Math_bigInt_factorial(a) {
     var b = a.toString(), i, j, k, l, o, t, c;
     b = b.split("").reverse();
     for (i = 0; i < b.length; i += 1) {
-        b[i] = parseInt(b[i], 10);
+        b[i] = +b[i];
     }
     for (i = a - 1; i >= 2; i -= 1) {
         l = b.length;
@@ -272,7 +272,7 @@ Math.bigInt.factorial = function Math_bigInt_factorial(a) {
             t = b[j].toString().split("").reverse().join("");
             o = t.length;
             for (k = 0; k < o; k += 1) {
-                c = parseInt(t.charAt(k), 10);
+                c = +t.charAt(k);
                 b[j + k] = b[j + k] ? (k ? b[j + k] : 0) + c:c;
             }
         }
@@ -289,7 +289,7 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         z = typeof(z) === "string" ? z : "" + z;
         z = z.split("").reverse();
         for (var i = 0; i < z.length; i += 1) {
-            z[i] = parseInt(z[i], 10);
+            z[i] = +z[i];
         }
         return z;
     }
@@ -320,7 +320,7 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
 Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     function toInt(z) {
         for (var i = 0; i < z.length; i += 1) {
-            z[i] = parseInt(z[i], 10);
+            z[i] = +z[i];
         }
         return z;
     }
@@ -328,7 +328,7 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
         var i, t, z = Math.js.copy(x).reverse();
         for (i = 0; i < z.length; i += 1) {
             if (z[i] >= 10) {
-                t = parseInt(z[i] / 10, 10);
+                t = Math.floor(z[i] / 10);
                 z[i] = z[i] % 10;
                 z[i + 1] = z[i + 1] !== undefined ? z[i + 1] + t : t;
             }
@@ -359,7 +359,7 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
             z = fillz(g.length - j - 1);
             //checks that every number in the array is below 10.
             u = check(t);
-            //joins the number array and the zeros, and converts to string..
+            //joins the number array and the zeros, and converts to string.
             t = u.concat(z);
             t = t.join("");
             r.unshift(t);
@@ -400,10 +400,10 @@ Math.toText = function Math_toText(n) {
     terms.push("undecillion", "duodecillion", "tredecillion");
     while (l > 0) {
         if (l >= 3) {
-            segs.push(parseInt(n.splice(l - 3, 3).join(""), 10));
+            segs.push(+n.splice(l - 3, 3).join(""));
             l -= 3;
         } else {
-            segs.push(parseInt(n.splice(0, l).join(""), 10));
+            segs.push(+n.splice(0, l).join(""));
             l = 0;
         }
     }
@@ -426,8 +426,8 @@ Math.toText = function Math_toText(n) {
             return r;
         }
         var a, b, c, d = z % 100, r = "";
-        a = parseInt(z / 100, 10);
-        b = parseInt(d / 10, 10);
+        a = Math.floor(z / 100);
+        b = Math.floor(d / 10);
         c = d % 10;
         r = a === 0? "":t(a) + " hundred";
         r += a !== 0 && d !== 0?" and ":"";
@@ -447,6 +447,9 @@ Math.is = {
 	Number: function Math_is_Number(a) {
 		return typeof(a) === 'number'?true:typeof(a) === 'object'?a.constructor.toString().match(/Number|BigInt/) !== null:false;
 	},
+	Natural: function Math_is_Natural(a) {
+	    
+    },
     Integer: function Math_is_Integer(a) {
         
     },
