@@ -16,7 +16,7 @@
  * @param(Number) a A Number.
  */
 http.get = function get(url) {
-    var AJAX, e;
+    var AJAX;
     if (window.XMLHttpRequest) {
         AJAX = new XMLHttpRequest();
     } else {

@@ -63,7 +63,6 @@ Math.js = {
                 a += 1;
             }
         } catch (e) {
-            e = e;
             for (a in as) {
                 if (as.hasOwnProperty(a) && as[a]) {
                     r.push(a);
@@ -114,10 +113,28 @@ Math.sum = function Math_sum(a) {
  * @return(Number) Returns the product of all numbers.
  */
 Math.product = function Math_product(a) {
-    var r = 1;
-    a = a.length ? a:Math.js.copy(arguments);
+    var r = 1, b = [];
+    a = Math.js.copy(arguments);
     while (a.length) {
-        r *= a.shift();
+        b = b.concat(a.shift());
+    }
+    while (b.length) {
+        r *= b.shift();
+    }
+    return r;
+};
+
+/**
+ * An extension to the Math object that accepts Arrays or Numbers
+ * as an argument and returns the quotient of the first by the second numbers.
+ * @param(Array) a A Number or an Array of numbers.
+ * @return(Number) Returns the product of all numbers.
+ */
+Math.quotient = function Math_product(a) {
+    a = Math.js.copy(arguments);
+    var r = Math.product(a.shift());
+    while (a.length) {
+        r /= Math.product(a.shift());
     }
     return r;
 };
@@ -296,7 +313,7 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
     function sum(A, B) {
         var C = [], i, l = Math.max(A.length, B.length);
         for (i = 0; i < l; i += 1) {
-            C[i] = (A[i]?A[i]:0) + (B[i]?B[i]:0) + (C[i]?C[i]:0);
+            C[i] = (A[i] ? A[i] :0) + (B[i] ? B[i]: 0) + (C[i] ? C[i]: 0);
             if (C[i] >= 10) {
                 C[i] -= 10;
                 C[i + 1] = C[i + 1] ? C[i + 1] + 1 : 1;
@@ -385,7 +402,7 @@ Math.bigInt.pow = function Math_bigInt_pow(n, p) {
     for (i = 0; i < p; i += 1) {
         r[i] = n;
     }
-    return p === 0?1:Math.bigInt.multiply(r);
+    return p === 0 ? 1 : Math.bigInt.multiply(r);
 };
 
 /**
@@ -413,30 +430,30 @@ Math.toText = function Math_toText(n) {
     function toText(z) {
         function t(a) {
             var r;
-            r = a === 1?"one":a === 2?"two":a === 3?"three":"";
-            r = a === 4?"four":a === 5?"five":a === 6?"six":"";
-            r = a === 7?"seven":a === 8?"eight":a === 9?"nine":"";
-            r = a === 11?"eleven":a === 12?"twelve":a === 13?"thir":"";
-            r = a === 14?"four":a === 15?"fif":a === 16?"six":"";
-            r = a === 17?"seven":a === 18?"eigh":a === 19?"nine":"";
-            r += a > 12 && a < 20?"teen":"";
-            r = a === 10?"ten":a === 20?"twenty":a === 30?"thirty":"";
-            r = a === 40?"forty":a === 50?"fifty":a === 60?"sixty":"";
-            r = a === 70?"seventy":a === 80?"eighty":a === 90?"ninety":"";
+            r = a === 1 ? "one" : a === 2 ? "two" : a === 3 ? "three" : "";
+            r = a === 4 ? "four" : a === 5 ? "five" : a === 6 ? "six" : "";
+            r = a === 7 ? "seven" : a === 8 ? "eight" : a === 9 ? "nine" : "";
+            r = a === 11 ? "eleven" : a === 12 ? "twelve" : a === 13 ? "thir" : "";
+            r = a === 14 ? "four" : a === 15 ? "fif" : a === 16 ? "six" : "";
+            r = a === 17 ? "seven" : a === 18 ? "eigh" : a === 19 ? "nine" : "";
+            r += a > 12 && a < 20 ? "teen" : "";
+            r = a === 10 ? "ten" : a === 20 ? "twenty" : a === 30 ? "thirty" : "";
+            r = a === 40 ? "forty" : a === 50 ? "fifty" : a === 60 ? "sixty" : "";
+            r = a === 70 ? "seventy" : a === 80 ? "eighty" : a === 90 ? "ninety" : "";
             return r;
         }
         var a, b, c, d = z % 100, r = "";
         a = Math.floor(z / 100);
         b = Math.floor(d / 10);
         c = d % 10;
-        r = a === 0? "":t(a) + " hundred";
-        r += a !== 0 && d !== 0?" and ":"";
-        r += (b !== 0 && c === 0) || d < 20?t(d):t(b * 10) + "-" + t(c);
+        r = a === 0 ? "" : t(a) + " hundred";
+        r += a !== 0 && d !== 0 ? " and " : "";
+        r += (b !== 0 && c === 0) || d < 20 ? t(d) : t(b * 10) + "-" + t(c);
         return r;
     }
     for (i = 0; i < segs.length; i += 1) {
         if (segs[i] !== 0) {
-            r.push(toText(segs[i]) + (terms[i] !== ""?" " + terms[i]:""));
+            r.push(toText(segs[i]) + (terms[i] !== "" ? " " + terms[i] : ""));
         }
     }
     r.reverse();
@@ -445,7 +462,7 @@ Math.toText = function Math_toText(n) {
 
 Math.is = {
 	Number: function Math_is_Number(a) {
-		return typeof(a) === 'number'?true:typeof(a) === 'object'?a.constructor.toString().match(/Number|BigInt/) !== null:false;
+		return typeof(a) === 'number' ? true : typeof(a) === 'object' ? a.constructor.toString().match(/Number|BigInt/) !== null : false;
 	},
 	Natural: function Math_is_Natural(a) {
 	    
