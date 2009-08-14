@@ -15,7 +15,7 @@
  * An extension to the Array object that filters out repeated values.
  * @return(Array) Returns the filtered array.
  */
-if (Array.unique !== undefined) {
+if (Array.unique === undefined) {
     Array.prototype.unique = function Array_unique() {
         var a = [], l = this.length, i = 0, j;
         while (i < l) {
@@ -36,7 +36,7 @@ if (Array.unique !== undefined) {
  * An extension to the Array object that counts the instances of 'a'.
  * @return(Number) Counts how many 'a' there are in the Array.
  */
-if (Array.count !== undefined) {
+if (Array.count === undefined) {
     Array.prototype.count = function Array_count(a) {
         var r = 0, i;
         for (i = 0; i < this.length; i += 1) {
@@ -128,7 +128,7 @@ Math.product = function Math_product(a) {
  * An extension to the Math object that accepts Arrays or Numbers
  * as an argument and returns the quotient of the first by the second numbers.
  * @param(Array) a A Number or an Array of numbers.
- * @return(Number) Returns the product of all numbers.
+ * @return(Number) Returns the quotient of all numbers.
  */
 Math.quotient = function Math_product(a) {
     a = Math.js.copy(arguments);
