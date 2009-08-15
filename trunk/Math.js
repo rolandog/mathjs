@@ -47,6 +47,25 @@ if (Array.count === undefined) {
 }
 
 /**
+ * An extension to the Array object that filters out repeated values.
+ * @return(Array) Returns the filtered array.
+ */
+if (Array.identicalTo === undefined) {
+    Array.prototype.unique = function Array_identicalTo(a) {
+        var i;
+        if (a.length !== this.length) {
+            return false;
+        }
+        for (i in this) {
+            if (this[i] !== a[i]) {
+                return false;
+            }
+        }
+        return true;
+    };
+}
+
+/**
  * @classDescription Contains some helpful functions.
  */
 Math.js = {
@@ -140,6 +159,33 @@ Math.quotient = function Math_quotient(a) {
 };
 
 /**
+ * An extension to the Math object that accepts Numbers as an argument
+ * and returns the quotient of the first by the second numbers, with many
+ * decimal places, as much as specified.
+ * @param(Number) numerator An Integer.
+ * @param(Number) denominator An Integer.
+ * @param(Number) numerator A positive Integer.
+ * @return(String) Returns the quotient of the numerator by the denominator.
+ */
+Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
+    var remainder, quotient, decimalString;
+    remainder = numerator % denominator;
+    quotient = parseInt(numerator / denominator, 10);
+    decimalString = "" + quotient;
+    decimalPlaces = decimalPlaces === undefined ? 20 : decimalPlaces;
+    decimalString += decimalPlaces ? "." : "";
+    decimalPlaces
+    while (decimalPlaces > 0) {
+        numerator = remainder * 10;
+        quotient = parseInt(numerator / denominator, 10);
+        remainder = numerator % denominator;
+        decimalString += quotient;
+        decimalPlaces -= 1;
+    }
+    return decimalString.replace(/0+$/, "");
+}
+
+/**
  * An extension to the Math object that accepts a Number
  * and returns the factorial.
  * @param(Array) a A Number or an Array of numbers.
@@ -208,7 +254,7 @@ Math.isPrime = function Math_isPrime(n) {
  * @return(Array) Returns the factors of 'a' in an array.
  */
 Math.factors = function Math_factors(a) {
-    var n = Math.abs(a), r = Math.floor(Math.sqrt(n)), i = 2, f = [];
+    var n = Math.abs(a), r = Math.ceil(Math.sqrt(n)), i = 2, f = [];
     while (i <= n && i <= r) {
         if (n % i === 0) {
             f.push(i);
