@@ -174,7 +174,6 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
     decimalString = "" + quotient;
     decimalPlaces = decimalPlaces === undefined ? 20 : decimalPlaces;
     decimalString += decimalPlaces ? "." : "";
-    decimalPlaces
     while (decimalPlaces > 0) {
         numerator = remainder * 10;
         quotient = parseInt(numerator / denominator, 10);
@@ -183,7 +182,7 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
         decimalPlaces -= 1;
     }
     return decimalString.replace(/0+$/, "");
-}
+};
 
 /**
  * An extension to the Math object that accepts a Number
