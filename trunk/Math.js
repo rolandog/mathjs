@@ -47,11 +47,11 @@ if (Array.count === undefined) {
 }
 
 /**
- * An extension to the Array object that filters out repeated values.
- * @return(Array) Returns the filtered array.
+ * An extension to the Array comparing two different arrays.
+ * @return(Boolean) Returns true if identical.
  */
 if (Array.identicalTo === undefined) {
-    Array.prototype.unique = function Array_identicalTo(a) {
+    Array.prototype.identicalTo = function Array_identicalTo(a) {
         var i;
         if (a.length !== this.length) {
             return false;
