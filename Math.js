@@ -130,7 +130,7 @@ Math.product = function Math_product(a) {
  * @param(Array) a A Number or an Array of numbers.
  * @return(Number) Returns the quotient of all numbers.
  */
-Math.quotient = function Math_product(a) {
+Math.quotient = function Math_quotient(a) {
     a = Math.js.copy(arguments);
     var r = Math.product(a.shift());
     while (a.length) {
