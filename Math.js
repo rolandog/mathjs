@@ -209,7 +209,7 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
  * Math.decimalRepresentation(1, 6) = "0.1(6)"
  * @return(String) Returns the decimal representation.
  */
-Math.decimalRepresentation = function decimalRepresentation(numerator, denominator) {
+Math.decimalRepresentation = function Math_decimalRepresentation(numerator, denominator) {
     var remainder, quotient, number = [], decimals = [], remainders = [];
     remainder = numerator % denominator;
     quotient = parseInt(numerator / denominator, 10);
