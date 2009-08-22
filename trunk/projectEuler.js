@@ -75,6 +75,7 @@ var http = {
     "A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number. A number whose proper divisors are less than the number is called deficient and a number whose proper divisors exceed the number is called abundant. As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit. Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.",
     undefined,
     "What is the first term in the Fibonacci sequence to contain 1000 digits?",
+    "A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:1/2    =     0.5\n1/3    =     0.(3)\n1/4    =     0.25\n1/5    =     0.2\n1/6    =     0.1(6)\n1/7    =     0.(142857)\n1/8    =     0.125\n1/9    =     0.(1)\n1/10    =     0.1\n\nWhere 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.\nFind the value of d  1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.",
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -595,7 +596,17 @@ var http = {
             i += 1;
         }
         return i;
-    }, undefined, undefined, undefined, undefined, undefined,
+    },
+    function Problem_26() {
+        var d, r = "", rs = [], maxR = 1;
+        for (d = 1; d < 1000; d += 1) {
+            r = Math.decimalRepresentation(1, d);
+            rs.push(r);
+            maxR = r.length > rs[maxR - 1].length) ? d : maxR;
+        }
+        return maxR;
+    },
+    undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,

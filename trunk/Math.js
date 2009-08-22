@@ -66,6 +66,25 @@ if (Array.identicalTo === undefined) {
 }
 
 /**
+ * An extension to the Array that inserts stuff by slicing and concatenating.
+ * @return(Array) Returns the new Array.
+ */
+if (Array.insert === undefined) {
+    Array.prototype.insert = function Array_insert(a, p) {
+        var b, c, d, i;
+        b = this.slice(0, p);
+        c = this.slice(p);
+        d = b.concat(a, c);
+        for (i in d) {
+            if (d[i] !== undefined) {
+                this[i] = d[i];
+            }
+        }
+        return this;
+    };
+}
+
+/**
  * @classDescription Contains some helpful functions.
  */
 Math.js = {
@@ -182,6 +201,37 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
         decimalPlaces -= 1;
     }
     return decimalString.replace(/0+$/, "");
+};
+
+/**
+ * As long as the proportion between numerator and denominator is less than 1e7
+ * or 1e-7, it will return the decimal representation. Example:
+ * Math.decimalRepresentation(1, 6) = "0.1(6)"
+ * @return(String) Returns the decimal representation.
+ */
+Math.decimalRepresentation = function decimalRepresentation(numerator, denominator) {
+    var remainder, quotient, number = [], decimals = [], remainders = [];
+    remainder = numerator % denominator;
+    quotient = parseInt(numerator / denominator, 10);
+    number.push(quotient);
+    if (remainder) {
+        number.push(".");
+        while (remainder && remainders.count(remainder * 10) === 0) {
+            numerator = remainder * 10;
+            remainders.push(numerator);
+            quotient = parseInt(numerator / denominator, 10);
+            decimals.push(quotient);
+            remainder = numerator % denominator;
+        }
+        if (remainder) {
+            numerator = remainder * 10;
+            quotient = parseInt(numerator / denominator, 10);
+            decimals.insert("(", decimals.indexOf(quotient));
+            decimals.push(")");
+        }
+        number = number.concat(decimals);
+    }
+    return number.join(""); //.replace(/0+$/, "");
 };
 
 /**
