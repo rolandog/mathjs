@@ -76,7 +76,7 @@ var http = {
     undefined,
     "What is the first term in the Fibonacci sequence to contain 1000 digits?",
     "A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:1/2    =     0.5\n1/3    =     0.(3)\n1/4    =     0.25\n1/5    =     0.2\n1/6    =     0.1(6)\n1/7    =     0.(142857)\n1/8    =     0.125\n1/9    =     0.(1)\n1/10    =     0.1\n\nWhere 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.\nFind the value of d  1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.",
-    undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -602,7 +602,7 @@ var http = {
         for (d = 1; d < 1000; d += 1) {
             r = Math.decimalRepresentation(1, d);
             rs.push(r);
-            maxR = r.length > rs[maxR - 1].length) ? d : maxR;
+            maxR = r.length > rs[maxR - 1].length ? d : maxR;
         }
         return maxR;
     },
@@ -649,14 +649,14 @@ var http = {
 ], answers, times;
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
     70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
-    31626, 871198282, 4179871, undefined, 4782, undefined, undefined, undefined, undefined, undefined,
+    31626, 871198282, 4179871, undefined, 4782, 983, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
 times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147,
     1, 1844, 2, 13082, 0, 272, 67, 3, 104, 69,
-    593, 259, 1034792, undefined, 7830, undefined, undefined, undefined, undefined, undefined,
+    593, 259, 1034792, undefined, 7830, 1000, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
