@@ -76,7 +76,8 @@ var http = {
     "A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:\n\n012   021   102   120   201   210\n\nWhat is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?",
     "What is the first term in the Fibonacci sequence to contain 1000 digits?",
     "A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:1/2    =     0.5\n1/3    =     0.(3)\n1/4    =     0.25\n1/5    =     0.2\n1/6    =     0.1(6)\n1/7    =     0.(142857)\n1/8    =     0.125\n1/9    =     0.(1)\n1/10    =     0.1\n\nWhere 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.\nFind the value of d  1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.",
-    undefined, undefined, undefined, undefined, undefined,
+    "Euler published the remarkable quadratic formula:\n\nn² + n + 41\n\nIt turns out that the formula will produce 40 primes for the consecutive values n = 0 to 39. However, when n = 40, 402 + 40 + 41 = 40(40 + 1) + 41 is divisible by 41, and certainly when n = 41, 41² + 41 + 41 is clearly divisible by 41.\n\nUsing computers, the incredible formula  n²  79n + 1601 was discovered, which produces 80 primes for the consecutive values n = 0 to 79. The product of the coefficients, 79 and 1601, is 126479.\n\nConsidering quadratics of the form:\n\nn² + an + b, where |a|  1000 and |b|  1000\n\nwhere |n| is the modulus/absolute value of n\ne.g. |11| = 11 and |4| = 4\nFind the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n = 0.",
+    undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -422,7 +423,7 @@ var http = {
             a = a.split("").reverse();
             var l = a.length, i;
             for (i = 0; i < l; i += 1) {
-                a[i] = 2 *a[i];
+                a[i] = 2 * a[i];
             }
             for (i = 0; i < l; i += 1) {
                 if (a[i] > 9) {
@@ -507,7 +508,7 @@ var http = {
             i += sampleSize;
             j += tarray[0].split("1").length - 1;
             if (triangle [i] !== undefined) {
-                j += triangle[i][j + 1] > triangle[i][j]? 1:0;
+                j += triangle[i][j + 1] > triangle[i][j] ? 1 : 0;
             }
             k -= 1;
         }
@@ -608,7 +609,36 @@ var http = {
         }
         return maxR;
     },
-    undefined, undefined, undefined, undefined, undefined,
+    function Problem_27(l) {
+        var n, a, b, l = l ? l : 1000, p, np = [], i, c, mc = 0, am = 0, bm = 0;
+        //populates list with enough prime numbers for the max value
+        Math.isPrime(l * l * 2 + l + 1);
+        p = Math.js.primes;
+        //gets the prime numbers below 1000;
+        p = p.slice(0, p.closeTo(l));
+        for (i = 0; i < p.length; i += 1) {
+            np[i] = -1 * p[i];
+        }
+        np.reverse();
+        //includes -1, 0 and 1
+        np = np.concat([-1, 0, 1], p);
+        for (a = 0; a < np.length; a += 1) {
+            for (b = 0; b < np.length; b += 1) {
+                c = 0;
+                n = 0;
+                while (Math.isPrime((n * n) + (np[a] * n) + np[b])) {
+                    //this is the consecutive counter
+                    c += 1;
+                    n += 1;
+                }
+                am = c > mc ? np[a] : am;
+                bm = c > mc ? np[b] : bm;
+                mc = c > mc ? c : mc;
+            }
+        }
+        //the answer is the product of amax * bmax
+        return "" + am + " * " + bm + " = " + am * bm;
+    }, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -818,19 +848,21 @@ function populateLists() {
             queries = json.query.split("&");
             json.query = {};
             for (q in queries) {
-                p = queries[q].split("=");
-                json.query[p[0]] = p[1] !== undefined ? p[1] : null;
+                if (queries.hasOwnProperty(q) && queries[q]) {
+                    p = queries[q].split("=");
+                    json.query[p[0]] = p[1] !== undefined ? p[1] : null;
+                }
             }
         }
         return json;
     }
-    url = parseURL(document.location.href)
+    url = parseURL(document.location.href);
     if (url.query) {
         if (url.query.solve) {
             solve(url.query.solve);
         }
         if (url.query.display) {
-            display(url.query.display)
+            display(url.query.display);
         }
     }
 }
