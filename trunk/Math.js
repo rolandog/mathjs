@@ -176,8 +176,34 @@ Math.js = {
      */
     descending: function Math_js_descending(a, b) {
         return b - a;
-    }
+    },
+    primes: [2, 3]
 };
+
+/**
+ * An extension to the Array object that returns the position of a number with a
+ * value closest to a. The array must be sorted numerically:
+ * You can use Array.sort(Math.js.ascending)
+ * @return(Array) Returns the array.
+ */
+if (Array.closeTo === undefined) {
+    Array.prototype.closeTo = function Array_closeTo(a) {
+        var t = this, i, m = Infinity, mp = 0;
+        if (t.indexOf(a) === -1) {
+            for (i = 0; i < t.length; i += 1) {
+                //if there is a growing difference
+                mp = Math.abs(a - t[i]) < m ? i : mp;
+                m = Math.abs(a - t[i]) < m ? Math.abs(a - t[i]) : m;
+                if (Math.abs(a - t[i]) > m) {
+                    return mp;
+                }
+            }
+        } else {
+            return t.indexOf(a);
+        }
+        return mp;
+    };
+}
 
 /**
  * An extension to the Math object that accepts Arrays or Numbers
@@ -333,15 +359,39 @@ Math.lcm = function Math_lcm(a) {
  * @return(Boolean) true if a number is prime.
  */
 Math.isPrime = function Math_isPrime(n) {
-    if (n !== Math.floor(n) || n <= 1 || (n % 2 === 0 && n !== 2)) {
+    var i, j, p = Math.js.primes, l, isPrime;
+    //if it's in the array, we don't need to do anything else
+    if (p.indexOf(n) !== -1) {
+        return true;
+    }
+    //if it's an even number that is not 2, it's not a prime
+    if (n % 2 === 0 && n !== 2) {
         return false;
     }
-    if (n > 4) {
-        var i, r = Math.ceil(Math.sqrt(n));
-        for (i = 3; i <= r; i += 2) {
-            if (n % i === 0) {
-                return false;
+    //a useful limit is the sqrt of n, so that we don't try to divide until 'n'
+    l = Math.ceil(Math.sqrt(n));
+    //its best to round up, and make it an odd number
+    l += l % 2 === 0 ? 1 : 0;
+    //if the biggest prime number in the array is less than the rounded sqrt,
+    //the list needs to be populated.
+    if (p[p.length - 1] < l) {
+        //generates new primes for the array. If the last one is 3, start from 5
+        for (i = p[p.length - 1] + 2; i <= l; i += 2) {
+            isPrime = true;
+            //if i is divisible by any of the primes, then it isn't a prime number
+            for (j = 1; j < p.length && isPrime; j += 1) {
+                isPrime = i % p[j] === 0 ? false : isPrime;
             }
+            if (isPrime) {
+                p.push(i);
+            }
+        }
+    }
+    //now that the list is populated, we're gonna check if it is a prime
+    l = p.closeTo(l);
+    for (i = 0; i < l; i += 1) {
+        if (n % p[i] === 0) {
+            return false;
         }
     }
     return true;
@@ -613,16 +663,16 @@ Math.is = {
 	    
     },
     Integer: function Math_is_Integer(a) {
-        
+        return parseInt(a, 10) === a;
     },
     Real: function Math_is_Real(a) {
-        
+        return parseInt(a, 10) !== a;
     },
     Even: function Math_is_Even(a) {
-        
+        return a % 2 === 0;
     },
     Odd: function Math_is_Odd(a) {
-        
+        return a % 2 !== 0;
     }
 };
 
