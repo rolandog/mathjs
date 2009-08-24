@@ -73,7 +73,7 @@ var http = {
     "Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n). If d(a) = b and d(b) = a, where a !== b, then a and b are an amicable pair and each of a and b are called amicable numbers. For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110 Therefore d(220) = 284. The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220. Evaluate the sum of all the amicable numbers under 10000.",
     "Using names.txt (right click and 'Save Link/Target As...'), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score. For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 * 53 = 49714. What is the total of all the name scores in the file?",
     "A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number. A number whose proper divisors are less than the number is called deficient and a number whose proper divisors exceed the number is called abundant. As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit. Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.",
-    undefined,
+    "A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:\n\n012   021   102   120   201   210\n\nWhat is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?",
     "What is the first term in the Fibonacci sequence to contain 1000 digits?",
     "A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:1/2    =     0.5\n1/3    =     0.(3)\n1/4    =     0.25\n1/5    =     0.2\n1/6    =     0.1(6)\n1/7    =     0.(142857)\n1/8    =     0.125\n1/9    =     0.(1)\n1/10    =     0.1\n\nWhere 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.\nFind the value of d  1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.",
     undefined, undefined, undefined, undefined, undefined,
@@ -586,7 +586,9 @@ var http = {
         }
         return Math.sum(other);
     },
-    undefined,
+    function Problem_24() {
+        return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].permutations()[999999].join("");
+    },
     function Problem_25() {
         var a = "1", b = "1", c = "2", i = 3;
         while (c.length < 1000) {
@@ -649,14 +651,14 @@ var http = {
 ], answers, times;
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
     70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
-    31626, 871198282, 4179871, undefined, 4782, 983, undefined, undefined, undefined, undefined,
+    31626, 871198282, 4179871, 2783915460, 4782, 983, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
 times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147,
     1, 1844, 2, 13082, 0, 272, 67, 3, 104, 69,
-    593, 259, 1034792, undefined, 7830, 1000, undefined, undefined, undefined, undefined,
+    593, 259, 1034792, 180000, 7830, 1000, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,

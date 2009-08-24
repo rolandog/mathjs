@@ -85,6 +85,56 @@ if (Array.insert === undefined) {
 }
 
 /**
+ * An extension to the Array object swaps the a'th and b'th items.
+ * @return(Array) Returns the array.
+ */
+if (Array.swap === undefined) {
+    Array.prototype.swap = function Array_swap(a, b) {
+        if (a !== b) {
+            var c = this[b];
+            this[b] = this[a];
+            this[a] = c;
+        }
+        return this;
+    };
+}
+
+/**
+ * An extension to the Array object generates permutations. It can return them
+ * as an array or a string if isString is true.
+ * @return(Array) Returns the array.
+ */
+if (Array.permutations === undefined) {
+    Array.prototype.permutations = function Array_permutations(isString) {
+        var t = Math.js.copy(this);
+        function permutations(a) {
+            if (a.length === 1) {
+                return [a];
+            }
+            var ps = [], p, i, j, b = a.slice(0), r = [];
+            for (i = 0;  i < a.length; i += 1) {
+                p = a.splice(i, 1);
+                ps = permutations(a);
+                for (j = 0; j < ps.length; j += 1) {
+                    ps[j] = p.concat(ps[j]);
+                }
+                r = r.concat(ps);
+                a = b.slice(0);
+            }
+            return r;
+        }
+        function clean(a) {
+            var i;
+            for (i = 0; i < a.length; i += 1) {
+                a[i] = a[i].join("");
+            }
+            return a.join();
+        }
+        return isString ? clean(permutations(t)) : permutations(t);
+    };
+}
+
+/**
  * @classDescription Contains some helpful functions.
  */
 Math.js = {
