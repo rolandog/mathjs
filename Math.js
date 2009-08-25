@@ -33,7 +33,18 @@ if (Array.unique === undefined) {
 }
 
 /**
+ * An extension to the Array object that returns the last item in the array.
+ * @return(Number) The last item.
+ */
+if (Array.last === undefined) {
+    Array.prototype.last = function Array_last() {
+        return this[this.length - 1];
+    };
+}
+
+/**
  * An extension to the Array object that counts the instances of 'a'.
+ * @param(Number) a What is to be counted.
  * @return(Number) Counts how many 'a' there are in the Array.
  */
 if (Array.count === undefined) {
@@ -48,6 +59,7 @@ if (Array.count === undefined) {
 
 /**
  * An extension to the Array comparing two different arrays.
+ * @param(Array) a Array to which it will be compared.
  * @return(Boolean) Returns true if identical.
  */
 if (Array.identicalTo === undefined) {
@@ -67,6 +79,8 @@ if (Array.identicalTo === undefined) {
 
 /**
  * An extension to the Array that inserts stuff by slicing and concatenating.
+ * @param(Array) a What is to be inserted.
+ * @param(Number) p Position of where it is to be inserted.
  * @return(Array) Returns the new Array.
  */
 if (Array.insert === undefined) {
@@ -86,6 +100,8 @@ if (Array.insert === undefined) {
 
 /**
  * An extension to the Array object swaps the a'th and b'th items.
+ * @param(Number) a Position of the element to be swapped.
+ * @param(Number) b Position of the element to be swapped.
  * @return(Array) Returns the array.
  */
 if (Array.swap === undefined) {
@@ -102,6 +118,7 @@ if (Array.swap === undefined) {
 /**
  * An extension to the Array object generates permutations. It can return them
  * as an array or a string if isString is true.
+ * @param(Boolean) isString So that it returns an Array or a String.
  * @return(Array) Returns the array.
  */
 if (Array.permutations === undefined) {
@@ -131,6 +148,52 @@ if (Array.permutations === undefined) {
             return a.join();
         }
         return isString ? clean(permutations(t)) : permutations(t);
+    };
+}
+
+/**
+ * An extension to the Array object that returns chunky arrays.
+ * @param(Number) n Number of chunks.
+ * @return(Array) Returns an array, chunked.
+ */
+if (Array.chunk === undefined) {
+    Array.prototype.chunk = function Array_chunk(n, nL) {
+        //i is the limit. There is a limit of 16 workers per tab, 64 on total
+        //anything created after that is queued
+        var chunks = [], t = this, l = t.length, i, s, last;
+        function minChunks(l) {
+            var a, minMod = Infinity, ma;
+            for (a = 16; a >= 2; a -= 1) {
+                ma = l % a < minMod ? a : ma;
+                minMod = l % a < minMod ? l % a : minMod;
+            }
+            return ma;
+        }
+        //if n is undefined, call minChunks else if n is larger than l, use l, else use n.
+        n = n !== undefined ? n > l ? l : n : minChunks(l);
+        //if nonLinear (will try to do logarithmic)
+        if (nL) {
+            n += 1;
+            s = function s(x) {
+                return parseInt(l * Math.log(x + 1) / Math.log(n), 10);
+            };
+            for (i = 0; i < n - 1; i += 1) {
+                chunks.push(t.slice(s(i), s(i + 1)));
+            }
+        } else {
+            //the size of the chunks
+            s = parseInt(l / n, 10);
+            for (i = 0; i < n; i += 1) {
+                chunks.push(t.slice(i * s, (i + 1) * s));
+            }
+            //this joins the remaining items in the last chunk.
+            if (l % n !== 0) {
+                last = chunks.pop();
+                last = last.concat(t.slice(i * s));
+                chunks.push(last);
+            }
+        }
+        return chunks;
     };
 }
 
@@ -191,10 +254,10 @@ if (Array.closeTo === undefined) {
         var t = this, i, m = Infinity, mp = 0;
         if (t.indexOf(a) === -1) {
             for (i = 0; i < t.length; i += 1) {
-                //if there is a growing difference
                 mp = Math.abs(a - t[i]) < m ? i : mp;
                 m = Math.abs(a - t[i]) < m ? Math.abs(a - t[i]) : m;
                 if (Math.abs(a - t[i]) > m) {
+                    //if there is a growing difference, get out!
                     return mp;
                 }
             }
@@ -374,9 +437,9 @@ Math.isPrime = function Math_isPrime(n) {
     l += l % 2 === 0 ? 1 : 0;
     //if the biggest prime number in the array is less than the rounded sqrt,
     //the list needs to be populated.
-    if (p[p.length - 1] < l) {
+    if (p.last() < l) {
         //generates new primes for the array. If the last one is 3, start from 5
-        for (i = p[p.length - 1] + 2; i <= l; i += 2) {
+        for (i = p.last() + 2; i <= l; i += 2) {
             isPrime = true;
             //if i is divisible by any of the primes, then it isn't a prime number
             for (j = 1; j < p.length && isPrime; j += 1) {
@@ -454,7 +517,7 @@ Math.fibonacci = function Math_fibonacci(l, a, b) {
     a = a === undefined ? 1:a;
     b = b === undefined ? 2:b;
     var r = [a, b];
-    while (r[r.length - 1] < l) {
+    while (r.last() < l) {
         r.push(r[r.length - 1] + r[r.length - 2]);
     }
     return r;
