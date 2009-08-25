@@ -609,14 +609,14 @@ var http = {
         }
         return maxR;
     },
-    function Problem_27(l) {
-        var n, a, b, l = l ? l : 1000, p, np = [], i, c, mc = 0, am = 0, bm = 0;
+    function Problem_27() {
+        var n, a, b, l = 1000, p, pp, np = [], i, c, mc = 0, am = 0, bm = 0;
         //populates list with enough prime numbers for the max value
         Math.isPrime(l * l * 2 + l + 1);
         p = Math.js.primes;
         //gets the prime numbers below 1000;
-        p = p.slice(0, p.closeTo(l));
-        for (i = 0; i < p.length; i += 1) {
+        pp = p.slice(0, p.closeTo(l));
+        for (i = 0; i < pp.length; i += 1) {
             np[i] = -1 * p[i];
         }
         np.reverse();
@@ -626,7 +626,7 @@ var http = {
             for (b = 0; b < np.length; b += 1) {
                 c = 0;
                 n = 0;
-                while (Math.isPrime((n * n) + (np[a] * n) + np[b])) {
+                while (p.indexOf(n * n + np[a] * n + np[b]) !== -1) {
                     //this is the consecutive counter
                     c += 1;
                     n += 1;
