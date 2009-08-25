@@ -204,22 +204,18 @@ var http = {
         }
     },
     function Problem_10() {
-        var i, p = [2];
-        function isPrime(n) {
-            var j, r = Math.floor(Math.sqrt(n));
-            for (j = 0; j < p.length && p[j] <= r; j += 1) {
-                if (n % p[j] === 0) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        for (i = 3; i < 2000000; i += 2) {
-            if (isPrime(i)) {
+        var p = [], l, i = 1999999;
+        //the lower limit is the rounded odd sqrt of i;
+        l = parseInt(Math.sqrt(i), 10);
+        l += l % 2 === 0 ? 1 : 0;
+        while (i >= l) {
+            if (Math.isPrime(i)) {
                 p.push(i);
             }
+            i -= 2;
         }
-        return Math.sum(p);
+        p.reverse();
+        return Math.sum(Math.js.primes.concat(p));
     },
     function Problem_11() {
         var a = [
