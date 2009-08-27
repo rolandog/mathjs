@@ -57,6 +57,18 @@ if (Array.count === undefined) {
     };
 }
 
+
+/** * Array Remove - By John Resig (MIT Licensed)
+ * An extension to the Array that removes item(s). Destructive.
+ * @param(Array) a Array to which it will be compared.
+ * @return(Boolean) Returns true if identical.
+ */
+Array.remove = function Array_remove(array, from, to) {
+    var rest = array.slice((to || from) + 1 || array.length);
+    array.length = from < 0 ? array.length + from : from;
+    return array.push.apply(array, rest);
+};
+
 /**
  * An extension to the Array comparing two different arrays.
  * @param(Array) a Array to which it will be compared.
@@ -123,7 +135,7 @@ if (Array.swap === undefined) {
  */
 if (Array.permutations === undefined) {
     Array.prototype.permutations = function Array_permutations(isString) {
-        var t = Math.js.copy(this);
+        var m = Math, t = m.js.copy(this);
         function permutations(a) {
             if (a.length === 1) {
                 return [a];
@@ -160,7 +172,7 @@ if (Array.chunk === undefined) {
     Array.prototype.chunk = function Array_chunk(n, nL) {
         //i is the limit. There is a limit of 16 workers per tab, 64 on total
         //anything created after that is queued
-        var chunks = [], t = this, l = t.length, i, s, last;
+        var chunks = [], t = this, l = t.length, i, s, last, m = Math;
         function minChunks(l) {
             var a, minMod = Infinity, ma;
             for (a = 16; a >= 2; a -= 1) {
@@ -175,7 +187,7 @@ if (Array.chunk === undefined) {
         if (nL) {
             n += 1;
             s = function s(x) {
-                return parseInt(l * Math.log(x + 1) / Math.log(n), 10);
+                return parseInt(l * m.log(x + 1) / m.log(n), 10);
             };
             for (i = 0; i < n - 1; i += 1) {
                 chunks.push(t.slice(s(i), s(i + 1)));
@@ -245,26 +257,37 @@ Math.js = {
 
 /**
  * An extension to the Array object that returns the position of a number with a
+ * value closest to, but less than, a. The array must be sorted numerically:
+ * You can use Array.sort(Math.js.ascending)
+ * @param(Number) a A Number.
+ * @return(Array) Returns the index.
+ */
+if (Array.lessThan === undefined) {
+    Array.prototype.lessThan = function Array_lessThan(a) {
+        var i = 0, t = this, l = t.length;
+        do {
+            i++;
+        } while (t[i] < a);
+        return i - 1;
+    };
+}
+
+/**
+ * An extension to the Array object that returns the position of a number with a
  * value closest to a. The array must be sorted numerically:
  * You can use Array.sort(Math.js.ascending)
- * @return(Array) Returns the array.
+ * @param(Number) a A Number.
+ * @return(Array) Returns the index.
  */
 if (Array.closeTo === undefined) {
     Array.prototype.closeTo = function Array_closeTo(a) {
-        var t = this, i, m = Infinity, mp = 0;
-        if (t.indexOf(a) === -1) {
-            for (i = 0; i < t.length; i += 1) {
-                mp = Math.abs(a - t[i]) < m ? i : mp;
-                m = Math.abs(a - t[i]) < m ? Math.abs(a - t[i]) : m;
-                if (Math.abs(a - t[i]) > m) {
-                    //if there is a growing difference, get out!
-                    return mp;
-                }
-            }
+        var t = this, l = t.length, i, iO = t.indexOf(a);
+        if (iO === -1) {
+            i = t.lessThan(a);
+            return t[i + 1] - a < a - t[i] ? i + 1 : i;
         } else {
-            return t.indexOf(a);
+            return iO;
         }
-        return mp;
     };
 }
 
@@ -275,8 +298,8 @@ if (Array.closeTo === undefined) {
  * @return(Number) Returns the sum of all numbers.
  */
 Math.sum = function Math_sum(a) {
-    var r = 0;
-    a = a.length ? a:Math.js.copy(arguments);
+    var r = 0, m = Math;
+    a = a.length ? a:m.js.copy(arguments);
     while (a.length) {
         r += a.shift();
     }
@@ -290,8 +313,8 @@ Math.sum = function Math_sum(a) {
  * @return(Number) Returns the product of all numbers.
  */
 Math.product = function Math_product(a) {
-    var r = 1, b = [];
-    a = Math.js.copy(arguments);
+    var r = 1, b = [], m = Math;
+    a = m.js.copy(arguments);
     while (a.length) {
         b = b.concat(a.shift());
     }
@@ -308,10 +331,11 @@ Math.product = function Math_product(a) {
  * @return(Number) Returns the quotient of all numbers.
  */
 Math.quotient = function Math_quotient(a) {
-    a = Math.js.copy(arguments);
-    var r = Math.product(a.shift());
+    var m = Math;
+    a = m.js.copy(arguments);
+    var r = m.product(a.shift());
     while (a.length) {
-        r /= Math.product(a.shift());
+        r /= m.product(a.shift());
     }
     return r;
 };
@@ -380,7 +404,8 @@ Math.decimalRepresentation = function Math_decimalRepresentation(numerator, deno
  * @return(Number) Returns the product of all numbers.
  */
 Math.factorial = function Math_factorial(a) {
-    return (a <= 1) ? 1 : a * Math.factorial(a - 1);
+    var m = Math;
+    return (a <= 1) ? 1 : a * m.factorial(a - 1);
 };
 
 /**
@@ -389,16 +414,17 @@ Math.factorial = function Math_factorial(a) {
  * @return(Number) Returns the Greatest Common Divisor.
  */
 Math.gcd = function Math_gcd(a) {
-    a = a.length ? a:Math.js.copy(arguments);
-    var l = a.length;
+    var m = Math;
+    a = a.length ? a:m.js.copy(arguments);
+    l = a.length;
     if (l < 2) {
         throw "Error: Must have at least two integers.";
     }
     while (l - 2) {
-        a.push(Math.gcd(a.shift(), a.shift()));
+        a.push(m.gcd(a.shift(), a.shift()));
         l = a.length;
     }
-    return a[1] === 0 ? a[0] : Math.gcd(a[1], a[0] % a[1]);
+    return a[1] === 0 ? a[0] : m.gcd(a[1], a[0] % a[1]);
 };
 
 /**
@@ -407,13 +433,56 @@ Math.gcd = function Math_gcd(a) {
  * @return(Number) Returns the Least Common Multiple.
  */
 Math.lcm = function Math_lcm(a) {
-    a = a.length ? a:Math.js.copy(arguments);
-    var l = a.length;
+    var m = Math;
+    a = a.length ? a:m.js.copy(arguments);
+    l = a.length;
     while (l - 2) {
-        a.unshift(Math.lcm(a.shift(), a.shift()));
+        a.unshift(m.lcm(a.shift(), a.shift()));
         l = a.length;
     }
-    return a[0] * a[1] / Math.gcd(a[0], a[1]);
+    return a[0] * a[1] / m.gcd(a[0], a[1]);
+};
+
+/**
+ * Returns odd numbers.
+ * @param(Number) a An integer.
+ * @param(Number) b An integer.
+ * @return(Array) the odd numbers between a and b.
+ */
+Math.odd = function Math_odd(a, b) {
+    var r = [];
+    if (b === undefined) {
+        b = a;
+        a = 1;
+    }
+    b -= b % 2 ? 0 : 1;
+    a += a % 2 ? 0 : 1;
+    do {
+        r.push(a);
+        a += 2;
+    } while (a <= b);
+    return r;
+};
+
+/**
+ * Returns even numbers.
+ * @param(Number) a An integer.
+ * @param(Number) b An integer.
+ * @return(Array) the even numbers between a and b.
+ */
+Math.even = function Math_even(a, b) {
+    var r = [];
+    if (b === undefined) {
+        b = a;
+        a = 2;
+    }
+    b -= b % 2 ? 1 : 0;
+    a += a % 2 ? 1 : 0;
+    do {
+        r.push(a);
+        a += 2;
+    } while (a <= b);
+    return r;
 };
 
 /**
@@ -421,18 +490,19 @@ Math.lcm = function Math_lcm(a) {
  * @param(Number) a An integer.
  * @return(Boolean) true if a number is prime.
  */
-Math.isPrime = function Math_isPrime(n) {
-    var i, j, p = Math.js.primes, l, isPrime;
+Math.isPrime = function Math_isPrime(n, p) {
+    var i, j, l, len, isPrime, m = Math, primes = m.js.primes;
+    p = p === undefined ? primes : p;
     //if it's in the array, we don't need to do anything else
     if (p.indexOf(n) !== -1) {
         return true;
     }
     //if it's an even number that is not 2, it's not a prime
-    if (n % 2 === 0 && n !== 2) {
+    if ((n % 2 === 0 && n !== 2) || n === 1) {
         return false;
     }
     //a useful limit is the sqrt of n, so that we don't try to divide until 'n'
-    l = Math.ceil(Math.sqrt(n));
+    l = m.ceil(m.sqrt(n));
     //its best to round up, and make it an odd number
     l += l % 2 === 0 ? 1 : 0;
     //if the biggest prime number in the array is less than the rounded sqrt,
@@ -441,8 +511,9 @@ Math.isPrime = function Math_isPrime(n) {
         //generates new primes for the array. If the last one is 3, start from 5
         for (i = p.last() + 2; i <= l; i += 2) {
             isPrime = true;
+            len = p.length;
             //if i is divisible by any of the primes, then it isn't a prime number
-            for (j = 1; j < p.length && isPrime; j += 1) {
+            for (j = 1; j < len && isPrime; j += 1) {
                 isPrime = i % p[j] === 0 ? false : isPrime;
             }
             if (isPrime) {
@@ -466,7 +537,7 @@ Math.isPrime = function Math_isPrime(n) {
  * @return(Array) Returns the factors of 'a' in an array.
  */
 Math.factors = function Math_factors(a) {
-    var n = Math.abs(a), r = Math.ceil(Math.sqrt(n)), i = 2, f = [];
+    var m = Math, n = m.abs(a), r = m.ceil(m.sqrt(n)), i = 2, f = [];
     while (i <= n && i <= r) {
         if (n % i === 0) {
             f.push(i);
@@ -476,7 +547,7 @@ Math.factors = function Math_factors(a) {
             i += 1;
         }
     }
-    if (a !== Math.abs(a)) {
+    if (a !== m.abs(a)) {
         f.unshift(-1);
     }
     return f;
@@ -489,7 +560,7 @@ Math.factors = function Math_factors(a) {
  * @return(Array) Returns the divisors of 'a' in an array.
  */
 Math.divisors = function Math_divisors(a, b) {
-    var n = Math.abs(a), r = Math.sqrt(n), i = 1, d = [];
+    var m = Math, n = m.abs(a), r = m.sqrt(n), i = 1, d = [];
     while (i <= r) {
         if (a % i === 0) {
             d.push(i);
@@ -499,7 +570,7 @@ Math.divisors = function Math_divisors(a, b) {
         }
         i += 1;
     }
-    d = d.sort(Math.js.ascending);
+    d = d.sort(m.js.ascending);
     if (b) {
         d.pop();
     }
@@ -569,7 +640,7 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         return z;
     }
     function sum(A, B) {
-        var C = [], i, l = Math.max(A.length, B.length);
+        var m = Math, js = m.js, C = [], i, l = m.max(A.length, B.length);
         for (i = 0; i < l; i += 1) {
             C[i] = (A[i] ? A[i] :0) + (B[i] ? B[i]: 0) + (C[i] ? C[i]: 0);
             if (C[i] >= 10) {
@@ -579,8 +650,9 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         }
         return C;
     }
-    a = a.length && typeof(a) !== "string" ? a:Math.js.copy(arguments);
-    var b = a.shift();
+    var b, m = Math;
+    a = a.length && typeof(a) !== "string" ? a:js.copy(arguments);
+    b = a.shift();
     b = flip(b);
     while (a.length) {
         b = sum(b, flip(a.shift()));
@@ -600,10 +672,10 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
         return z;
     }
     function check(x) {
-        var i, t, z = Math.js.copy(x).reverse();
+        var m = Math, js = m.js, i, t, z = js.copy(x).reverse();
         for (i = 0; i < z.length; i += 1) {
             if (z[i] >= 10) {
-                t = Math.floor(z[i] / 10);
+                t = m.floor(z[i] / 10);
                 z[i] = z[i] % 10;
                 z[i + 1] = z[i + 1] !== undefined ? z[i + 1] + t : t;
             }
@@ -639,9 +711,9 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
             t = t.join("");
             r.unshift(t);
         }
-        return toInt(Math.bigInt.sum(r).split(""));
+        return toInt(m.bigInt.sum(r).split(""));
     }
-    a = a.length && typeof(a) !== "string" ? a:Math.js.copy(arguments);
+    a = a.length && typeof(a) !== "string" ? a:js.copy(arguments);
     var b = a.shift(), c;
     b = toInt(("" + b).split(""));
     while (a.length) {
@@ -656,11 +728,11 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
  * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
  */
 Math.bigInt.pow = function Math_bigInt_pow(n, p) {
-    var r = [], i;
+    var r = [], i, m = Math;
     for (i = 0; i < p; i += 1) {
         r[i] = n;
     }
-    return p === 0 ? 1 : Math.bigInt.multiply(r);
+    return p === 0 ? 1 : m.bigInt.multiply(r);
 };
 
 /**
@@ -700,9 +772,9 @@ Math.toText = function Math_toText(n) {
             r = a === 70 ? "seventy" : a === 80 ? "eighty" : a === 90 ? "ninety" : "";
             return r;
         }
-        var a, b, c, d = z % 100, r = "";
-        a = Math.floor(z / 100);
-        b = Math.floor(d / 10);
+        var a, b, c, d = z % 100, r = "", m = Math;
+        a = m.floor(z / 100);
+        b = m.floor(d / 10);
         c = d % 10;
         r = a === 0 ? "" : t(a) + " hundred";
         r += a !== 0 && d !== 0 ? " and " : "";
@@ -741,8 +813,9 @@ Math.is = {
 
 Math.type = {
 	of: function Math_type_of(a) {
-		for (var i in Math.is) {
-			if (Math.is[i](a)) {
+        var i, m = Math;
+		for (i in m.is) {
+			if (m.is[i](a)) {
 				return i.toLowerCase();
 			}
 		}

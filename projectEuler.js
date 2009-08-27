@@ -113,17 +113,17 @@ var http = {
         return r.pop();
     },
     function Problem_4() {
+        var i, j, palindromes = [], m = Math;
         function isPalindrome(a) {
             a = a.toString();
-            var l = a.length, i;
-            for (i = 0; i < Math.floor(l / 2); i += 1) {
+            var l = a.length, i, lim = m.floor(l / 2);
+            for (i = 0; i < lim; i += 1) {
                 if (a.charAt(i) !== a.charAt(l - 1 - i)) {
                     return false;
                 }
             }
             return true;
         }
-        var i, j, palindromes = [];
         for (i = 101; i <= 999; i += 1) {
             for (j = 101; j <= 999; j += 1) {
                 if (isPalindrome(i * j)) {
@@ -131,7 +131,7 @@ var http = {
                 }
             }
         }
-        return palindromes.sort(Math.js.ascending).pop();
+        return palindromes.sort(m.js.ascending).pop();
     },
     function Problem_5() {
         var i, n = [];
@@ -141,24 +141,27 @@ var http = {
         return Math.lcm(n);
     },
     function Problem_6() {
-        var i, ns = [], sqs = [];
+        var i, ns = [], sqs = [], m = Math;
         for (i = 1; i <= 100; i += 1) {
             ns.push(i);
-            sqs.push(Math.pow(i, 2));
+            sqs.push(m.pow(i, 2));
         }
-        return Math.pow(Math.sum(ns), 2) - Math.sum(sqs);
+        return m.pow(m.sum(ns), 2) - m.sum(sqs);
     },
     function Problem_7() {
-        var primes = [2], i;
-        for (i = 3; primes.length < 10001; i += 2) {
-            if (Math.isPrime(i)) {
-                primes.push(i);
-            }
-        }
-        return primes.pop();
+        var i, m = Math, primes = m.js.primes, oL = 1001, l;
+        i = parseInt(oL * m.log(oL), 10);
+        i += i % 2 ? 0 : 1;
+        m.isPrime(i);
+        do {
+            i = i * 2 + 1;
+            m.isPrime(i);
+            l = primes.length;
+        } while (l < oL);
+        return primes[1000];
     },
     function Problem_8() {
-        var n, i, max = 0, l;
+        var n, i, max = 0, l, m = Math, c;
         n = "73167176531330624919225119674426574742355349194934";
         n += "96983520312774506326239578318016984801869478851843";
         n += "85861560789112949495459501737958331952853208805511";
@@ -185,7 +188,8 @@ var http = {
             n[i] = +n[i];
         }
         for (i = 0; i < l - 4; i += 1) {
-            max = Math.max(max, n[i] * n[i + 1] * n[i + 2] * n[i + 3] * n[i + 4]);
+            c = n[i] * n[i + 1] * n[i + 2] * n[i + 3] * n[i + 4];
+            max = m.max(max, c);
         }
         return max;
     },
@@ -204,18 +208,14 @@ var http = {
         }
     },
     function Problem_10() {
-        var p = [], l, i = 1999999;
-        //the lower limit is the rounded odd sqrt of i;
-        l = parseInt(Math.sqrt(i), 10);
-        l += l % 2 === 0 ? 1 : 0;
-        while (i >= l) {
-            if (Math.isPrime(i)) {
-                p.push(i);
-            }
-            i -= 2;
-        }
-        p.reverse();
-        return Math.sum(Math.js.primes.concat(p));
+        var M = Math, primes = M.js.primes, p, l = 2000000, i = l, c;
+        do {
+            i = i * 2 + 1;
+            M.isPrime(i);
+        } while (primes.last() < l);
+        c = primes.lessThan(l);
+        p = primes.slice(0, c + 1);
+        return M.sum(p);
     },
     function Problem_11() {
         var a = [
@@ -690,146 +690,176 @@ times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 27];
 
+if (Math.js !== undefined) {
+    Math.js.format = function format(t) {
+        var u, r = Math.decimalRepresentation;
+        if (t > 3600000) {
+            t = r(t, 3600000);
+            u = "hours";
+        } else if (t > 60000) {
+            t = r(t, 60000);
+            u = "minutes";
+        } else if (t > 1000) {
+            t = r(t, 1000);
+            u = "seconds";
+        } else {
+            t = "" + t;
+            u = "milliseconds";
+        }
+        return [t, u];
+    };
+    Math.js.get = function Math_js_get(id) {
+        return document.getElementById(id);
+    };
+    Math.js.before = function Math_js_before(reference, node) {
+        reference.parentNode.insertBefore(node, reference);
+    };
+    Math.js.after = function Math_js_after(reference, node) {
+        Math.js.before(reference.nextSibling, node);
+    };
+    Math.js.remove = function Math_js_remove(node) {
+        node.parentNode.removeChild(node);
+    };
+    Math.js.next = function Math_js_next(reference) {
+        Math.js.remove(reference.nextSibling);
+    };
+    Math.js.text = function Math_js_text(b) { 
+        return document.createTextNode(b);
+    };
+    Math.js.element = function Math_js_element(b) {
+        return document.createElement(b);
+    };
+    Math.js.append = function Math_js_append(b, c) {
+        b.appendChild(c);
+    };
+    Math.js.create = function Math_js_create(d, b, i) {
+        var m = Math.js, r = m.element(d);
+        if (i !== undefined) {
+            r.id = i;
+        }
+        if (b !== undefined) {
+            m.append(r, m.text(b));
+        }
+        return r;
+    };
+}
 /** * Solves the selected problem. */
 function solve(n) {
-    var t0, t1, problem, answer, p, time, conf, s;
+    var t0, t1, problem, answer, p, time, conf, s, f, format, t, e, a, c, m, g, units;
+    //get the formating and DOM manipulating functions, to save space
+    m = Math.js;
+    e = m.element;
+    a = m.append;
+    c = m.create;
+    t = m.text;
+    g = m.get;
+    f = m.format;
+    //get the document area and clean it up
     p = document.getElementById("problem");
     if (p) {
         p.parentNode.removeChild(p);
     }
+    //check if it isn't an empty string as an argument, if not, make it a number
     if (n === "") {
         return false;
     } else if (typeof(n) === "string") {
         n = +n;
     }
+    //get the function, and its answer and calculation times
     problem = projectEuler[n - 1];
     answer = answers[n - 1];
     time = times[n - 1];
-    function format(t) { 
-        if (t === undefined) {
-            return "might take a while. ";
-        }
-        if (t >= 60000) {
-            t = "takes " + Math.floor(t / 60000) + " minutes";
-        } else if (t >= 1000) {
-            t = "takes " + Math.floor(t / 1000) + " seconds";
-        } else {
-            t = "takes " + t + " milliseconds";
-        }
-        return t + ", more or less, on a 1.5 GHz laptop using Google Chrome. ";
-    }
-    conf = time >= 4200 ? confirm("The algorithm " + format(time) + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
+    //change the formating function into a string
+    format = time !== undefined ? f(time) : "might take a while. ";
+    format = "takes " + format.join(" ") + ", more or less, on a 1.5 GHz laptop using Google Chrome. ";
+    conf = time >= 4200 ? confirm("The algorithm " + format + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
     if (conf) {
         t0 = new Date();
         answer = problem();
         t1 = new Date();
-        time = t1 - t0;
+        time = f(t1 - t0)[0];
+        units = f(t1 - t0)[1];
     } else {
-        time = "N/A";
+        t0 = f(time);
+        time = t0[0];
+        units = t0[1];
     }
-    function t(b) { 
-        return document.createTextNode(b);
-    }
-    function e(b) {
-        return document.createElement(b);
-    }
-    function a(b, c) {
-        b.appendChild(c);
-    }
-    function c(d, b) {
-        var r = e(d);
-        a(r, t(b));
-        return r;
-    }
-    p = e("p");
-    p.id = "problem";
+    p = c("p", undefined, "problem");
     a(p, c("h3", "Problem: " + n));
     a(p, c("i", pEProblems[n - 1]));
     a(p, e("br"));
-    a(p, c("strong", "Answer: "));
+    a(p, c("strong", "Answer: ", "answer"));
     a(p, t(answer + ", "));
-    a(p, c("strong", "Time: "));
-    a(p, t(time + " "));
-    a(p, c("small", "milliseconds"));
+    a(p, c("strong", "Time: ", "time"));
+    a(p, t(time));
+    a(p, c("small", " " + units, "units"));
     a(p, t("."));
     a(p, e("br"));
     a(p, c("pre", problem));
     a(p, e("br"));
-    s = document.getElementById("solution");
+    s = g("solution");
     a(s, p);
 }
 
 /** * Displays the chosen functions. */
 function display(n) {
-    var Mf = Math.js.functions, p, f, i;
-    p = document.getElementById("function");
+    var m = Math.js, Mf = m.functions, p, f, i, t, e, a, c, g;
+    //get the formating and DOM manipulating functions, to save space
+    e = m.element;
+    a = m.append;
+    c = m.create;
+    t = m.text;
+    g = m.get;
+    format = m.format;
+    p = g("function");
     if (p) {
-        p.parentNode.removeChild(p);
-    }
-    if (n === "") {
-        return false;
-    }
-    function t(b) { 
-        return document.createTextNode(b);
-    }
-    function e(b) {
-        return document.createElement(b);
-    }
-    function a(b, c) {
-        b.appendChild(c);
-    }
-    function c(d, b) {
-        var r = e(d);
-        a(r, t(b));
-        return r;
+        m.remove(p);
     }
     for (i = 0; i < Mf.length; i += 1) {
         if (Mf[i].name === n) {
             f = Mf[i];
         }
     }
-    p = e("p");
-    p.id = "function";
+    p = c("p", undefined, "function");
     a(p, c("h3", "Function: " + f.name));
     a(p, c("pre", f));
-    a(document.getElementById("source"), p);
+    a(g("source"), p);
 }
 
 function populateLists() {
-    var i, pl = document.getElementById("plist"), fl = document.getElementById("flist"), a = [], f, g, url, queries;
-    for (f in Math) {
-        if (typeof(Math[f]) === "object") {
-            for (g in Math[f]) {
-                if (typeof(Math[f][g]) === "function") {
-                    a.push(Math[f][g]);
+    var i, m = Math.js, g = m.get, r = m.remove, pl = g("plist"), fl = g("flist"), a = [], e, f, url, queries;
+    for (e in Math) {
+        if (typeof(Math[e]) === "object") {
+            for (f in Math[e]) {
+                if (typeof(Math[e][f]) === "function") {
+                    a.push(Math[e][f]);
                 }
             }
-        } else if (typeof(Math[f]) === "function") {
-            a.push(Math[f]);
+        } else if (typeof(Math[e]) === "function") {
+            a.push(Math[e]);
         }
     }
     a.sort();
-    Math.js.functions = a;
+    m.functions = a;
     function option(n, t) {
-        var o = document.createElement("option"), txt = t + n;
+        var o = m.element("option"), txt = t + n;
         o.value = "" + n;
-        txt = document.createTextNode(txt);
-        o.appendChild(txt);
+        txt = m.text(txt);
+        m.append(o, txt);
         return o;
     }
     for (i = 0; i < projectEuler.length; i += 1) {
         if (projectEuler[i] !== undefined) {
-            pl.appendChild(option(i + 1, "Problem "));
+            m.append(pl, option(i + 1, "Problem "));
         }
     }
     if (a[0].name !== undefined) {
         for (i = 0; i < a.length; i += 1) {
-            fl.appendChild(option(a[i].name, ""));
+            m.append(fl, option(a[i].name, ""));
         }
     } else {
-        fl.parentNode.removeChild(fl);
-        fl = document.getElementById("flabel");
-        fl.parentNode.removeChild(fl);
+        r(fl);
+        r(g("flabel"));
     }
     
     function parseURL(url) {
