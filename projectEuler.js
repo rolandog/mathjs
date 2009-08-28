@@ -77,11 +77,10 @@ var http = {
     "What is the first term in the Fibonacci sequence to contain 1000 digits?",
     "A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:1/2    =     0.5\n1/3    =     0.(3)\n1/4    =     0.25\n1/5    =     0.2\n1/6    =     0.1(6)\n1/7    =     0.(142857)\n1/8    =     0.125\n1/9    =     0.(1)\n1/10    =     0.1\n\nWhere 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.\nFind the value of d  1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.",
     "Euler published the remarkable quadratic formula:\n\nn² + n + 41\n\nIt turns out that the formula will produce 40 primes for the consecutive values n = 0 to 39. However, when n = 40, 402 + 40 + 41 = 40(40 + 1) + 41 is divisible by 41, and certainly when n = 41, 41² + 41 + 41 is clearly divisible by 41.\n\nUsing computers, the incredible formula  n²  79n + 1601 was discovered, which produces 80 primes for the consecutive values n = 0 to 79. The product of the coefficients, 79 and 1601, is 126479.\n\nConsidering quadratics of the form:\n\nn² + an + b, where |a|  1000 and |b|  1000\n\nwhere |n| is the modulus/absolute value of n\ne.g. |11| = 11 and |4| = 4\nFind the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n = 0.",
-    undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
-    undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
     "The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317.\nFind the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000.",
     undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -149,7 +148,7 @@ var http = {
         return m.pow(m.sum(ns), 2) - m.sum(sqs);
     },
     function Problem_7() {
-        var i, m = Math, primes = m.js.primes, oL = 1001, l;
+        var i, m = Math, primes = m.primes, oL = 10001, l;
         i = parseInt(oL * m.log(oL), 10);
         i += i % 2 ? 0 : 1;
         m.isPrime(i);
@@ -158,7 +157,7 @@ var http = {
             m.isPrime(i);
             l = primes.length;
         } while (l < oL);
-        return primes[1000];
+        return primes[oL - 1];
     },
     function Problem_8() {
         var n, i, max = 0, l, m = Math, c;
@@ -208,11 +207,12 @@ var http = {
         }
     },
     function Problem_10() {
-        var M = Math, primes = M.js.primes, p, l = 2000000, i = l, c;
+        var M = Math, primes = M.primes, p, l = 2000000, i = l, c, m;
         do {
             i = i * 2 + 1;
             M.isPrime(i);
-        } while (primes.last() < l);
+            m = primes.last();
+        } while (m < l);
         c = primes.lessThan(l);
         p = primes.slice(0, c + 1);
         return M.sum(p);
@@ -239,41 +239,46 @@ var http = {
             [20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16],
             [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],
             [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
-        ], j, i, m = 0;
+        ], j, i, m = 0, max = Math.max;
         for (i = 0; i < 20; i += 1) {
             for (j = 0; j < 20; j += 1) {
                 if (j < 17) {
-                    m = Math.max(m, a[i][j] * a[i][j + 1] * a[i][j + 2] * a[i][j + 3]);
+                    m = max(m, a[i][j] * a[i][j + 1] * a[i][j + 2] * a[i][j + 3]);
                 }
                 if (j < 17 && i >= 3) {
-                    m = Math.max(m, a[i][j] * a[i - 1][j + 1] * a[i - 2][j + 2] * a[i - 3][j + 3]);
+                    m = max(m, a[i][j] * a[i - 1][j + 1] * a[i - 2][j + 2] * a[i - 3][j + 3]);
                 }
                 if (i >= 3) {
-                    m = Math.max(m, a[i][j] * a[i - 1][j] * a[i - 2][j] * a[i - 3][j]);
+                    m = max(m, a[i][j] * a[i - 1][j] * a[i - 2][j] * a[i - 3][j]);
                 }
                 if (i >= 3 && j >= 3) {
-                    m = Math.max(m, a[i][j] * a[i - 1][j - 1] * a[i - 2][j - 2] * a[i - 3][j - 3]);
+                    m = max(m, a[i][j] * a[i - 1][j - 1] * a[i - 2][j - 2] * a[i - 3][j - 3]);
                 }
                 if (j >= 3) {
-                    m = Math.max(m, a[i][j] * a[i][j - 1] * a[i][j - 2] * a[i][j - 3]);
+                    m = max(m, a[i][j] * a[i][j - 1] * a[i][j - 2] * a[i][j - 3]);
                 }
                 if (j >= 3 && i < 17) {
-                    m = Math.max(m, a[i][j] * a[i + 1][j - 1] * a[i + 2][j - 2] * a[i + 3][j - 3]);
+                    m = max(m, a[i][j] * a[i + 1][j - 1] * a[i + 2][j - 2] * a[i + 3][j - 3]);
                 }
                 if (i < 17) {
-                    m = Math.max(m, a[i][j] * a[i + 1][j] * a[i + 2][j] * a[i + 3][j]);
+                    m = max(m, a[i][j] * a[i + 1][j] * a[i + 2][j] * a[i + 3][j]);
                 }
                 if (i < 17 && j < 17) {
-                    m = Math.max(m, a[i][j] * a[i + 1][j + 1] * a[i + 2][j + 2] * a[i + 3][j + 3]);
+                    m = max(m, a[i][j] * a[i + 1][j + 1] * a[i + 2][j + 2] * a[i + 3][j + 3]);
                 }
             }
         }
         return m;
     },
+    //76576500
     function Problem_12() {
-        for (var i = 2, t = 3; Math.divisors(t).length <= 500; i += 1) {
+        var i = 2, d, l, md = Math.divisors, t;
+        do {
             t = i * (i + 1) / 2;
-        }
+            d = md(t);
+            l = d.length;
+            i += 1;
+        } while (l < 500);
         return t;
     },
     function Problem_13() {
@@ -378,8 +383,8 @@ var http = {
             72107838435069186155435662884062257473692284509516,
             20849603980134001723930671666823555245252804609722,
             53503534226472524250874054075591789781264330331690
-        ], s = Math.sum(numbers), p = Math.ceil(Math.log(s) / Math.LN10);
-        return Math.floor(s / Math.pow(10, p - 10));
+        ], m = Math, s = m.sum(numbers), p = m.ceil(m.log(s) / m.LN10);
+        return m.floor(s / m.pow(10, p - 10));
     },
     function Problem_14() {
         function sequence(n) {
@@ -409,8 +414,8 @@ var http = {
         return maxn;
     },
     function Problem_15() {
-        var size = 20, limit;
-        limit = Math.factorial(2 * size) / Math.pow(Math.factorial(size), 2);
+        var size = 20, limit, m = Math;
+        limit = m.factorial(2 * size) / m.pow(m.factorial(size), 2);
         return limit;
     },
     function Problem_16() {
@@ -439,9 +444,9 @@ var http = {
         return Math.sum(n);
     },
     function Problem_17() {
-        var i, r = "";
+        var i, r = "", m = Math;
         for (i = 1; i <= 1000; i += 1) {
-            r += Math.toText(i).replace(/\W/g, "");
+            r += m.toText(i).replace(/\W/g, "");
         }
         return r.length;
     },
@@ -522,17 +527,16 @@ var http = {
         return c;
     },
     function Problem_20() {
-        var i, a = Math.bigInt.factorial(100).split("");
+        var i, m = Math, a = m.bigInt.factorial(100).split("");
         for (i = 0; i < a.length; i += 1) {
             a[i] = +a[i];
         }
-        return Math.sum(a);
+        return m.sum(a);
     },
     function Problem_21() {
         function d(n) {
-            var r = Math.divisors(n);
-            r.pop();
-            return Math.sum(r);
+            var m = Math;
+            return m.sum(m.divisors(n, true));
         }
         function amicable(a) {
             var b = d(a);
@@ -565,9 +569,9 @@ var http = {
         return score;
     },
     function Problem_23() {
-        var abundant = [], i, j, k, l, other = [];
+        var abundant = [], i, j, k, l, other = [], m = Math;
         for (i = 1; i <= 28123; i += 1) {
-            if (Math.sum(Math.divisors(i, true)) - i > 0) {
+            if (m.sum(m.divisors(i, true)) - i > 0) {
                 abundant.push(i);
             }
             other[i - 1] = i;
@@ -581,69 +585,70 @@ var http = {
                 }
             }
         }
-        return Math.sum(other);
+        return m.sum(other);
     },
     function Problem_24() {
-        return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].permutations()[999999].join("");
+        return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].permutations(999999).join("");
     },
     function Problem_25() {
-        var a = "1", b = "1", c = "2", i = 3;
+        var a = "1", b = "1", c = "2", i = 3, sum = Math.bigInt.sum;
         while (c.length < 1000) {
             a = b;
             b = c;
-            c = Math.bigInt.sum(a, b);
+            c = sum(a, b);
             i += 1;
         }
         return i;
     },
     function Problem_26() {
-        var d, r = "", rs = [], maxR = 1;
+        var d, r = "", rs = [], maxR = 1, dR = Math.decimalRepresentation;
         for (d = 1; d < 1000; d += 1) {
-            r = Math.decimalRepresentation(1, d);
+            r = dR(1, d);
             rs.push(r);
             maxR = r.length > rs[maxR - 1].length ? d : maxR;
         }
         return maxR;
     },
     function Problem_27() {
-        var n, a, b, l = 1000, p, pp, np = [], i, c, mc = 0, am = 0, bm = 0;
-        //populates list with enough prime numbers for the max value
-        Math.isPrime(l * l * 2 + l + 1);
-        p = Math.js.primes;
-        //gets the prime numbers below 1000;
-        pp = p.slice(0, p.closeTo(l));
-        for (i = 0; i < pp.length; i += 1) {
-            np[i] = -1 * p[i];
-        }
-        np.reverse();
-        //includes -1, 0 and 1
-        np = np.concat([-1, 0, 1], p);
-        for (a = 0; a < np.length; a += 1) {
-            for (b = 0; b < np.length; b += 1) {
-                c = 0;
+        var n, a, b, ai = 0, bi = 0, m = 0, am, bm, ca, bc, ac, M = Math, p = M.isPrime, is, lb, la, r;
+        p(1000001);
+        bc = M.primes.slice(0, M.primes.lessThan(1000) + 1).reverse();
+        ac = M.between(946, 960);
+        ac = ac.negative().concat(ac);
+        la = ac.length - 1;
+        lb = bc.length - 1;
+        do {
+            b = bc[bi];
+            ai = 0;
+            do {
                 n = 0;
-                while (p.indexOf(n * n + np[a] * n + np[b]) !== -1) {
-                    //this is the consecutive counter
-                    c += 1;
+                a = ac[ai];
+                do {
+                    ca = n * n + a * n + b;
                     n += 1;
+                    is = p(ca);
+                } while (is);
+                if (n > m) {
+                    m = n;
+                    am = a;
+                    bm = b;
+                    r = a * b;
                 }
-                am = c > mc ? np[a] : am;
-                bm = c > mc ? np[b] : bm;
-                mc = c > mc ? c : mc;
-            }
-        }
-        //the answer is the product of amax * bmax
-        return "" + am + " * " + bm + " = " + am * bm;
-    }, undefined, undefined, undefined, undefined,
+                ai += 1;
+            } while (ai < la);
+            bi += 1;
+        } while (bi < lb);
+        return "(" + m + ") " + am + " * " + bm + " = " + r;
+    },
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
-    undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined,
     function Problem_48() {
-        var r = 0, i;
-        for (i = 1; i <= 1; i += 1) {
-            r = Math.bigInt.sum(r, Math.bigInt.pow(i, i));
-        }
+        var r = 0, i = 1, m = Math.bigInt;
+        do {
+            r = m.sum(r, m.pow(i, i));
+        } while (i < 1000);
         return r.slice(r.length - 10);
     }, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -770,9 +775,8 @@ function solve(n) {
     answer = answers[n - 1];
     time = times[n - 1];
     //change the formating function into a string
-    format = time !== undefined ? f(time) : "might take a while. ";
-    format = "takes " + format.join(" ") + ", more or less, on a 1.5 GHz laptop using Google Chrome. ";
-    conf = time >= 4200 ? confirm("The algorithm " + format + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
+    format = time !== undefined ? "takes " + f(time).join(" ") + ", more or less, on a 1.5 GHz laptop using Google Chrome. " : "might take a while. ";
+    conf = time >= 4200 || time === undefined ? confirm("The algorithm " + format + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
     if (conf) {
         t0 = new Date();
         answer = problem();
@@ -803,7 +807,7 @@ function solve(n) {
 
 /** * Displays the chosen functions. */
 function display(n) {
-    var m = Math.js, Mf = m.functions, p, f, i, t, e, a, c, g;
+    var m = Math.js, Mf = m.functions, p, f, i, t, e, a, c, g, format;
     //get the formating and DOM manipulating functions, to save space
     e = m.element;
     a = m.append;
