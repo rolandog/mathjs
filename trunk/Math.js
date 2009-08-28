@@ -57,6 +57,22 @@ if (Array.count === undefined) {
     };
 }
 
+/**
+ * An extension to the Array object that returns its negative version.
+ * @param(Number) a What is to be counted.
+ * @return(Number) Counts how many 'a' there are in the Array.
+ */
+if (Array.negative === undefined) {
+    Array.prototype.negative = function Array_negative() {
+        var r = [], t = this, i = t.length;
+        do {
+            i -= 1;
+            r.push(-t[i]);
+        } while (i);
+        return r;
+    };
+}
+
 
 /** * Array Remove - By John Resig (MIT Licensed)
  * An extension to the Array that removes item(s). Destructive.
@@ -134,9 +150,9 @@ if (Array.swap === undefined) {
  * @return(Array) Returns the array.
  */
 if (Array.permutations === undefined) {
-    Array.prototype.permutations = function Array_permutations(isString) {
+    Array.prototype.permutations = function Array_permutations(n) {
         var m = Math, t = m.js.copy(this);
-        function permutations(a) {
+        function permutations(a, o) {
             if (a.length === 1) {
                 return [a];
             }
@@ -148,6 +164,9 @@ if (Array.permutations === undefined) {
                     ps[j] = p.concat(ps[j]);
                 }
                 r = r.concat(ps);
+                if (o !== undefined && r.length >= o) {
+                    return r[o - 1];
+                }
                 a = b.slice(0);
             }
             return r;
@@ -159,7 +178,7 @@ if (Array.permutations === undefined) {
             }
             return a.join();
         }
-        return isString ? clean(permutations(t)) : permutations(t);
+        return permutations(t, n);
     };
 }
 
@@ -251,8 +270,7 @@ Math.js = {
      */
     descending: function Math_js_descending(a, b) {
         return b - a;
-    },
-    primes: [2, 3]
+    }
 };
 
 /**
@@ -266,7 +284,7 @@ if (Array.lessThan === undefined) {
     Array.prototype.lessThan = function Array_lessThan(a) {
         var i = 0, t = this, l = t.length;
         do {
-            i++;
+            i += 1;
         } while (t[i] < a);
         return i - 1;
     };
@@ -298,8 +316,8 @@ if (Array.closeTo === undefined) {
  * @return(Number) Returns the sum of all numbers.
  */
 Math.sum = function Math_sum(a) {
-    var r = 0, m = Math;
-    a = a.length ? a:m.js.copy(arguments);
+    var r = 0, m = Math.js;
+    a = a.length ? a : m.copy(arguments);
     while (a.length) {
         r += a.shift();
     }
@@ -331,9 +349,9 @@ Math.product = function Math_product(a) {
  * @return(Number) Returns the quotient of all numbers.
  */
 Math.quotient = function Math_quotient(a) {
-    var m = Math;
+    var m = Math, r;
     a = m.js.copy(arguments);
-    var r = m.product(a.shift());
+    r = m.product(a.shift());
     while (a.length) {
         r /= m.product(a.shift());
     }
@@ -414,8 +432,8 @@ Math.factorial = function Math_factorial(a) {
  * @return(Number) Returns the Greatest Common Divisor.
  */
 Math.gcd = function Math_gcd(a) {
-    var m = Math;
-    a = a.length ? a:m.js.copy(arguments);
+    var m = Math, l;
+    a = a.length ? a : m.js.copy(arguments);
     l = a.length;
     if (l < 2) {
         throw "Error: Must have at least two integers.";
@@ -433,7 +451,7 @@ Math.gcd = function Math_gcd(a) {
  * @return(Number) Returns the Least Common Multiple.
  */
 Math.lcm = function Math_lcm(a) {
-    var m = Math;
+    var m = Math, l;
     a = a.length ? a:m.js.copy(arguments);
     l = a.length;
     while (l - 2) {
@@ -486,48 +504,70 @@ Math.even = function Math_even(a, b) {
 };
 
 /**
+ * Returns numbers.
+ * @param(Number) a An integer.
+ * @param(Number) b An integer.
+ * @return(Array) the even numbers between a and b.
+ */
+Math.between = function Math_between(a, b) {
+    var r = [];
+    if (b === undefined) {
+        b = a;
+        a = 0;
+    }
+    do {
+        r.push(a);
+        a += 1;
+    } while (a <= b);
+    return r;
+};
+
+Math.primes = [2, 3];
+
+/**
  * Determines if a number is prime.
  * @param(Number) a An integer.
  * @return(Boolean) true if a number is prime.
  */
 Math.isPrime = function Math_isPrime(n, p) {
-    var i, j, l, len, isPrime, m = Math, primes = m.js.primes;
+    var i, j, l, len, isPrime, m = Math, primes = m.primes, last, lim;
     p = p === undefined ? primes : p;
-    //if it's in the array, we don't need to do anything else
-    if (p.indexOf(n) !== -1) {
-        return true;
-    }
-    //if it's an even number that is not 2, it's not a prime
+    n = m.abs(n);
     if ((n % 2 === 0 && n !== 2) || n === 1) {
         return false;
     }
-    //a useful limit is the sqrt of n, so that we don't try to divide until 'n'
     l = m.ceil(m.sqrt(n));
-    //its best to round up, and make it an odd number
     l += l % 2 === 0 ? 1 : 0;
-    //if the biggest prime number in the array is less than the rounded sqrt,
-    //the list needs to be populated.
-    if (p.last() < l) {
-        //generates new primes for the array. If the last one is 3, start from 5
-        for (i = p.last() + 2; i <= l; i += 2) {
+    len = p.length;
+    last = p[len - 1];
+    if (last < l) {
+        i = last + 2;
+        do {
             isPrime = true;
-            len = p.length;
-            //if i is divisible by any of the primes, then it isn't a prime number
-            for (j = 1; j < len && isPrime; j += 1) {
-                isPrime = i % p[j] === 0 ? false : isPrime;
-            }
+            j = 1;
+            lim = len - 1;
+            do {
+                isPrime = i % p[j] ? isPrime : false;
+                j += 1;
+            } while (j < lim && isPrime);
             if (isPrime) {
-                p.push(i);
+                len = p.push(i);
             }
+            i += 2;
+        } while (i <= l);
+    } else if (n < last) {
+        if (p.indexOf(n) !== -1) {
+            return true;
         }
     }
-    //now that the list is populated, we're gonna check if it is a prime
-    l = p.closeTo(l);
-    for (i = 0; i < l; i += 1) {
+    l = p.lessThan(l);
+    i = 0;
+    do {
         if (n % p[i] === 0) {
             return false;
         }
-    }
+        i += 1;
+    } while (i < l);
     return true;
 };
 
@@ -650,8 +690,8 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         }
         return C;
     }
-    var b, m = Math;
-    a = a.length && typeof(a) !== "string" ? a:js.copy(arguments);
+    var b, m = Math, js = m.js;
+    a = a.length && typeof(a) !== "string" ? a : js.copy(arguments);
     b = a.shift();
     b = flip(b);
     while (a.length) {
@@ -695,7 +735,7 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
         return r;
     }
     function product(f, g) {
-        var i, j, r = [], t, u, z;
+        var i, j, r = [], t, u, z, m = Math;
         for (j = g.length - 1; j >= 0; j -= 1) {
             t = [];
             //multiplies everything
@@ -713,8 +753,8 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
         }
         return toInt(m.bigInt.sum(r).split(""));
     }
-    a = a.length && typeof(a) !== "string" ? a:js.copy(arguments);
-    var b = a.shift(), c;
+    var b = a.shift(), c, m = Math.js;
+    a = a.length && typeof(a) !== "string" ? a : m.copy(arguments);
     b = toInt(("" + b).split(""));
     while (a.length) {
         c = toInt(("" + a.shift()).split(""));
