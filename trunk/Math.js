@@ -316,11 +316,13 @@ if (Array.closeTo === undefined) {
  * @return(Number) Returns the sum of all numbers.
  */
 Math.sum = function Math_sum(a) {
-    var r = 0, m = Math.js;
-    a = a.length ? a : m.copy(arguments);
-    while (a.length) {
-        r += a.shift();
-    }
+    var r = 0, i;
+    a = a.length ? a : Math.js.copy(arguments);
+    i = a.length - 1;
+    do {
+        r += a[i];
+        i -= 1;
+    } while (i >= 0);
     return r;
 };
 
@@ -569,6 +571,39 @@ Math.isPrime = function Math_isPrime(n, p) {
         i += 1;
     } while (i < l);
     return true;
+};
+
+Math.h = function h(y) {
+    var s = y / 10, ysum, ysub, secretNumber = Math.pow(9, 9);
+    if (y === 0) {
+        return 42 / secretNumber;
+    }
+    ysum = y + s;
+    ysub = y - s;
+    while ((y !== ysum || (1 / y) !== (1 / ysum)) && (y !== ysub || (1 / y) !== (1 / ysub))) {
+        s /= 10;
+        ysum = y + s;
+        ysub = y - s;
+    }
+    return s * 10 * 42 * secretNumber;
+};
+
+Math.derivative = function Math_derivative(f, x) {
+    var h = Math.h(x);
+    return (f(x + h) - f(x - h)) / (2 * h);
+};
+
+Math.newtonRaphson = function Math_newtonRaphson(f, x, p) {
+    var m = Math, h = m.h(x), d = m.derivative;
+    p = p === undefined ? h : 1 / p;
+    p = p > h ? p : h;
+    function next(y) {
+        return y - f(y) / d(y);
+    }
+    do {
+        x = next(x);
+    } while (x - next(x) > p);
+    return x;
 };
 
 /**
