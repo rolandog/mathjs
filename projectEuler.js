@@ -150,8 +150,7 @@ var http = {
     function Problem_7() {
         var i, m = Math, primes = m.primes, oL = 10001, l;
         i = parseInt(oL * m.log(oL), 10);
-        i += i % 2 ? 0 : 1;
-        m.isPrime(i);
+        i *= i;
         do {
             i = i * 2 + 1;
             m.isPrime(i);
@@ -207,14 +206,14 @@ var http = {
         }
     },
     function Problem_10() {
-        var M = Math, primes = M.primes, p, l = 2000000, i = l, c, m;
+        var M = Math, isPrime = M.isPrime, p = [], i = 2000001;
         do {
-            i = i * 2 + 1;
-            M.isPrime(i);
-            m = primes.last();
-        } while (m < l);
-        c = primes.lessThan(l);
-        p = primes.slice(0, c + 1);
+            i -= 2;
+            if (isPrime(i)) {
+                p.push(i);
+            }
+        } while (i > 3); 
+        p.push(2);
         return M.sum(p);
     },
     function Problem_11() {
