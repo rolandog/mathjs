@@ -557,12 +557,11 @@ Math.isPrime = function Math_isPrime(n, p) {
             }
             i += 2;
         } while (i <= l);
-    } else if (n < last) {
-        if (p.indexOf(n) !== -1) {
-            return true;
-        }
     }
-    l = p.lessThan(l);
+    if (n <= last) {
+        return p.indexOf(n) !== -1 ? true : false;
+    }
+    l = p.lessThan(l) + 1;
     i = 0;
     do {
         if (n % p[i] === 0) {
