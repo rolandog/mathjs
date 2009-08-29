@@ -206,13 +206,14 @@ var http = {
         }
     },
     function Problem_10() {
-        var M = Math, isPrime = M.isPrime, p = [], i = 2000001;
+        var M = Math, isPrime = M.isPrime, p = [], i = 2000001, j = 0;
         do {
             i -= 2;
             if (isPrime(i)) {
-                p.push(i);
+                p[j] = i;
+                j += 1;
             }
-        } while (i > 3); 
+        } while (i >= 3); 
         p.push(2);
         return M.sum(p);
     },
