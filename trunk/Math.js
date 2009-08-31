@@ -526,21 +526,22 @@ Math.between = function Math_between(a, b) {
 
 Math.primes = [2, 3];
 
+Math.howManyPrimes = 2;
+
 /**
  * Determines if a number is prime.
  * @param(Number) a An integer.
  * @return(Boolean) true if a number is prime.
  */
 Math.isPrime = function Math_isPrime(n, p) {
-    var i, j, l, len, isPrime, m = Math, primes = m.primes, last, lim;
+    var i, j, l, isPrime, m = Math, primes = m.primes, len = m.howManyPrimes, last, lim;
     p = p === undefined ? primes : p;
     n = m.abs(n);
     if ((n % 2 === 0 && n !== 2) || n === 1) {
         return false;
     }
-    l = m.ceil(m.sqrt(n));
-    l += l % 2 === 0 ? 1 : 0;
-    len = p.length;
+    l = m.sqrt(n);
+    l = m.ceil(l);
     last = p[len - 1];
     if (last < l) {
         i = last + 2;
@@ -549,11 +550,12 @@ Math.isPrime = function Math_isPrime(n, p) {
             j = 1;
             lim = len - 1;
             do {
-                isPrime = i % p[j] ? isPrime : false;
+                isPrime = i % p[j];
                 j += 1;
             } while (j < lim && isPrime);
             if (isPrime) {
                 len = p.push(i);
+                m.howManyPrimes = len;
             }
             i += 2;
         } while (i <= l);
@@ -561,14 +563,14 @@ Math.isPrime = function Math_isPrime(n, p) {
     if (n <= last) {
         return p.indexOf(n) !== -1 ? true : false;
     }
-    l = p.lessThan(l) + 1;
-    i = 0;
+    i = 1;
     do {
-        if (n % p[i] === 0) {
+        j = p[i];
+        if (n % j === 0) {
             return false;
         }
         i += 1;
-    } while (i < l);
+    } while (j <= l);
     return true;
 };
 

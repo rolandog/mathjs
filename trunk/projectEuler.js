@@ -148,13 +148,13 @@ var http = {
         return m.pow(m.sum(ns), 2) - m.sum(sqs);
     },
     function Problem_7() {
-        var i, m = Math, primes = m.primes, oL = 10001, l;
+        var i, m = Math, primes = m.primes, oL = 10001, l, isPrime = m.isPrime;
         i = parseInt(oL * m.log(oL), 10);
         i *= i;
         do {
             i = i * 2 + 1;
-            m.isPrime(i);
-            l = primes.length;
+            isPrime(i);
+            l = m.howManyPrimes;
         } while (l < oL);
         return primes[oL - 1];
     },
@@ -206,10 +206,15 @@ var http = {
         }
     },
     function Problem_10() {
-        var M = Math, isPrime = M.isPrime, p = [], i = 2000001, j = 0;
+        var M = Math, isPrime = M.isPrime, p = [], i = 2000001, j = 0, itIs;
+        if (M.howManyPrimes > 1234) {
+            M.primes = [2, 3];
+            M.howManyPrimes = 2;
+        }
         do {
             i -= 2;
-            if (isPrime(i)) {
+            itIs = isPrime(i);
+            if (itIs) {
                 p[j] = i;
                 j += 1;
             }
