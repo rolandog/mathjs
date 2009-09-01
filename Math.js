@@ -74,16 +74,34 @@ if (Array.negative === undefined) {
 }
 
 
-/** * Array Remove - By John Resig (MIT Licensed)
- * An extension to the Array that removes item(s). Destructive.
- * @param(Array) a Array to which it will be compared.
- * @return(Boolean) Returns true if identical.
+/** * An extension to the Array that removes item(s). Destructive.
+ * @param(Number) from From where items will be removed.
+ * @param(Number) to The final 
+ * @return(Number) Returns the removed item.
  */
-Array.remove = function Array_remove(array, from, to) {
-    var rest = array.slice((to || from) + 1 || array.length);
-    array.length = from < 0 ? array.length + from : from;
-    return array.push.apply(array, rest);
-};
+if (Array.remove === undefined) {
+    Array.prototype.remove = function Array_remove(from, to) {
+        var t = this, l = t.length, array = [], r = [], i = 0, j = 0;
+        from = from < 0 ? l + from : from;
+        to = to < 0 ? l + to : to;
+        do {
+            if (i >= from && i <= (to || from)) {
+                r.push(t.shift());
+                j += 1;
+            } else {
+                array.push(t.shift());
+            }
+            i += 1;
+        } while (i < l);
+        i = 0;
+        l -= j;
+        do {
+            t.push(array[i]);
+            i += 1;
+        } while (i < l);
+        return r;
+    };
+}
 
 /**
  * An extension to the Array comparing two different arrays.
@@ -156,15 +174,17 @@ if (Array.permutations === undefined) {
             if (a.length === 1) {
                 return [a];
             }
-            var ps = [], p, i, j, b = a.slice(0), r = [];
-            for (i = 0;  i < a.length; i += 1) {
+            var ps = [], p, i, j, b = a.slice(0), r = [], la = a.length, lps, lr;
+            for (i = 0;  i < la; i += 1) {
                 p = a.splice(i, 1);
                 ps = permutations(a);
-                for (j = 0; j < ps.length; j += 1) {
+                lps = ps.length;
+                for (j = 0; j < lps; j += 1) {
                     ps[j] = p.concat(ps[j]);
                 }
                 r = r.concat(ps);
-                if (o !== undefined && r.length >= o) {
+                lr = r.length;
+                if (o !== undefined && lr >= o) {
                     return r[o - 1];
                 }
                 a = b.slice(0);
@@ -172,8 +192,8 @@ if (Array.permutations === undefined) {
             return r;
         }
         function clean(a) {
-            var i;
-            for (i = 0; i < a.length; i += 1) {
+            var i, l = a.length;
+            for (i = 0; i < l; i += 1) {
                 a[i] = a[i].join("");
             }
             return a.join();
@@ -636,7 +656,8 @@ Math.factors = function Math_factors(a) {
  * @return(Array) Returns the divisors of 'a' in an array.
  */
 Math.divisors = function Math_divisors(a, b) {
-    var m = Math, n = m.abs(a), r = m.sqrt(n), i = 1, d = [];
+    var m = Math, n = m.abs(a), r = m.sqrt(n), i = 1, d = [], ascending;
+    ascending = m.js.ascending;
     while (i <= r) {
         if (a % i === 0) {
             d.push(i);
@@ -646,7 +667,7 @@ Math.divisors = function Math_divisors(a, b) {
         }
         i += 1;
     }
-    d = d.sort(m.js.ascending);
+    d = d.sort(ascending);
     if (b) {
         d.pop();
     }
@@ -663,9 +684,10 @@ Math.divisors = function Math_divisors(a, b) {
 Math.fibonacci = function Math_fibonacci(l, a, b) {
     a = a === undefined ? 1:a;
     b = b === undefined ? 2:b;
-    var r = [a, b];
-    while (r.last() < l) {
-        r.push(r[r.length - 1] + r[r.length - 2]);
+    var r = [a, b], len = 2, last = b;
+    while (last < l) {
+        last = r[len - 1] + r[len - 2];
+        len = r.push(last);
     }
     return r;
 };
