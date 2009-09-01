@@ -9,6 +9,7 @@
  * @author               Rolando Garza rolandog@gmail.com
  */
 
+/*global ActiveXObject: true, window: true, XMLHttpRequest: true */
 "use strict";
 
 /**
@@ -99,8 +100,8 @@ var http = {
         return Math.sum(multiples);
     },
     function Problem_2() {
-        var fib = Math.fibonacci(4000000), s = 0, i;
-        for (i = 0; i < fib.length; i += 1) {
+        var fib = Math.fibonacci(4000000), s = 0, i, l = fib.length;
+        for (i = 0; i < l; i += 1) {
             if (fib[i] % 2 === 0) {
                 s += fib[i];
             }
@@ -112,25 +113,30 @@ var http = {
         return r.pop();
     },
     function Problem_4() {
-        var i, j, palindromes = [], m = Math;
+        var i = 101, j, palindromes = [], m = Math, ascending = m.js.ascending, ij;
         function isPalindrome(a) {
-            a = a.toString();
-            var l = a.length, i, lim = m.floor(l / 2);
-            for (i = 0; i < lim; i += 1) {
-                if (a.charAt(i) !== a.charAt(l - 1 - i)) {
+            a = "" + a;
+            var l = a.length, k = 0, fl = m.floor, lim = fl(l / 2);
+            do {
+                if (a.charAt(k) !== a.charAt(l - 1 - k)) {
                     return false;
                 }
-            }
+                k += 1;
+            } while (k < lim);
             return true;
         }
-        for (i = 101; i <= 999; i += 1) {
-            for (j = 101; j <= 999; j += 1) {
-                if (isPalindrome(i * j)) {
-                    palindromes.push(i * j);
+        do {
+            j = 101;
+            do {
+                ij = i * j;
+                if (isPalindrome(ij)) {
+                    palindromes.push(ij);
                 }
-            }
-        }
-        return palindromes.sort(m.js.ascending).pop();
+                j += 1;
+            } while (j <= 999);
+            i += 1;
+        } while (i <= 999);
+        return palindromes.sort(ascending).pop();
     },
     function Problem_5() {
         var i, n = [];
@@ -140,26 +146,26 @@ var http = {
         return Math.lcm(n);
     },
     function Problem_6() {
-        var i, ns = [], sqs = [], m = Math;
-        for (i = 1; i <= 100; i += 1) {
-            ns.push(i);
-            sqs.push(m.pow(i, 2));
-        }
-        return m.pow(m.sum(ns), 2) - m.sum(sqs);
+        var i = 1, ns = 0, sqs = 0;
+        do {
+            ns += i;
+            sqs += i * i;
+            i += 1;
+        } while (i <= 100);
+        return ns * ns - sqs;
     },
     function Problem_7() {
-        var i, m = Math, primes = m.primes, oL = 10001, l, isPrime = m.isPrime;
-        i = parseInt(oL * m.log(oL), 10);
-        i *= i;
+        var primes = [2], i = 3, l = 1, isPrime = Math.isPrime;
         do {
-            i = i * 2 + 1;
-            isPrime(i);
-            l = m.howManyPrimes;
-        } while (l < oL);
-        return primes[oL - 1];
+            if (isPrime(i)) {
+                l = primes.push(i);
+            }
+            i += 2;
+        } while (l < 10001);
+        return primes[10000];
     },
     function Problem_8() {
-        var n, i, max = 0, l, m = Math, c;
+        var n, i = 0, max = 0, l, c;
         n = "73167176531330624919225119674426574742355349194934";
         n += "96983520312774506326239578318016984801869478851843";
         n += "85861560789112949495459501737958331952853208805511";
@@ -182,28 +188,34 @@ var http = {
         n += "71636269561882670428252483600823257530420752963450";
         n = n.split("");
         l = n.length;
-        for (i = 0; i < l; i += 1) {
+        do {
             n[i] = +n[i];
-        }
-        for (i = 0; i < l - 4; i += 1) {
+            i += 1;
+        } while (i < l);
+        i = 0;
+        do {
             c = n[i] * n[i + 1] * n[i + 2] * n[i + 3] * n[i + 4];
-            max = m.max(max, c);
-        }
+            max = max < c ? c : max;
+            i += 1;
+        } while (i < l - 4);
         return max;
     },
     function Problem_9() {
-        var a, b, c;
-        for (c = 400; c < 500; c += 1) {
-            for (b = 300; b < c; b += 1) {
-                for (a = 100; a < b; a += 1) {
-                    if (Math.pow(a, 2) + Math.pow(b, 2) === Math.pow(c, 2)) {
-                        if (a + b + c === 1000) {
-                            return a * b * c;
-                        }
+        var a, b, c = 400;
+        do {
+            b = 300;
+            do {
+                a = 100;
+                do {
+                    if (a * a + b * b === c * c && a + b + c === 1000) {
+                        return a * b * c;
                     }
-                }
-            }
-        }
+                    a += 1;
+                } while (a < b);
+                b += 1;
+            } while (b < c);
+            c += 1;
+        } while (c < 500);
     },
     function Problem_10() {
         var M = Math, isPrime = M.isPrime, p = [], i = 2000001, j = 0, itIs;
@@ -244,38 +256,48 @@ var http = {
             [20, 69, 36, 41, 72, 30, 23, 88, 34, 62, 99, 69, 82, 67, 59, 85, 74, 4, 36, 16],
             [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],
             [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
-        ], j, i, m = 0, max = Math.max;
-        for (i = 0; i < 20; i += 1) {
-            for (j = 0; j < 20; j += 1) {
+        ], j, i = 0, m = 0, c;
+        do {
+            j = 0;
+            do {
                 if (j < 17) {
-                    m = max(m, a[i][j] * a[i][j + 1] * a[i][j + 2] * a[i][j + 3]);
+                    c = a[i][j] * a[i][j + 1] * a[i][j + 2] * a[i][j + 3];
+                    m = m < c ? c : m;
                 }
                 if (j < 17 && i >= 3) {
-                    m = max(m, a[i][j] * a[i - 1][j + 1] * a[i - 2][j + 2] * a[i - 3][j + 3]);
+                    c = a[i][j] * a[i - 1][j + 1] * a[i - 2][j + 2] * a[i - 3][j + 3];
+                    m = m < c ? c : m;
                 }
                 if (i >= 3) {
-                    m = max(m, a[i][j] * a[i - 1][j] * a[i - 2][j] * a[i - 3][j]);
+                    c = a[i][j] * a[i - 1][j] * a[i - 2][j] * a[i - 3][j];
+                    m = m < c ? c : m;
                 }
                 if (i >= 3 && j >= 3) {
-                    m = max(m, a[i][j] * a[i - 1][j - 1] * a[i - 2][j - 2] * a[i - 3][j - 3]);
+                    c = a[i][j] * a[i - 1][j - 1] * a[i - 2][j - 2] * a[i - 3][j - 3];
+                    m = m < c ? c : m;
                 }
                 if (j >= 3) {
-                    m = max(m, a[i][j] * a[i][j - 1] * a[i][j - 2] * a[i][j - 3]);
+                    c = a[i][j] * a[i][j - 1] * a[i][j - 2] * a[i][j - 3];
+                    m = m < c ? c : m;
                 }
                 if (j >= 3 && i < 17) {
-                    m = max(m, a[i][j] * a[i + 1][j - 1] * a[i + 2][j - 2] * a[i + 3][j - 3]);
+                    c = a[i][j] * a[i + 1][j - 1] * a[i + 2][j - 2] * a[i + 3][j - 3];
+                    m = m < c ? c : m;
                 }
                 if (i < 17) {
-                    m = max(m, a[i][j] * a[i + 1][j] * a[i + 2][j] * a[i + 3][j]);
+                    c =  a[i][j] * a[i + 1][j] * a[i + 2][j] * a[i + 3][j];
+                    m = m < c ? c : m;
                 }
                 if (i < 17 && j < 17) {
-                    m = max(m, a[i][j] * a[i + 1][j + 1] * a[i + 2][j + 2] * a[i + 3][j + 3]);
+                    c = a[i][j] * a[i + 1][j + 1] * a[i + 2][j + 2] * a[i + 3][j + 3];
+                    m = m < c ? c : m;
                 }
-            }
-        }
+                j += 1;
+            } while (j < 20);
+            i += 1;
+        } while (i < 20);
         return m;
     },
-    //76576500
     function Problem_12() {
         var i = 2, d, l, md = Math.divisors, t;
         do {
@@ -393,20 +415,20 @@ var http = {
     },
     function Problem_14() {
         function sequence(n) {
-            var r = [n];
+            var l = 1;
             while (n !== 1) {
                 switch (n % 2) {
                 case 0:
                     n /= 2;
-                    r.push(n);
+                    l += 1;
                     break;
                 case 1:
                     n = 3 * n + 1;
-                    r.push(n);
+                    l += 1;
                     break;
                 }
             }
-            return r.length;
+            return l;
         }
         var i, maxl = 0, a, maxn = 0;
         for (i = 13; i < 1000000; i += 1) {
@@ -574,15 +596,15 @@ var http = {
         return score;
     },
     function Problem_23() {
-        var abundant = [], i, j, k, l, other = [], m = Math;
+        var abundant = [], i, j, k, l, other = [], m = Math, len, sum = m.sum, d = m.divisors;
         for (i = 1; i <= 28123; i += 1) {
-            if (m.sum(m.divisors(i, true)) - i > 0) {
-                abundant.push(i);
+            if (sum(d(i, true)) - i > 0) {
+                len = abundant.push(i);
             }
             other[i - 1] = i;
         }
-        for (i = 0; i < abundant.length; i += 1) {
-            for (j = i; j < abundant.length; j += 1) {
+        for (i = 0; i < len; i += 1) {
+            for (j = i; j < len; j += 1) {
                 k = abundant[i] + abundant[j];
                 l = other.indexOf(k);
                 if (l > -1) {
@@ -590,7 +612,7 @@ var http = {
                 }
             }
         }
-        return m.sum(other);
+        return sum(other);
     },
     function Problem_24() {
         return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].permutations(999999).join("");
@@ -615,10 +637,10 @@ var http = {
         return maxR;
     },
     function Problem_27() {
-        var n, a, b, ai = 0, bi = 0, m = 0, am, bm, ca, bc, ac, M = Math, p = M.isPrime, is, lb, la, r;
+        var n, a, b, ai = 0, bi = 0, m = 0, am, bm, ca, bc, ac, M = Math, p = M.isPrime, is, lb, la, r, c;
         p(1000001);
         bc = M.primes.slice(0, M.primes.lessThan(1000) + 1).reverse();
-        ac = M.between(946, 960);
+        ac = M.between(1, 1000);
         ac = ac.negative().concat(ac);
         la = ac.length - 1;
         lb = bc.length - 1;
@@ -627,14 +649,16 @@ var http = {
             ai = 0;
             do {
                 n = 0;
+                c = 0;
                 a = ac[ai];
                 do {
                     ca = n * n + a * n + b;
                     n += 1;
+                    c += 1;
                     is = p(ca);
                 } while (is);
-                if (n > m) {
-                    m = n;
+                if (c > m) {
+                    m = c;
                     am = a;
                     bm = b;
                     r = a * b;
@@ -687,14 +711,14 @@ var http = {
 ], answers, times;
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
     70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
-    31626, 871198282, 4179871, 2783915460, 4782, 983, undefined, undefined, undefined, undefined,
+    31626, 871198282, 4179871, 2783915460, 4782, 983, -59231, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
-times = [11, 0, 1, 514, 1, 1, 58, 2, 549, 1322147,
-    1, 1844, 2, 13082, 0, 272, 67, 3, 104, 69,
-    593, 259, 1034792, 180000, 7830, 1000, undefined, undefined, undefined, undefined,
+times = [1, 1, 1, 514, 1, 1, 58, 2, 549, 1423,
+    1, 1844, 2, 4410, 0, 272, 67, 3, 104, 69,
+    593, 259, 1034792, 180000, 7830, 1000, 1974, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
