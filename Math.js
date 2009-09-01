@@ -657,7 +657,6 @@ Math.factors = function Math_factors(a) {
  */
 Math.divisors = function Math_divisors(a, b) {
     var m = Math, n = m.abs(a), r = m.sqrt(n), i = 1, d = [], ascending;
-    ascending = m.js.ascending;
     while (i <= r) {
         if (a % i === 0) {
             d.push(i);
@@ -667,8 +666,9 @@ Math.divisors = function Math_divisors(a, b) {
         }
         i += 1;
     }
-    d = d.sort(ascending);
     if (b) {
+        ascending = m.js.ascending;
+        d = d.sort(ascending);
         d.pop();
     }
     return d;
@@ -732,20 +732,23 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
     function flip(z) {
         z = typeof(z) === "string" ? z : "" + z;
         z = z.split("").reverse();
-        for (var i = 0; i < z.length; i += 1) {
+        var i = 0, zl = z.length;
+        do {
             z[i] = +z[i];
-        }
+            i += 1;
+        } while (i < zl);
         return z;
     }
     function sum(A, B) {
-        var m = Math, js = m.js, C = [], i, l = m.max(A.length, B.length);
-        for (i = 0; i < l; i += 1) {
-            C[i] = (A[i] ? A[i] :0) + (B[i] ? B[i]: 0) + (C[i] ? C[i]: 0);
+        var C = [], i = 0, al = A.length, bl = B.length, l = al > bl ? al : bl;
+        do {
+            C[i] = (A[i] ? A[i] : 0) + (B[i] ? B[i] : 0) + (C[i] ? C[i] : 0);
             if (C[i] >= 10) {
                 C[i] -= 10;
                 C[i + 1] = C[i + 1] ? C[i + 1] + 1 : 1;
             }
-        }
+            i += 1;
+        } while (i < l);
         return C;
     }
     var b, m = Math, js = m.js;
@@ -764,20 +767,23 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
  */
 Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     function toInt(z) {
-        for (var i = 0; i < z.length; i += 1) {
+        var i = 0, l = z.length;
+        do {
             z[i] = +z[i];
-        }
+            i += 1;
+        } while (i < l);
         return z;
     }
     function check(x) {
-        var m = Math, js = m.js, i, t, z = js.copy(x).reverse();
-        for (i = 0; i < z.length; i += 1) {
+        var m = Math, js = m.js, i = 0, t, z = js.copy(x).reverse(), zl = z.length;
+        do {
             if (z[i] >= 10) {
                 t = m.floor(z[i] / 10);
                 z[i] = z[i] % 10;
                 z[i + 1] = z[i + 1] !== undefined ? z[i + 1] + t : t;
-            }
-        }
+            }            
+            i += 1;
+        } while (i < zl);
         z.reverse();
         while (z[0] === 0) {
             z.shift();
@@ -793,22 +799,22 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
         return r;
     }
     function product(f, g) {
-        var i, j, r = [], t, u, z, m = Math;
-        for (j = g.length - 1; j >= 0; j -= 1) {
+        var i, j = g.length - 1, r = [], t, u, z, m = Math;
+        //multiplies everything in the inner loop
+        do {
             t = [];
-            //multiplies everything
-            for (i = f.length - 1; i >= 0; i -= 1) {
+            i = f.length - 1;
+            do {
                 t[i] = f[i] * g[j];
-            }
-            //fills an array with zeros, according to the magnitude order of the number
+                i -= 1;
+            } while (i >= 0);
             z = fillz(g.length - j - 1);
-            //checks that every number in the array is below 10.
             u = check(t);
-            //joins the number array and the zeros, and converts to string.
             t = u.concat(z);
             t = t.join("");
             r.unshift(t);
-        }
+            j -= 1;
+        } while (j >= 0);
         return toInt(m.bigInt.sum(r).split(""));
     }
     var b = a.shift(), c, m = Math.js;
@@ -826,11 +832,11 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
  * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
  */
 Math.bigInt.pow = function Math_bigInt_pow(n, p) {
-    var r = [], i, m = Math;
-    for (i = 0; i < p; i += 1) {
-        r[i] = n;
-    }
-    return p === 0 ? 1 : m.bigInt.multiply(r);
+    var r = [], i, multiply = Math.bigInt.multiply;
+    do {
+        i = r.push(n);
+    } while (i < p);
+    return p === 0 ? 1 : multiply(r);
 };
 
 /**
