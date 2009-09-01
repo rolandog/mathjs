@@ -416,7 +416,10 @@ var http = {
     function Problem_14() {
         function sequence(n) {
             var l = 1;
-            while (n !== 1) {
+            if (n === 1) {
+                return l;
+            }
+            do {
                 switch (n % 2) {
                 case 0:
                     n /= 2;
@@ -427,48 +430,28 @@ var http = {
                     l += 1;
                     break;
                 }
-            }
+            } while (n !== 1);
             return l;
         }
-        var i, maxl = 0, a, maxn = 0;
-        for (i = 13; i < 1000000; i += 1) {
+        var i = 13, maxl = 0, a, maxn = 0;
+        do {
             a = sequence(i);
             if (a > maxl) {
                 maxl = a;
                 maxn = i;
-            }
-        }
+            }            
+            i += 1;
+        } while (i < 1000000);
         return maxn;
     },
     function Problem_15() {
-        var size = 20, limit, m = Math;
-        limit = m.factorial(2 * size) / m.pow(m.factorial(size), 2);
+        var size = 20, limit, m = Math, factorial = m.factorial, pow = m.pow;
+        limit = factorial(2 * size) / pow(factorial(size), 2);
         return limit;
     },
     function Problem_16() {
-        var n = "2", i;
-        function twice(a) {
-            a = a.split("").reverse();
-            var l = a.length, i;
-            for (i = 0; i < l; i += 1) {
-                a[i] = 2 * a[i];
-            }
-            for (i = 0; i < l; i += 1) {
-                if (a[i] > 9) {
-                    a[i + 1] = a[i + 1] ? a[i + 1] + 1 : 1;
-                    a[i] -= 10;
-                }
-            }
-            return a.reverse().join("");
-        }
-        for (i = 1; i < 1000; i += 1) {
-            n = twice(n);
-        }
-        n = n.split("");
-        for (i = 0; i < n.length; i += 1) {
-            n[i] = +n[i];
-        }
-        return Math.sum(n);
+        var m = Math, sum = m.bigInt.sum, pow = m.bigInt.pow;
+        return sum(pow(2, 1000).split(""));
     },
     function Problem_17() {
         var i, r = "", m = Math;
@@ -596,22 +579,27 @@ var http = {
         return score;
     },
     function Problem_23() {
-        var abundant = [], i, j, k, l, other = [], m = Math, len, sum = m.sum, d = m.divisors;
-        for (i = 1; i <= 28123; i += 1) {
+        var abundant = [], i = 1, j, k, l, other = [], m = Math, len, sum = m.sum, d = m.divisors;
+        do {
             if (sum(d(i, true)) - i > 0) {
                 len = abundant.push(i);
             }
             other[i - 1] = i;
-        }
-        for (i = 0; i < len; i += 1) {
-            for (j = i; j < len; j += 1) {
+            i += 1;
+        } while (i <= 28123);
+        i = 0;
+        do {
+            j = i;
+            do {
                 k = abundant[i] + abundant[j];
                 l = other.indexOf(k);
                 if (l > -1) {
                     other.splice(l, 1);
                 }
-            }
-        }
+                j += 1;
+            } while (j < len);
+            i += 1;
+        } while (i < len);
         return sum(other);
     },
     function Problem_24() {
