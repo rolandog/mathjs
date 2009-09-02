@@ -606,11 +606,12 @@ var http = {
         return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].permutations(999999).join("");
     },
     function Problem_25() {
-        var a = "1", b = "1", c = "2", i = 3, sum = Math.bigInt.sum;
-        while (c.length < 1000) {
+        var a = "1", b = "1", c = "2", i = 3, sum = Math.bigInt.sum, l = "1";
+        while (l < 1000) {
             a = b;
             b = c;
             c = sum(a, b);
+            l = c.length;
             i += 1;
         }
         return i;
