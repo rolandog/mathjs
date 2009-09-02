@@ -740,12 +740,17 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
         return z;
     }
     function sum(A, B) {
-        var C = [], i = 0, al = A.length, bl = B.length, l = al > bl ? al : bl;
+        var C = [], i = 0, al = A.length, bl = B.length, a, b, c, c1, l;
+        l = al > bl ? al : bl;
         do {
-            C[i] = (A[i] ? A[i] : 0) + (B[i] ? B[i] : 0) + (C[i] ? C[i] : 0);
-            if (C[i] >= 10) {
-                C[i] -= 10;
-                C[i + 1] = C[i + 1] ? C[i + 1] + 1 : 1;
+            a = A[i];
+            b = B[i];
+            c = C[i];
+            c = (C[i] = (a ? a : 0) + (b ? b : 0) + (c ? c : 0));
+            if (c >= 10) {
+                c = (C[i] -= 10);
+                c1 = C[i + 1];
+                C[i + 1] = c1 ? c1 + 1 : 1;
             }
             i += 1;
         } while (i < l);
@@ -760,7 +765,6 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
     }
     return b.reverse().join("");
 };
-
 /**
  * Returns the product of big integers
  * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
