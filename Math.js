@@ -444,8 +444,7 @@ Math.decimalRepresentation = function Math_decimalRepresentation(numerator, deno
  * @return(Number) Returns the product of all numbers.
  */
 Math.factorial = function Math_factorial(a) {
-    var m = Math;
-    return (a <= 1) ? 1 : a * m.factorial(a - 1);
+    return a ? a * Math_factorial(a - 1) : 1;
 };
 
 /**
@@ -464,7 +463,7 @@ Math.gcd = function Math_gcd(a) {
         a.push(m.gcd(a.shift(), a.shift()));
         l = a.length;
     }
-    return a[1] === 0 ? a[0] : m.gcd(a[1], a[0] % a[1]);
+    return a[1] === 0 ? a[0] : Math_gcd(a[1], a[0] % a[1]);
 };
 
 /**
@@ -523,6 +522,25 @@ Math.even = function Math_even(a, b) {
         a += 2;
     } while (a <= b);
     return r;
+};
+
+/**
+ * Returns random numbers.
+ * @param(Number) a An integer.
+ * @param(Number) b An integer.
+ * @return(Array) the even numbers between a and b.
+ */
+Math.Random = function Math_Random(a, b) {
+    var m = Math;
+    if (a === undefined) {
+        a = 0;
+        b = 9007199254740991;
+        return m.floor(m.random() * (b - a + 1) + a) / b;
+    } else if (b === undefined) {
+        b = a;
+        a = 0;
+    }
+    return m.floor(m.random() * (b - a + 1) + a)
 };
 
 /**
@@ -702,24 +720,33 @@ Math.bigInt = {};
  * @param(Number) a An Integer. * @return(String) Returns the evaluated factorial number.
  */
 Math.bigInt.factorial = function Math_bigInt_factorial(a) {
-    var b = a.toString(), i, j, k, l, o, t, c;
+    var b = a.toString(), i, j, k, l, o, t, c, bl;
     b = b.split("").reverse();
-    for (i = 0; i < b.length; i += 1) {
+    bl = b.length;
+    i = 0;
+    do {
         b[i] = +b[i];
-    }
+        i += 1;
+    } while (i < bl);
     for (i = a - 1; i >= 2; i -= 1) {
         l = b.length;
-        for (j = 0; j < l; j += 1) {
+        j = 0;
+        do {
             b[j] *= i;
-        }
-        for (j = 0; j < l; j += 1) {
+            j += 1;
+        } while (j < l);
+        j = 0;
+        do {
             t = b[j].toString().split("").reverse().join("");
             o = t.length;
-            for (k = 0; k < o; k += 1) {
+            k = 0;
+            do {
                 c = +t.charAt(k);
                 b[j + k] = b[j + k] ? (k ? b[j + k] : 0) + c:c;
-            }
-        }
+                k += 1;
+            } while (k < o);
+            j += 1;
+        } while (j < l);
     }
     return b.reverse().join("");
 };
@@ -804,7 +831,6 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     }
     function product(f, g) {
         var i, j = g.length - 1, r = [], t, u, z, m = Math;
-        //multiplies everything in the inner loop
         do {
             t = [];
             i = f.length - 1;
@@ -933,4 +959,4 @@ Math.type = {
 function BigInt(a) {
     return true;
 }
-//The limit of integer precision: Math.toText(9007199254740994);
+//The limit of integer precision: Math.toText(9007199254740992);
