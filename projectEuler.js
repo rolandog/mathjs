@@ -728,7 +728,9 @@ undefined,
         }
         do {
             if (p(i + "")) {
-                j = i.toString(2);//then do test
+                if (p(i.toString(2))) {
+                    r += i;
+                }
             }
             i -= 2;
         } while (i > 0);
@@ -777,14 +779,14 @@ undefined,
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
     70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
     31626, 871198282, 4179871, 2783915460, 4782, 983, -59231, undefined, undefined, 443839,
-    undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, 872187, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
 times = [1, 1, 1, 514, 1, 1, 58, 2, 549, 1423,
     1, 1844, 2, 4410, 0, 272, 67, 3, 104, 69,
     593, 259, 1034792, 180000, 7830, 1000, 1974, undefined, undefined, 2234,
-    undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, 143, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 27];
