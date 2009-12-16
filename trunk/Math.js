@@ -646,7 +646,7 @@ Math.newtonRaphson = function Math_newtonRaphson(f, x, p) {
 };
 
 /**
- * Returns the factors of a number in an array.
+ * Returns the prime factors of a number in an array.
  * @param(Number) a An integer.
  * @return(Array) Returns the factors of 'a' in an array.
  */
