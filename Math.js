@@ -1,4 +1,4 @@
-/** 
+fo/** 
  * Math.js
  * http://rolandog.com/math-js/
  *
@@ -49,10 +49,11 @@ if (Array.last === undefined) {
  */
 if (Array.count === undefined) {
     Array.prototype.count = function Array_count(a) {
-        var r = 0, i;
-        for (i = 0; i < this.length; i += 1) {
-            r += this[i] === a ? 1 : 0; 
-        }
+        var r = 0, t = this, i = t.length;
+        do {
+            i -= 1;
+            r += t[i] === a ? 1 : 0;
+        } while (i);
         return r;
     };
 }
@@ -74,7 +75,8 @@ if (Array.negative === undefined) {
 }
 
 
-/** * An extension to the Array that removes item(s). Destructive.
+/**
+ * An extension to the Array that removes item(s). Destructive.
  * @param(Number) from From where items will be removed.
  * @param(Number) to The final 
  * @return(Number) Returns the removed item.
@@ -717,7 +719,8 @@ Math.bigInt = {};
 
 /**
  * Returns big Integer factorial numbers
- * @param(Number) a An Integer. * @return(String) Returns the evaluated factorial number.
+ * @param(Number) a An Integer.
+ * @return(String) Returns the evaluated factorial number.
  */
 Math.bigInt.factorial = function Math_bigInt_factorial(a) {
     var b = a.toString(), i, j, k, l, o, t, c, bl;
@@ -753,7 +756,8 @@ Math.bigInt.factorial = function Math_bigInt_factorial(a) {
 
 /**
  * Returns the sum of big integers
- * @param(String) a An Integer. * @return(String) Returns the evaluated sum.
+ * @param(String) a An Integer.
+ * @return(String) Returns the evaluated sum.
  */
 Math.bigInt.sum = function Math_bigInt_sum(a) {
     function flip(z) {
@@ -794,7 +798,8 @@ Math.bigInt.sum = function Math_bigInt_sum(a) {
 };
 /**
  * Returns the product of big integers
- * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
+ * @param(String) a An Integer.
+ * @return(String) Returns the evaluated multiplication.
  */
 Math.bigInt.multiply = function Math_bigInt_multiply(a) {
     function toInt(z) {
@@ -859,7 +864,8 @@ Math.bigInt.multiply = function Math_bigInt_multiply(a) {
 
 /**
  * Returns an integer to a specified power
- * @param(String) a An Integer. * @return(String) Returns the evaluated multiplication.
+ * @param(String) a An Integer.
+ * @return(String) Returns the evaluated multiplication.
  */
 Math.bigInt.pow = function Math_bigInt_pow(n, p) {
     var r = [], i, multiply = Math.bigInt.multiply;
@@ -871,7 +877,8 @@ Math.bigInt.pow = function Math_bigInt_pow(n, p) {
 
 /**
  * Returns the textual representation of a number.
- * @param(String) a An Integer. * @return(String) Converts the number to text (British English).
+ * @param(String) a An Integer.
+ * @return(String) Converts the number to text (British English).
  */
 Math.toText = function Math_toText(n) {
     n = (typeof(n) !== "string" ? "" + n : n).split("");
