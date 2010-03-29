@@ -1,4 +1,4 @@
-fo/** 
+/** 
  * Math.js
  * http://rolandog.com/math-js/
  *
