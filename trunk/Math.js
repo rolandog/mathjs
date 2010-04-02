@@ -542,7 +542,7 @@ Math.Random = function Math_Random(a, b) {
         b = a;
         a = 0;
     }
-    return m.floor(m.random() * (b - a + 1) + a)
+    return m.floor(m.random() * (b - a + 1) + a);
 };
 
 /**
