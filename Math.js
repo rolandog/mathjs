@@ -898,10 +898,10 @@ Math.toText = function Math_toText(n) {
     terms.push("undecillion", "duodecillion", "tredecillion");
     while (l > 0) {
         if (l >= 3) {
-            segs.push(+n.splice(l - 3, 3).join(""));
+            segs.push(parseInt(n.splice(l - 3, 3).join(""), 10));
             l -= 3;
         } else {
-            segs.push(+n.splice(0, l).join(""));
+            segs.push(parseInt(n.splice(0, l).join(""), 10));
             l = 0;
         }
     }
@@ -910,22 +910,22 @@ Math.toText = function Math_toText(n) {
     }
     function toText(z) {
         function t(a) {
-            var r;
-            r = a === 1 ? "one" : a === 2 ? "two" : a === 3 ? "three" : "";
-            r = a === 4 ? "four" : a === 5 ? "five" : a === 6 ? "six" : "";
-            r = a === 7 ? "seven" : a === 8 ? "eight" : a === 9 ? "nine" : "";
-            r = a === 11 ? "eleven" : a === 12 ? "twelve" : a === 13 ? "thir" : "";
-            r = a === 14 ? "four" : a === 15 ? "fif" : a === 16 ? "six" : "";
-            r = a === 17 ? "seven" : a === 18 ? "eigh" : a === 19 ? "nine" : "";
+            var r = "";
+            r += a === 1 ? "one" : a === 2 ? "two" : a === 3 ? "three" : "";
+            r += a === 4 ? "four" : a === 5 ? "five" : a === 6 ? "six" : "";
+            r += a === 7 ? "seven": a === 8 ? "eight" : a === 9 ? "nine" : "";
+            r += a === 11 ? "eleven" : a === 12 ? "twelve" : a === 13 ? "thir" : "";
+            r += a === 14 ? "four" : a === 15 ? "fif" : a === 16 ? "six" : "";
+            r += a === 17 ? "seven" : a === 18 ? "eigh" : a === 19 ? "nine" : "";
             r += a > 12 && a < 20 ? "teen" : "";
-            r = a === 10 ? "ten" : a === 20 ? "twenty" : a === 30 ? "thirty" : "";
-            r = a === 40 ? "forty" : a === 50 ? "fifty" : a === 60 ? "sixty" : "";
-            r = a === 70 ? "seventy" : a === 80 ? "eighty" : a === 90 ? "ninety" : "";
+            r += a === 10 ? "ten" : a === 20 ? "twenty" : a === 30 ? "thirty" : "";
+            r += a === 40 ? "forty" : a === 50 ? "fifty" : a === 60 ? "sixty" : "";
+            r += a === 70 ? "seventy" : a === 80 ? "eighty" : a === 90 ? "ninety" : "";
             return r;
         }
-        var a, b, c, d = z % 100, r = "", m = Math;
-        a = m.floor(z / 100);
-        b = m.floor(d / 10);
+        var a, b, c, d = z % 100, r = "";
+        a = parseInt(z / 100, 10);
+        b = parseInt(d / 10, 10);
         c = d % 10;
         r = a === 0 ? "" : t(a) + " hundred";
         r += a !== 0 && d !== 0 ? " and " : "";
