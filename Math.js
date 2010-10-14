@@ -571,6 +571,7 @@ Math.howManyPrimes = 2;
 /**
  * Determines if a number is prime.
  * @param(Number) a An integer.
+ * @param(Array) p An array containing the prime numbers for the sieve.
  * @return(Boolean) true if a number is prime.
  */
 Math.isPrime = function Math_isPrime(n, p) {
@@ -614,6 +615,19 @@ Math.isPrime = function Math_isPrime(n, p) {
     return true;
 };
 
+Math.nextPrime = function Math_nextPrime(n) {
+    var m = Math, l = m.howManyPrimes, ip = m.isPrime, p = false;
+    n = n ? n : m.primes[l - 1]; //if undefined, use the last from the sieve
+    n = n % 2 ? n : n + 1; //if even, start from the next integer
+    do {
+        n += 2; //since primes other than two are odd, skip by two
+        p = ip(n); //check to see if it's a prime
+    } while (!p); // while not a prime
+    m.primes.push(n);
+    m.howManyPrimes += 1;
+    return n;
+};
+
 Math.h = function h(y) {
     var s = y / 10, ysum, ysub, secretNumber = Math.pow(9, 9);
     if (y === 0) {
@@ -621,7 +635,7 @@ Math.h = function h(y) {
     }
     ysum = y + s;
     ysub = y - s;
-    while ((y !== ysum || (1 / y) !== (1 / ysum)) && (y !== ysub || (1 / y) !== (1 / ysub))) {
+    while ((y !== ysum || (1 / y) !== (1 / ysum)) || (y !== ysub || (1 / y) !== (1 / ysub))) {
         s /= 10;
         ysum = y + s;
         ysub = y - s;
@@ -634,16 +648,13 @@ Math.derivative = function Math_derivative(f, x) {
     return (f(x + h) - f(x - h)) / (2 * h);
 };
 
-Math.newtonRaphson = function Math_newtonRaphson(f, x, p) {
-    var m = Math, h = m.h(x), d = m.derivative;
-    p = p === undefined ? h : 1 / p;
-    p = p > h ? p : h;
-    function next(y) {
-        return y - f(y) / d(y);
-    }
+Math.newtonRaphson = function Math_newtonRaphson(f, x) {
+    var m = Math, h = m.h(x), d = m.derivative, xd, n = 42;
     do {
-        x = next(x);
-    } while (x - next(x) > p);
+    	xd = f(x) / d(f, x);
+        x -= xd;
+        n -= 1
+    } while (n);
     return x;
 };
 
