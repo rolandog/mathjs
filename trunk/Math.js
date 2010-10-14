@@ -400,12 +400,11 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
     decimalString += decimalPlaces ? "." : "";
     while (decimalPlaces > 0) {
         numerator = remainder * 10;
-        quotient = parseInt(numerator / denominator, 10);
+        decimalString += (quotient = parseInt(numerator / denominator, 10));
         remainder = numerator % denominator;
-        decimalString += quotient;
         decimalPlaces -= 1;
     }
-    return decimalString.replace(/0+$/, "");
+    return decimalString.replace(/0+$/, "").replace(/\.$/, "");
 };
 
 /**
@@ -635,7 +634,7 @@ Math.h = function h(y) {
     }
     ysum = y + s;
     ysub = y - s;
-    while ((y !== ysum || (1 / y) !== (1 / ysum)) || (y !== ysub || (1 / y) !== (1 / ysub))) {
+    while ((y !== ysum || (1 / y) !== (1 / ysum)) && (y !== ysub || (1 / y) !== (1 / ysub))) {
         s /= 10;
         ysum = y + s;
         ysub = y - s;
