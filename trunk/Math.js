@@ -170,7 +170,7 @@ if (Array.swap === undefined) {
  * @return(Array) Returns the array.
  */
 if (Array.permutations === undefined) {
-    Array.prototype.permutations = function Array_permutations(n) {
+    Array.prototype.permutations = function Array_permutations(n, c) {
         var m = Math, t = m.js.copy(this);
         function permutations(a, o) {
             if (a.length === 1) {
@@ -200,7 +200,7 @@ if (Array.permutations === undefined) {
             }
             return a.join();
         }
-        return permutations(t, n);
+        return c === undefined ? permutations(t, n) : clean(permutations(t, n));
     };
 }
 
@@ -304,11 +304,11 @@ Math.js = {
  */
 if (Array.lessThan === undefined) {
     Array.prototype.lessThan = function Array_lessThan(a) {
-        var i = 0, t = this, l = t.length;
+        var t = this, l = t.length;
         do {
-            i += 1;
-        } while (t[i] < a);
-        return i - 1;
+            l -= 1;
+        } while (t[l] >= a);
+        return l;
     };
 }
 
@@ -321,7 +321,7 @@ if (Array.lessThan === undefined) {
  */
 if (Array.closeTo === undefined) {
     Array.prototype.closeTo = function Array_closeTo(a) {
-        var t = this, l = t.length, i, iO = t.indexOf(a);
+        var t = this, i, iO = t.indexOf(a);
         if (iO === -1) {
             i = t.lessThan(a);
             return t[i + 1] - a < a - t[i] ? i + 1 : i;
@@ -648,11 +648,11 @@ Math.derivative = function Math_derivative(f, x) {
 };
 
 Math.newtonRaphson = function Math_newtonRaphson(f, x) {
-    var m = Math, h = m.h(x), d = m.derivative, xd, n = 42;
+    var m = Math, d = m.derivative, xd, n = 42;
     do {
-    	xd = f(x) / d(f, x);
+        xd = f(x) / d(f, x);
         x -= xd;
-        n -= 1
+        n -= 1;
     } while (n);
     return x;
 };
