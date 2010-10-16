@@ -722,17 +722,25 @@ var http = {
         return n;
     },
     function Problem_29() {
-        var l = 100, a = l, b, c = "", d, p = Math.bigInt.pow;
+        function rep(a, b) {
+            var c = a;
+            b -= 1;
+            do {
+                c = c.concat(a);
+                b -= 1;
+            } while (b);
+            return c.sort();
+        }
+        var l = 100, a = l, b, d = [], f = Math.factors;
         do {
             b = l;
             do {
-                d = p(a, b);
-                c += c.indexOf(", " + d) === -1 ? ", " + d : "";
+                d.push(rep(f(a), b).join('*'));
                 b -= 1;
             } while (b - 1);
             a -= 1;
         } while (a - 1);
-        return c.match(/,/g).length;
+        return d.unique().sort(Math.js.ascending).length;
     },
     function Problem_30() {
 
