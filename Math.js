@@ -663,11 +663,14 @@ Math.newtonRaphson = function Math_newtonRaphson(f, x) {
  * @return(Array) Returns the factors of 'a' in an array.
  */
 Math.factors = function Math_factors(a) {
-    var m = Math, n = m.abs(a), r = m.ceil(m.sqrt(n)), i = 2, f = [];
-    while (i <= n && i <= r) {
+    var m = Math, n = m.abs(a), i = 2, f = [];
+    while (i <= n) {
         if (n % i === 0) {
             f.push(i);
             n /= i;
+            if (m.product(f) === m.abs(a)) {
+                break;
+            }
         }
         else {
             i += 1;
