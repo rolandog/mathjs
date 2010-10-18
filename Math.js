@@ -228,14 +228,14 @@ if (Array.chunk === undefined) {
         if (nL) {
             n += 1;
             s = function s(x) {
-                return parseInt(l * m.log(x + 1) / m.log(n), 10);
+                return (l * m.log(x + 1) / m.log(n)) | 0;
             };
             for (i = 0; i < n - 1; i += 1) {
                 chunks.push(t.slice(s(i), s(i + 1)));
             }
         } else {
             //the size of the chunks
-            s = parseInt(l / n, 10);
+            s = l / n | 0;
             for (i = 0; i < n; i += 1) {
                 chunks.push(t.slice(i * s, (i + 1) * s));
             }
@@ -394,13 +394,13 @@ Math.quotient = function Math_quotient(a) {
 Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
     var remainder, quotient, decimalString;
     remainder = numerator % denominator;
-    quotient = parseInt(numerator / denominator, 10);
+    quotient = numerator / denominator | 0;
     decimalString = "" + quotient;
     decimalPlaces = decimalPlaces === undefined ? 20 : decimalPlaces;
     decimalString += decimalPlaces ? "." : "";
     while (decimalPlaces > 0) {
         numerator = remainder * 10;
-        decimalString += (quotient = parseInt(numerator / denominator, 10));
+        decimalString += (quotient = numerator / denominator | 0);
         remainder = numerator % denominator;
         decimalPlaces -= 1;
     }
@@ -416,20 +416,20 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
 Math.decimalRepresentation = function Math_decimalRepresentation(numerator, denominator) {
     var remainder, quotient, number = [], decimals = [], remainders = [];
     remainder = numerator % denominator;
-    quotient = parseInt(numerator / denominator, 10);
+    quotient = numerator / denominator;
     number.push(quotient);
     if (remainder) {
         number.push(".");
         while (remainder && remainders.count(remainder * 10) === 0) {
             numerator = remainder * 10;
             remainders.push(numerator);
-            quotient = parseInt(numerator / denominator, 10);
+            quotient = numerator / denominator | 0;
             decimals.push(quotient);
             remainder = numerator % denominator;
         }
         if (remainder) {
             numerator = remainder * 10;
-            quotient = parseInt(numerator / denominator, 10);
+            quotient = numerator / denominator | 0;
             decimals.insert("(", decimals.indexOf(quotient));
             decimals.push(")");
         }
@@ -927,8 +927,8 @@ Math.toText = function Math_toText(n) {
             return r;
         }
         var a, b, c, d = z % 100, r = "";
-        a = parseInt(z / 100, 10);
-        b = parseInt(d / 10, 10);
+        a = z / 100 | 0;
+        b = d / 10 | 0;
         c = d % 10;
         r = a === 0 ? "" : t(a) + " hundred";
         r += a !== 0 && d !== 0 ? " and " : "";
@@ -952,10 +952,10 @@ Math.is = {
 	    
     },
     Integer: function Math_is_Integer(a) {
-        return parseInt(a, 10) === a;
+        return a | 0 === a;
     },
     Real: function Math_is_Real(a) {
-        return parseInt(a, 10) !== a;
+        return a | 0 !== a;
     },
     Even: function Math_is_Even(a) {
         return a % 2 === 0;
