@@ -224,21 +224,12 @@ var http = {
         } while (c < 500);
     },
     function Problem_10() {
-        var M = Math, isPrime = M.isPrime, p = [], i = 2000001, j = 0, itIs;
-        if (M.howManyPrimes > 1234) {
-            M.primes = [2, 3];
-            M.howManyPrimes = 2;
-        }
+        var M = Math, nP = M.nextPrime, l = 2000001, j;
+        M.isPrime(l);
         do {
-            i -= 2;
-            itIs = isPrime(i);
-            if (itIs) {
-                p[j] = i;
-                j += 1;
-            }
-        } while (i >= 3); 
-        p.push(2);
-        return M.sum(p);
+            j = nP();
+        } while (j < l); 
+        return M.sum(M.primes) - j;
     },
     function Problem_11() {
         var a = [
@@ -524,7 +515,7 @@ var http = {
             total += tarray[1];
             i += sampleSize;
             j += tarray[0].split("1").length - 1;
-            if (triangle [i] !== undefined) {
+            if (triangle[i] !== undefined) {
                 j += triangle[i][j + 1] > triangle[i][j] ? 1 : 0;
             }
             k -= 1;
@@ -673,7 +664,7 @@ var http = {
          * c & d are the array indexes
          * e & f are the direction indicators (+1, 0 or -1)
          */
-        var l = 1001, n = l, a = new Array(l), m = parseInt(l / 2, 10), c, d, e, f;
+        var l = 1001, n = l, a = new Array(l), m = l / 2 | 0, c, d, e, f;
         //creating our array of arrays
         do {
             a[n - 1] = new Array(l);
@@ -740,10 +731,9 @@ var http = {
             } while (b - 1);
             a -= 1;
         } while (a - 1);
-        return d.unique().sort(Math.js.ascending).length;
+        return d.unique().length;
     },
     function Problem_30() {
-
         /* i is the lower limit; the upper limit, l, is where a number 'n', made out of 9's, is equal
          * to or bigger than the sum of each 9 to the 5th power.
          * m is the number split into an array; n, a counter.
@@ -824,10 +814,11 @@ var http = {
                 } while (l && p);//if l=0 or any number isn't a prime number, break
             }
             return p;
-        };
+        }
         mnp = m.nextPrime;
         do {
-        } while (mnp() < 1000000);
+            j = mnp();
+        } while (j < 1000000);
         j = 10;//m.howManyPrimes;
         ps = m.primes;
         do {
