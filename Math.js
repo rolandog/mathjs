@@ -916,7 +916,7 @@ Math.toText = function Math_toText(n) {
             var r = "";
             r += a === 1 ? "one" : a === 2 ? "two" : a === 3 ? "three" : "";
             r += a === 4 ? "four" : a === 5 ? "five" : a === 6 ? "six" : "";
-            r += a === 7 ? "seven": a === 8 ? "eight" : a === 9 ? "nine" : "";
+            r += a === 7 ? "seven" : a === 8 ? "eight" : a === 9 ? "nine" : "";
             r += a === 11 ? "eleven" : a === 12 ? "twelve" : a === 13 ? "thir" : "";
             r += a === 14 ? "four" : a === 15 ? "fif" : a === 16 ? "six" : "";
             r += a === 17 ? "seven" : a === 18 ? "eigh" : a === 19 ? "nine" : "";
@@ -976,7 +976,105 @@ Math.type = {
 	}
 };
 
-function BigInt(a) {
-    return true;
+/**
+ * BigInt Class that allows addition, multiplication and integer exponentiation
+ * of positive integers.
+ */
+function BigInt(n) {
+    function proper(m) {
+        m = typeof(m) !== "string" ? "" + m : m;
+        m = m.split('e');
+        m[2] = m[1] ? m[0].split('.')[1] : m[1];
+        m[1] = m[1] ? +m[1] - (m[2] ? m[2].length : 0) : m[1];
+        m[0] = m[2] ? m[0] + m[2] : m[0];
+        //Say 4.321e5 is passed, we'll split m into [4, 9, 321]
+        if (m[1]) {
+            do {
+                m[0] += '0';
+                m[1] -= 1;
+            } while (m[1]);
+        }
+        m = m[0];
+        return m;
+    }
+    n = proper(n);
+    this.toString = function toString() {
+        return n;
+    };
+    this.__defineGetter__("value", function value() {
+        return +n;
+    });
+    this['+'] = function bigIntSum(b) {
+        b = proper(b);
+        function flip(z) {
+            z = typeof(z) === "string" ? z : "" + z;
+            z = z.split("").reverse();
+            var i = 0, zl = z.length;
+            do {
+                z[i] = +z[i];
+                i += 1;
+            } while (i < zl);
+            return z;
+        }
+        function sum(A, B) {
+            var C = [], i = 0, al = A.length, bl = B.length, a, b, c, c1, l;
+            l = al > bl ? al : bl;
+            do {
+                a = A[i];
+                b = B[i];
+                c = C[i];
+                c = (C[i] = (a ? a : 0) + (b ? b : 0) + (c ? c : 0));
+                if (c >= 10) {
+                    c = (C[i] -= 10);
+                    c1 = C[i + 1];
+                    C[i + 1] = c1 ? c1 + 1 : 1;
+                }
+                i += 1;
+            } while (i < l);
+            return C;
+        }
+        return sum(flip(n), flip(b)).reverse().join('');
+    };
+    //privileged function
+    this.add = function add(b) {
+        return (n = this['+'](b));
+    };
+    this['*'] = function bigIntProduct(b) {
+        
+    };
+    //privileged
+    this.multiplyBy = this['*'];
+    this['^'] = function bigIntPow(b) {
+        
+    };
+    this.raise = this['^'];
+    this.__defineGetter__('factorial', function bigIntFactorial() {
+        var a = +n, b = n.split('').reverse(), i = 0, j, k, l, o, t, c, bl = b.length;
+        do {
+            b[i] = +b[i];
+            i += 1;
+        } while (i < bl);
+        for (i = a - 1; i >= 2; i -= 1) {
+            l = b.length;
+            j = 0;
+            do {
+                b[j] *= i;
+                j += 1;
+            } while (j < l);
+            j = 0;
+            do {
+                t = b[j].toString().split("").reverse().join("");
+                o = t.length;
+                k = 0;
+                do {
+                    c = +t.charAt(k);
+                    b[j + k] = b[j + k] ? (k ? b[j + k] : 0) + c:c;
+                    k += 1;
+                } while (k < o);
+                j += 1;
+            } while (j < l);
+        }
+        return b.reverse().join("");
+    });
 }
 //The limit of integer precision: Math.toText(9007199254740992);

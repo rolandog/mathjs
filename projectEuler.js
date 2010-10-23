@@ -795,7 +795,64 @@ var http = {
     //16,19,26,49 / 64,95,65,98
         return d;
     },
-    undefined,
+    function Problem_34() {
+        function separate(a) {
+            var b = ('' + a).split(''), l = b.length;
+            do {
+                l -= 1;
+                b[l] = +b[l];
+            } while(l);
+            return b; //splits 123 into [1, 2, 3]
+        }
+        function factorial(n) {
+            if (!n) {
+                return 1;
+            }
+            if (!(n - 1)) {
+                return 1;
+            }
+            if (!(n - 2)) {
+                return 2;
+            }
+            if (!(n - 3)) {
+                return 6;
+            }
+            if (!(n - 4)) {
+                return 24;
+            }
+            if (!(n - 5)) {
+                return 120;
+            }
+            if (!(n - 6)) {
+                return 720;
+            }
+            if (!(n - 7)) {
+                return 5040;
+            }
+            if (!(n - 8)) {
+               return 40320;
+            }
+            if (!(n - 9)) {
+                return 362880;
+            }
+        }
+        function isCurious(n) {
+            var a = separate(n), b = 0, l = a.length;
+            do {
+                l -= 1;
+                b += factorial(a[l]);
+            } while(l);
+            return b === n;
+        }
+        var i = 3000000, s = 0;
+        do {
+            i -= 1;
+            if (isCurious(i)) {
+                s += i;
+            }
+        } while(i > 3);
+        return s;
+    },
     function Problem_35() {
         var i = 0, m = Math, j = m.howManyPrimes, mnp = m.nextPrime, ps, r = 0;
         function isCircular(n) {
@@ -891,14 +948,14 @@ var http = {
 ], answers, times;
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
     70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
-    31626, 871198282, 4179871, 2783915460, 4782, 983, -59231, 669171001, undefined, 443839,
+    31626, 871198282, 4179871, 2783915460, 4782, 983, -59231, 669171001, 9183, 443839,
     undefined, undefined, undefined, undefined, 55, 872187, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
 times = [1, 1, 1, 514, 1, 1, 58, 2, 549, 1423,
     1, 1844, 2, 4410, 0, 272, 67, 3, 104, 69,
-    593, 259, 1034792, 180000, 7830, 1000, 1974, 330, undefined, 2234,
+    593, 259, 1034792, 180000, 7830, 1000, 1974, 330, 2109, 2234,
     undefined, undefined, undefined, undefined, 10000, 143, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
