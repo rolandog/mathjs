@@ -224,12 +224,19 @@ var http = {
         } while (c < 500);
     },
     function Problem_10() {
-        var M = Math, nP = M.nextPrime, l = 2000001, j;
-        M.isPrime(l);
-        do {
-            j = nP();
-        } while (j < l); 
-        return M.sum(M.primes) - j;
+        var m = Math, p = m.primes, l = m.howManyPrimes, nP = m.nextPrime, i, j;
+        i = p[l - 1];
+        j = 0;
+        if (i < 2000000) {
+            j = m.sum(m.primes) - i;
+            while (i < 2000000) {
+                j += i;
+                i = nP();
+            }
+        } else {
+            j = m.sum(p.slice(0, p.lessThan(2000000) + 1));
+        }
+        return j;
     },
     function Problem_11() {
         var a = [
@@ -801,7 +808,7 @@ var http = {
             do {
                 l -= 1;
                 b[l] = +b[l];
-            } while(l);
+            } while (l);
             return b; //splits 123 into [1, 2, 3]
         }
         function factorial(n) {
@@ -830,7 +837,7 @@ var http = {
                 return 5040;
             }
             if (!(n - 8)) {
-               return 40320;
+                return 40320;
             }
             if (!(n - 9)) {
                 return 362880;
@@ -841,7 +848,7 @@ var http = {
             do {
                 l -= 1;
                 b += factorial(a[l]);
-            } while(l);
+            } while (l);
             return b === n;
         }
         var i = 3000000, s = 0;
@@ -850,7 +857,7 @@ var http = {
             if (isCurious(i)) {
                 s += i;
             }
-        } while(i > 3);
+        } while (i > 3);
         return s;
     },
     function Problem_35() {
@@ -953,8 +960,8 @@ answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
-times = [1, 1, 1, 514, 1, 1, 58, 2, 549, 1423,
-    1, 1844, 2, 4410, 0, 272, 67, 3, 104, 69,
+times = [0, 0, 0, 151, 0, 0, 31, 2, 14, 1423,
+    1, 1844, 1, 4410, 0, 272, 67, 3, 104, 69,
     593, 259, 1034792, 180000, 7830, 1000, 1974, 330, 2109, 2234,
     undefined, undefined, undefined, undefined, 10000, 143, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
@@ -1072,7 +1079,6 @@ function solve(n) {
     s = g("solution");
     a(s, p);
 }
-
 /**
  * Displays the chosen functions.
  */
@@ -1099,7 +1105,6 @@ function display(n) {
     a(p, c("pre", f));
     a(g("source"), p);
 }
-
 function populateLists() {
     var i, m = Math.js, g = m.get, r = m.remove, pl = g("plist"), fl = g("flist"), a = [], e, f, url;
     for (e in Math) {
@@ -1135,7 +1140,6 @@ function populateLists() {
         r(fl);
         r(g("flabel"));
     }
-    
     function parseURL(url) {
         var fields = {'username' : 4, 'password' : 5, 'port' : 7, 'scheme' : 2, 'authority' : 6, 'path' : 8, 'url' : 0, 'query' : 9, 'fragment' : 10}, json = {}, parsed, p, q, queries;
         parsed = url.match(/^((\w+):\/\/)?((\w+):?(\w+)?@)?([^\/\?:]+):?(\d+)?(\/?[^\?#]+)?\??([^#]+)?#?(\w*)/);
@@ -1166,5 +1170,4 @@ function populateLists() {
         }
     }
 }
-
 http.onLoad(populateLists);
