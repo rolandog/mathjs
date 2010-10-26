@@ -584,7 +584,7 @@ var http = {
         return score;
     },
     function Problem_23() {
-        var abundant = [12], i = 1, h = 0, j = 12, k, l = 0, s = [], t, m = Math, sum = m.sum, d = m.divisors, a;
+        var abundant = [12], i = 1, h = 0, j = 12, k, l = 1, s = [], t, m = Math, sum = m.sum, d = m.divisors, a;
         do {
             if (i > j) { //if our number is greater than the cache, initially 12
                 a = i;
@@ -596,21 +596,24 @@ var http = {
                     }
                     a += 1;
                 } while (a < 28123);
-                h += 1; //increase the counter
-                j = abundant[h]; // next abundant so that i <= j is true
+                h += 1;
+                j = a; // next abundant so that i <= j is true
             }
             if (h) {//when we start using something greater than 12 as reference
-                k = h; //always set to 0
+                k = l / 2 | 0; //good starting point for the guess
+                do {
+                    k += 1; //making sure that I'm at least getting at the half
+                } while(abundant[k] < j / 2);
                 t = true;
                 do {
                     if (abundant.indexOf(i - abundant[k]) > -1) {
                         t = false;
-                        break;
+                        break; //stops the iterations, since we've found a compliment
                     }
                     k -= 1;
-                } while (k > -1); //won't check abundant[h] since 1, 2, 4 or 6 aren't abundant
+                } while (k > -1);
                 if (t) {
-                    s.push(i);
+                    s.push(i); //pushes numbers that had no compliments
                 }
             } else {
                 s.push(i); //will push numbers 1 - 12
