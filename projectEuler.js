@@ -584,28 +584,40 @@ var http = {
         return score;
     },
     function Problem_23() {
-        var abundant = [], i = 1, j, k, l, other = [], m = Math, len, sum = m.sum, d = m.divisors;
+        var abundant = [12], i = 1, h = 0, j = 12, k, l = 0, s = [], t, m = Math, sum = m.sum, d = m.divisors, a;
         do {
-            if (sum(d(i, true)) - i > 0) {
-                len = abundant.push(i);
+            if (i > j) { //if our number is greater than the cache, initially 12
+                a = i;
+                do {
+                    if (sum(d(a, true)) - a > 0) { //if the sum of the divisors is greater than i
+                        abundant.push(a); //then it is abundant
+                        l += 1;
+                        break;
+                    }
+                    a += 1;
+                } while (a < 28123);
+                h += 1; //increase the counter
+                j = abundant[h]; // next abundant so that i <= j is true
             }
-            other[i - 1] = i;
-            i += 1;
-        } while (i <= 28123);
-        i = 0;
-        do {
-            j = i;
-            do {
-                k = abundant[i] + abundant[j];
-                l = other.indexOf(k);
-                if (l > -1) {
-                    other.splice(l, 1);
+            if (h) {//when we start using something greater than 12 as reference
+                k = h; //always set to 0
+                t = true;
+                do {
+                    if (abundant.indexOf(i - abundant[k]) > -1) {
+                        t = false;
+                        break;
+                    }
+                    k -= 1;
+                } while (k > -1); //won't check abundant[h] since 1, 2, 4 or 6 aren't abundant
+                if (t) {
+                    s.push(i);
                 }
-                j += 1;
-            } while (j < len);
-            i += 1;
-        } while (i < len);
-        return sum(other);
+            } else {
+                s.push(i); //will push numbers 1 - 12
+            }
+            i += 1; //post increment, to prevent testing of i = 28123
+        } while (i < 28123);
+        return sum(s);
     },
     function Problem_24() {
         return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].permutations(999999).join("");
@@ -956,14 +968,14 @@ var http = {
 answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31875000, 142913828922,
     70600674, 76576500, 5537376230, 837799, 137846528820, 1366, 10881, 1074, 171, 648,
     31626, 871198282, 4179871, 2783915460, 4782, 983, -59231, 669171001, 9183, 443839,
-    undefined, undefined, undefined, undefined, 55, 872187, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, 40730, 55, 872187, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 9110846700, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
 times = [0, 0, 0, 151, 0, 0, 31, 2, 14, 1423,
     1, 1844, 1, 4410, 0, 272, 67, 3, 104, 69,
     593, 259, 1034792, 180000, 7830, 1000, 1974, 330, 2109, 2234,
-    undefined, undefined, undefined, undefined, 10000, 143, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, 4000, 10000, 143, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 27];
