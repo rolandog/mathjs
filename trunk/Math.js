@@ -50,10 +50,10 @@ if (Array.last === undefined) {
 if (Array.count === undefined) {
     Array.prototype.count = function Array_count(a) {
         var r = 0, t = this, i = t.length;
-        do {
+        while (i) {
             i -= 1;
             r += t[i] === a ? 1 : 0;
-        } while (i);
+        }
         return r;
     };
 }
@@ -532,16 +532,16 @@ Math.even = function Math_even(a, b) {
  * @return(Array) the even numbers between a and b.
  */
 Math.Random = function Math_Random(a, b) {
-    var m = Math;
+    var m = Math, r = m.random;
     if (a === undefined) {
         a = 0;
         b = 9007199254740991;
-        return m.floor(m.random() * (b - a + 1) + a) / b;
+        return m.floor(r() * (b - a + 1) + a) / b;
     } else if (b === undefined) {
         b = a;
         a = 0;
     }
-    return m.floor(m.random() * (b - a + 1) + a);
+    return m.floor(r() * (b - a + 1) + a);
 };
 
 /**

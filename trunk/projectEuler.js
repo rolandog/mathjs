@@ -596,22 +596,18 @@ var http = {
                     }
                     a += 1;
                 } while (a < 28123);
-                h += 1;
                 j = a; // next abundant so that i <= j is true
             }
-            if (h) {//when we start using something greater than 12 as reference
+            if (l - 1) {//when we start using something greater than 12 as reference
                 k = l / 2 | 0; //good starting point for the guess
-                do {
-                    k += 1; //making sure that I'm at least getting at the half
-                } while(abundant[k] < j / 2);
                 t = true;
                 do {
                     if (abundant.indexOf(i - abundant[k]) > -1) {
                         t = false;
                         break; //stops the iterations, since we've found a compliment
                     }
-                    k -= 1;
-                } while (k > -1);
+                    k += 1;
+                } while (k < l);
                 if (t) {
                     s.push(i); //pushes numbers that had no compliments
                 }
@@ -898,7 +894,7 @@ var http = {
         do {
             j = mnp();
         } while (j < 1000000);
-        j = 10;//m.howManyPrimes;
+        j = m.howManyPrimes;
         ps = m.primes;
         do {
             r += isCircular(ps[i]) ? 1 : 0;
