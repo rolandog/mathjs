@@ -336,6 +336,25 @@ Array.addMethod("populate", function populate(type, p1, p2, l, isInt) {
     return this;
 });
 
+Array.addMethod("group", function group(by, standard) {
+    var t = this.ascending, f, m = t.mean, s = t.isSample ? t.sstdev : t.stdev, u, h;
+    if (standard) {
+        f = function f(x) {
+            return (((x - m) / by) | 0) * by / s;
+        };
+    } else {
+        f = function f(x) {
+            return ((x / by) | 0) * by;
+        };
+    }
+    t = t.map(f);
+    u = t.unique;
+    h = u.map(function count(x) {
+        return t.count(x);
+    });
+    return [u, h];
+});
+
 // This function applies color formatting to a bar chart,
 // by calculating the color of each bar based on the data.
 // use in http://code.google.com/apis/ajax/playground/?type=visualization#image_multicolor_bar_chart
