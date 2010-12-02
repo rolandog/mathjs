@@ -29,7 +29,7 @@ Function.prototype.addSetter = function addSetter(name, func, funcG) {
     return this;
 };
 
-Array.addGetter("sum", function sum() {
+Array.addMethod("sum", function sum() {
     var r = 0,
     t = this,
     l = t.length;
@@ -96,13 +96,13 @@ Number.addMethod("pow", function pow(n) {
     return Math.pow(this, n);
 });
 
-Array.addGetter("sqrt", function sqrt() {
+Array.addMethod("sqrt", function sqrt() {
     return this.map(function sqrtA(x) {
         return Math.sqrt(x);
     });
 });
 
-Array.addGetter("square", function square() {
+Array.addMethod("square", function square() {
     return this.map(function squareA(x) {
         return x * x;
     });
@@ -136,7 +136,7 @@ Array.addMethod("product", function product(a) {
     return t.map(productA);
 });
 
-Array.addGetter("max", function max() {
+Array.addMethod("max", function max() {
     var r = -Infinity,
     t = this,
     l = t.length,
@@ -151,7 +151,7 @@ Array.addGetter("max", function max() {
     return r;
 });
 
-Array.addGetter("min", function min() {
+Array.addMethod("min", function min() {
     var r = Infinity,
     t = this,
     l = t.length,
@@ -166,24 +166,24 @@ Array.addGetter("min", function min() {
     return r;
 });
 
-Array.addGetter("ascending", function ascending() {
+Array.addMethod("ascending", function ascending() {
     return this.concat().sort(function asc(a, b) {
         return a - b;
     });
 });
 
-Array.addGetter("descending", function descending() {
+Array.addMethod("descending", function descending() {
     return this.concat().sort(function des(a, b) {
         return b - a;
     });
 });
 
-Array.addGetter("mean", function mean() {
-    return this.sum / this.length;
+Array.addMethod("mean", function mean() {
+    return this.sum() / this.length;
 });
 
-Array.addGetter("median", function median() {
-    var l = this.length, s, a = this.ascending;
+Array.addMethod("median", function median() {
+    var l = this.length, s, a = this.ascending();
     if (l % 2) { //if odd
         s = a[l / 2 | 0];
     } else { //if even
@@ -193,11 +193,11 @@ Array.addGetter("median", function median() {
     return s;
 });
 
-Array.addGetter("stdev", function stdev() {
+Array.addMethod("stdev", function stdev() {
     var t = this,
     l = t.length,
     i = l,
-    mean = this.mean,
+    mean = this.mean(),
     s = 0,
     d;
     if (l < 2) {
@@ -216,12 +216,12 @@ Array.addGetter("stdev", function stdev() {
     return Math.sqrt(s);
 });
 
-Array.addGetter("sstdev", function sstdev() {
-    var stdev = this.stdev, l = this.length;
+Array.addMethod("sstdev", function sstdev() {
+    var stdev = this.stdev(), l = this.length;
     return Math.sqrt(stdev * stdev * l / (l - 1));
 });
 
-Array.addGetter("unique", function Array_unique() {
+Array.addMethod("unique", function Array_unique() {
     var a = [], l = this.length, i = 0, j;
     while (i < l) {
         for (j = i + 1; j < l; j += 1) {
@@ -253,18 +253,6 @@ Array.addMethod("count", function Array_count(a) {
     return r;
 });
 
-
-Math.rand = function Math_rand(a, b) {
-    var m = Math, c = 9007199254740991;
-    if (a === undefined) {
-        a = 0;
-        b = 1;
-    } else if (b === undefined) {
-        b = a;
-        a = 0;
-    }
-    return (m.randInt(c) / c) * (b - a) + a;
-};
 Math.pdf = {
     normal : function normal(x, mean, stdev) {
         mean = mean || 0;
@@ -276,22 +264,27 @@ Math.pdf = {
         return a * m.exp(-b);
     }
 };
-Math.randInt = function Math_randInt(a, b) {
-    var m = Math, r = m.random;
+
+Math.rand = function Math_rand(a, b, by) {
+    var m = Math, c = 9007199254740991, f = m.floor, r = m.random();
+    c = f((c + 1) * r) / c;
+    r = c;
     if (a === undefined) {
         a = 0;
-        b = 9007199254740991;
+        b = 1;
     } else if (b === undefined) {
         b = a;
         a = 0;
     }
-    return m.floor(r() * (b - a + 1) + a);
+    if (by) {
+        return by * f((c * (b - a + by) + a) / by);
+    }
+    return c * (b - a) + a;
 };
 
-Math.normal = function normal(mean, stdev, isInt) {
-    mean = mean === undefined ? 0 : mean;
-    stdev = stdev === undefined ? 1 : stdev;
-    isInt = isInt || false;
+Math.normal = function normal(mean, stdev, by) {
+    mean = mean || 0;
+    stdev = stdev || 1;
     var s;
     //adapted from http://www.protonfish.com/jslib/boxmuller.shtml
     function rnd_bmt() {
@@ -306,70 +299,77 @@ Math.normal = function normal(mean, stdev, isInt) {
         } while (rds === 0 || rds > 1);
         // This magic is the Box-Muller Transform
         c = sqrt(-2 * log(rds) / rds);
-        // It always creates a pair of numbers. I"ll return them in an array.
-        // This function is quite efficient so don"t be afraid to throw one away if you don"t need both.
-        return [x * c, y * c][m.randInt(0, 1)];
+        // It always creates a pair of numbers. I'll return them in an array.
+        // This function is quite efficient so don't be afraid to throw one away if you don"t need both.
+        return [x * c, y * c][r(0, 1, 1)];
     }
     s = rnd_bmt() * stdev + mean;
-    return isInt ? Math.round(s) : s;
+    return by ? Math.round(s / by) * by : s;
 };
 
 // a +- b (not a to b)
-Math.uniform = function uniform(a, b, isInt) {
+Math.uniform = function uniform(a, b, by) {
     a = a === undefined ? 0 : a;
     b = b === undefined ? 1 : b;
-    isInt = isInt || false;
     var c = a - b;
     b = a + b;
     a = c;
-    return isInt ? Math.randInt(a, b) : Math.rand(a, b);
+    return Math.rand(a, b, by);
 };
 
-Array.addMethod("populate", function populate(type, p1, p2, l, isInt) {
+Array.addMethod("populate", function populate(type, p1, p2, l, by) {
     var t = this,
     rand = Math[type];
-    l = l || 42 * 42;
+    l = l || 42 * 42 * 42;
+    by = by || (this.groupBy || 0);
     while (l) {
         l -= 1;
-        t.push(rand(p1, p2, isInt));
+        t.push(rand(p1, p2, by));
     }
     return this;
 });
 
-Array.addMethod("group", function group(by, standard) {
-    var t = this.ascending, f, m = t.mean, s = t.isSample ? t.sstdev : t.stdev, u, h;
-    if (standard) {
+Array.addMethod("group", function group(standard, by) {
+    var t = this.ascending(), f, l = t.length, m = t.mean(), s = t.isSample ? t.sstdev() : t.stdev(), u, h, r;
+    by = by || (this.groupBy || s / 42);
+    r = Math.floor;
+    if (by) {
         f = function f(x) {
-            return (((x - m) / by) | 0) * by / s;
+            return r(x / by) * by;
         };
-    } else {
-        f = function f(x) {
-            return ((x / by) | 0) * by;
-        };
+        t = t.map(f);
     }
-    t = t.map(f);
-    u = t.unique;
+    u = t.unique();
     h = u.map(function count(x) {
         return t.count(x);
     });
+    if (standard) {
+        f = function f(x) {
+            return (x - m) / s;
+        };
+        u = u.map(f);
+        h = h.map(function p(x) {
+            return 100 * x / l;
+        });
+    }
     return [u, h];
 });
 
 // This function applies color formatting to a bar chart,
 // by calculating the color of each bar based on the data.
 // use in http://code.google.com/apis/ajax/playground/?type=visualization#image_multicolor_bar_chart
-function drawVisualization() {
+/*function drawVisualization() {
     // Create and populate the data table.
-    var data = new google.visualization.DataTable(), pob = [], uni, hist, red, green, yellow, colors, i, value, color, options, l, mean, stdev;
+    var data = new google.visualization.DataTable(), pob = [], uni, hist, red, green, yellow, colors, i, value, color, options, l, mean, stdev, n;
     data.addColumn("string");
     data.addColumn("number");
     pob.populate("normal", 5, 3, 15000, true);
-    uni = pob.ascending.unique;
-    mean = pob.mean;
-    stdev = pob.stdev;
-    hist = uni.map(function count(x) {
-        return pob.count(x);
-    });
+    mean = pob.mean();
+    stdev = pob.stdev();
+    n = false;
+    pob = pob.group(1, n);
+    uni = pob[0];
+    hist = pob[1];
     uni.forEach(function (x, idx) {
         data.addRow(['' + x, hist[idx]]);
     });
@@ -382,7 +382,7 @@ function drawVisualization() {
     colors = [];
     l = data.getNumberOfRows();
     for (i = 0; i < l; i += 1) {
-        value = Math.abs((data.getValue(i, 0) - mean) / stdev);
+        value = n ? Math.abs(data.getValue(i, 0)) : Math.abs((data.getValue(i, 0) - mean) / stdev);
         color = value < 1 ? green : (value < 2 ? yellow : red);
         colors.push(color);
     }
@@ -395,4 +395,60 @@ function drawVisualization() {
 
     // Create and draw the visualization.
     (new google.visualization.ImageChart(document.getElementById("visualization"))).draw(data, options);  
+}*/
+
+
+// use in http://code.google.com/apis/ajax/playground/?type=visualization#scatter_chart
+function drawVisualization() {
+    // Create and populate the data table.
+    var data = new google.visualization.DataTable(), pob, uni, hist, options, red, green, yellow, colors, value, color, mean, stdev, standard, abs = Math.abs;
+    data.addColumn("number", "Value");
+    data.addColumn("number", "Frequency");
+    
+    pob = [];
+    pob.groupBy = 1;
+    pob.populate("normal", 1000, 3.5, 5);
+    
+    mean = pob.mean();
+    stdev = pob.stdev();
+
+    red = "ff0000";
+    green = "00ff00";
+    yellow = "ffff00";
+    colors = [];
+    
+    standard = false;
+    pob = pob.group(standard);
+    uni = pob[0];
+    hist = pob[1];
+    
+    uni.forEach(function (x, idx) {
+        data.addRow([x, hist[idx]]);
+        value = standard ? abs(x) : abs((x - mean) / stdev);
+        color = value < 1 ? green : (value < 2 ? yellow : red);
+        colors.push(color);
+    });
+
+    options = {
+        title : "Histogram",
+        width : 600,
+        height : 400,
+        vAxis : {
+            title : "Frequency",
+            titleTextStyle : {
+                color : "green"
+            },
+            minValue : 0
+        },
+        hAxis: {
+            title: "Value",
+            titleTextStyle : {
+                color : "green"
+            }
+        },
+        legend : "none"
+    };
+    
+    // Create and draw the visualization.
+    (new google.visualization.ScatterChart(document.getElementById('visualization'))).draw(data, options);
 }
