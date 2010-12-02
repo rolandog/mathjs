@@ -401,37 +401,25 @@ Array.addMethod("group", function group(standard, by) {
 // use in http://code.google.com/apis/ajax/playground/?type=visualization#scatter_chart
 function drawVisualization() {
     // Create and populate the data table.
-    var data = new google.visualization.DataTable(), pob, uni, hist, options, red, green, yellow, colors, value, color, mean, stdev, standard, abs = Math.abs;
+    var data = new google.visualization.DataTable(), pob, uni, hist, options, standard;
     data.addColumn("number", "Value");
     data.addColumn("number", "Frequency");
-    
-    pob = [];
-    pob.groupBy = 1;
-    pob.populate("normal", 1000, 3.5, 5);
-    
-    mean = pob.mean();
-    stdev = pob.stdev();
 
-    red = "ff0000";
-    green = "00ff00";
-    yellow = "ffff00";
-    colors = [];
+    pob = [];
+    pob.groupBy = 0.5;
+    pob.populate("normal", 1000, 2, 100000);
     
-    standard = false;
+    standard = true;
     pob = pob.group(standard);
     uni = pob[0];
     hist = pob[1];
-    
     uni.forEach(function (x, idx) {
         data.addRow([x, hist[idx]]);
-        value = standard ? abs(x) : abs((x - mean) / stdev);
-        color = value < 1 ? green : (value < 2 ? yellow : red);
-        colors.push(color);
     });
 
     options = {
         title : "Histogram",
-        width : 600,
+        width : 800,
         height : 400,
         vAxis : {
             title : "Frequency",
