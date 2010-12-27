@@ -401,24 +401,37 @@ Array.addMethod("group", function group(standard, by) {
 // use in http://code.google.com/apis/ajax/playground/?type=visualization#scatter_chart
 function drawVisualization() {
     // Create and populate the data table.
-    var data = new google.visualization.DataTable(), pob, uni, hist, options, standard;
-    data.addColumn("number", "Value");
-    data.addColumn("number", "Frequency");
+    var data = new google.visualization.DataTable(), pob1, pob2, uni1, hist1, uni2, hist2, options, standard, m, s, n;
+    pob1 = [];
+    pob2 = [];
+    m = 1000;
+    s = 5;
+    n = 100000;
+    pob1.groupBy = s / 20;
+    pob2.groupBy = s / 20;
+    data.addColumn("number", "Particle Size");
+    data.addColumn("number", "StdDev = " + s);
+    data.addColumn("number", "StdDev = " + 2 * s);
 
-    pob = [];
-    pob.groupBy = 0.5;
-    pob.populate("normal", 1000, 2, 100000);
+    pob1.populate("normal", m, s, n);
+    pob2.populate("normal", m, 2 * s, n);
     
-    standard = true;
-    pob = pob.group(standard);
-    uni = pob[0];
-    hist = pob[1];
-    uni.forEach(function (x, idx) {
-        data.addRow([x, hist[idx]]);
+    standard = false;
+    pob1 = pob1.group(standard);
+    pob2 = pob2.group(standard);
+    uni1 = pob1[0];
+    hist1 = pob1[1];
+    uni2 = pob2[0];
+    hist2 = pob2[1];
+    uni1.forEach(function (x, idx) {
+        data.addRow([x, hist1[idx], null]);
+    });
+    uni2.forEach(function (x, idx) {
+        data.addRow([x, null, hist2[idx]]);
     });
 
     options = {
-        title : "Histogram",
+        title : "Histogram, mean = " + m,
         width : 800,
         height : 400,
         vAxis : {
@@ -429,14 +442,13 @@ function drawVisualization() {
             minValue : 0
         },
         hAxis: {
-            title: "Value",
+            title: "Particle Size",
             titleTextStyle : {
                 color : "green"
             }
-        },
-        legend : "none"
+        }
     };
     
     // Create and draw the visualization.
     (new google.visualization.ScatterChart(document.getElementById('visualization'))).draw(data, options);
-}
+}​
