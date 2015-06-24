@@ -928,11 +928,23 @@ var http = {
     undefined, undefined, undefined, undefined, undefined,
     undefined, undefined,
     function Problem_48() {
-        var r = 0, i = 1, m = Math.bigInt;
+        var r = 0, //the last 10 digits
+            t, //temporary variable
+            i = 1, //main counter (from 1 to 1000)
+            j; //auxiliary counter (counts from 0 to i - 1)
         do {
-            r = m.sum(r, m.pow(i, i));
-        } while (i < 1000);
-        return r.slice(r.length - 10);
+            t = 1; //always set temporary variable to 1 for further arithmetics
+            j = 0;
+            do {
+                t *= i; //multiply by current value of i
+                t = t > 1e10 ? t % 1e10 : t; //leave last 10 numbers
+                j += 1; //step completed, add 1 to counter
+            } while (j < i);
+            r += t; //add the current calculation to the 'result' var
+            r = r > 1e10 ? r % 1e10 : r; //leave last 10 numbers
+            i += 1; //step completed, proceed to next number
+        } while (i <= 1000); //will count i times
+        return r;
     },
     undefined, undefined,
     undefined, undefined, undefined, undefined, undefined,
@@ -972,10 +984,10 @@ answers = [233168, 4613732, 6857, 906609, 232792560, 25164150, 104743, 40824, 31
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 7273];
 times = [0, 0, 0, 151, 0, 0, 31, 2, 14, 1423,
-    1, 1844, 1, 4410, 0, 272, 67, 3, 104, 69,
-    593, 259, 1034792, 180000, 7830, 1000, 1974, 330, 2109, 2234,
-    undefined, undefined, undefined, 4000, 10000, 143, undefined, undefined, undefined, undefined,
-    undefined, undefined, undefined, undefined, undefined, undefined, undefined, 7425095, undefined, undefined,
+    1, 1844, 1, 1998, 0, 272, 67, 3, 104, 69,
+    593, 259, 10381, 5114, 583, 1000, 1974, 330, 2109, 2234,
+    undefined, undefined, 8, 4000, 4948, 143, undefined, undefined, undefined, undefined,
+    undefined, undefined, undefined, undefined, undefined, undefined, undefined, 31, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, undefined, undefined, undefined, undefined, 27];
 
@@ -1062,7 +1074,7 @@ function solve(n) {
     time = times[n - 1];
     //change the formating function into a string
     format = time !== undefined ? "takes " + f(time).join(" ") + ", more or less, on a 1.5 GHz laptop using Google Chrome. " : "might take a while. ";
-    conf = time >= 4200 || time === undefined ? confirm("The algorithm " + format + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
+    conf = time >= 9999 || time === undefined ? confirm("The algorithm " + format + "Do you want to run it anyway?\nIf you don't the answer will still be displayed, but you won't get that warm, fuzzy sensation of puting your own number-crunching computer to work.") : true;
     if (conf) {
         t0 = new Date();
         answer = problem();

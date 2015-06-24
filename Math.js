@@ -416,7 +416,7 @@ Math.divide = function Math_divide(numerator, denominator, decimalPlaces) {
 Math.decimalRepresentation = function Math_decimalRepresentation(numerator, denominator) {
     var remainder, quotient, number = [], decimals = [], remainders = [];
     remainder = numerator % denominator;
-    quotient = numerator / denominator;
+    quotient = parseInt(numerator / denominator);
     number.push(quotient);
     if (remainder) {
         number.push(".");
